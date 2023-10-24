@@ -1,3 +1,5 @@
+
+
 import './globals.css'
 import { Inter } from 'next/font/google'
 
@@ -22,15 +24,18 @@ export const metadata = {
   viewport: "width=device-width, initial-scale=1",
 }
 import { Providers } from "../app/redux/provider";
-import { store } from "../app/redux/store";
+import AuthProvider from './components/authProvider/AuthProvider';
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
 
       <body className={inter.className}>
+  <AuthProvider>
       <Providers>
       {children}
       </Providers>
+ </AuthProvider>
       </body>
     </html>
   )
