@@ -1,0 +1,66 @@
+.Header{
+    
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    z-index: 999;
+width: 100%;
+height: auto;
+display: flex;
+box-shadow: 0 .5rem 1rem rgba(0,0,0,.03)!important;
+}
+
+.Header .logo{
+    display: flex;
+    margin-left: 1%;
+    position: relative;
+    width: 20%;
+    margin-bottom: 0.7%;
+}
+.Header .logo .image{
+    position: relative;
+    width: 5vw;
+    height: 5vw;
+}
+.Header .logo .logo_name{
+
+    margin-top: 10%;
+    margin-left: 2%;
+    font-weight: 50px;
+    font-size: 1.2vw;
+}
+
+
+
+/* search bar */
+.Header .search{
+    position: relative;
+    width: 40%;
+    margin-top: 1.1%;
+}
+.Header .search .icon{
+position: absolute;
+top: 20%;
+left: 3%;
+font-size: 1.5vw;
+    color: rgb(133, 133, 133);
+}
+.Header .search input{ 
+background-color: rgb(237, 237, 237);
+    width: 100%;
+    font-size: 1.2vw;
+    outline: none;
+    padding: 2% 0;
+    padding-left: 9%;
+    border-radius: 30px;
+}
+
+
+/* user */
+.Header .user_panel{
+position: relative;
+width: 4%;
+margin-top: 0.6%;
+height: 3.8vw;
+}

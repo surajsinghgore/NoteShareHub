@@ -6,10 +6,9 @@ const handler=NextAuth({
     GoogleProvider({
       clientId:process.env.NEXT_PUBLIC_GOOGLE_APP_CLIENT_ID,
       clientSecret:process.env.NEXT_PUBLIC_GOOGLE_APP_CLIENT_SECRET})
-  ]
+  ],
+  secret: process.env.NEXT_PUBLIC_NEXT_AUTH_SECRET_KEY,
 })
 
 
-// const handler=NextAuth(authOptions);
-// console.log("err =>",handler)
 export {handler as GET,handler as POST}
