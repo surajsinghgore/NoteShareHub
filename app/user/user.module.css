@@ -62,8 +62,10 @@ justify-content: last;
     text-align: center;
     background-color: red;
     color: white;
-    padding-top: 2%;
-    padding: 1.5% 2.1%;
+    padding-top: 1.7%;
+    height: 3vw;
+    width: 3vw;
+    /* padding: 1.5% 2.3%; */
 font-size: 1vw;
 margin-bottom: 2%;
 }
@@ -86,4 +88,21 @@ font-size: 0.8vw;
 
     color: rgb(37 41 56) !important;
     cursor: pointer;
+}
+
+/* btn colors */
+.logout{
+    background-image: linear-gradient(to right top, #f60303, #ff2c3d, #ff4a65, #ff6788, #ff81a6);
+}
+.notification{
+    background-image: linear-gradient(to right top, #f9a10f, #f0a20b, #e7a209, #dea309, #d5a30b);
+}
+.userInfo{
+    background-image: linear-gradient(to right top, #0f3af9, #0044e8, #004ad5, #004dc1, #064fab);
+}
+.bookMark{
+    background-image: linear-gradient(to right top, #f90ff1, #f34cf7, #ed6afc, #e982fe, #e596ff);
+}
+.myPost{
+    background-image: linear-gradient(to right top, #03f640, #3af756, #54f868, #68f979, #79f989);
 }
