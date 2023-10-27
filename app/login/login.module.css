@@ -1,0 +1,39 @@
+.login{
+    position: absolute;
+    top: 0;
+    left: 0;
+width: 100vw;
+height: 100vh;
+z-index: 999;
+background-color: white;
+}
+
+.login .googleBtn{
+    width: 23%;
+    cursor: pointer;
+    user-select: none;
+    margin-top: 20%;
+    margin-left: 40%;
+    display: flex;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    border-radius: 10px;
+    border: 2px solid rgb(160, 160, 160);
+}
+.login .googleBtn .googleImage{
+margin-left: 13%;
+margin-right: 7%;
+    position: relative;
+    width: 2.5vw;
+    height: 2.5vw;
+}
+
+.login  .title{
+    color:  rgb(59, 59, 59);
+    font-size: 1.5vw;
+}
+.login .googleBtn:hover{
+
+
+    box-shadow: 0px 0px 2px 2px rgb(223, 223, 223);
+}
