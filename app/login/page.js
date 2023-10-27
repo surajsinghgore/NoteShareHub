@@ -4,18 +4,45 @@ import Image from 'next/legacy/image';
 import style from './login.module.css';
 import {  signIn, useSession } from "next-auth/react"
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
+    const { push } = useRouter();
     const session=useSession();
     const LoginWithGoogle=async()=>{
 
         signIn("google")
     }
 
+    const sendDataToDb=async()=>{
+        let name=session.data.user.name;
+        let email=session.data.user.email;
+        let image=session.data.user.image;
+        if((name!=undefined)||(email!=undefined)||(image!=undefined)){
+        let res=await fetch('/api/clientLogin',{
+            method:"POST",
+            body:JSON.stringify({name,email,image})
+        })
+        if(res.status==200){
+            localStorage.setItem('clientLogin',true);
+            push('/');
+
+            return;
+        }
+        
+    }
+    }
     useEffect(()=>{
 
-console.log(session)
-    },[session]);
+        if(session.data!=undefined){      
+        let name=session.data.user.name;
+        let email=session.data.user.email;
+        let image=session.data.user.image;
+        if((name!=undefined)||(email!=undefined)||(image!=undefined)){
+            sendDataToDb()
+        }
+    }
+    },[session.data]);
     
   return (
     <div className={style.login}>

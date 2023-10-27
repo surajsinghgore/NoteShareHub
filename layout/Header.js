@@ -1,8 +1,10 @@
-import Image from 'next/legacy/image'
+"use client";
+import Image from "next/legacy/image";
 import style from "./header.module.css";
 import logo from "../public/logo.png";
 import user from "../public/user.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSession } from "next-auth/react";
 import {
   faMagnifyingGlass,
   faBell,
@@ -12,8 +14,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Header() {
+  const session = useSession();
+  const [imageEnable, setImageEnable] = useState(false);
+  const [imagePath, setImagePath] = useState("");
+
+  useEffect(() => {
+    console.log("d");
+    if (session.data != undefined) {
+      if (session.data.user.image != undefined) {
+        setImageEnable(true);
+        console.log(session.data.user.image);
+        setImagePath(session.data.user.image);
+      }
+    }
+  }, [session]);
   return (
     <div className={style.Header}>
       {/* logo */}
@@ -21,7 +38,7 @@ export default function Header() {
         <div className={style.image}>
           <Link href="/">
             {" "}
-            <Image src={logo} alt="logo" layout='responsive' />
+            <Image src={logo} alt="logo" layout="responsive" />
           </Link>
         </div>
         <div className={style.logo_name}>
@@ -56,12 +73,25 @@ export default function Header() {
         </div>
       </div>
       <div className={style.notification} title="check Notification">
-      <div className={style.dot}></div>
+        <div className={style.dot}></div>
         <FontAwesomeIcon icon={faBell} className={style.notification_icon} />
       </div>
 
       <div className={style.user_panel}>
-       <Link href="/user"> <Image src={user} alt="user" layout="fill" /></Link>
+        {imageEnable ? (
+          <Link href="/user">
+            <Image
+              src={imagePath}
+              alt="user"
+              layout="fill"
+              style={{ borderRadius: "60px" }}
+            />
+          </Link>
+        ) : (
+          <Link href="/user">
+            <Image src={user} alt="user" layout="fill" />
+          </Link>
+        )}
       </div>
     </div>
   );
