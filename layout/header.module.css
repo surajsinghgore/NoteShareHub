@@ -8,6 +8,7 @@
 width: 100%;
 height: auto;
 display: flex;
+padding-bottom: 0.7%;
 box-shadow: 0 .5rem 1rem rgba(0,0,0,.03)!important;
 }
 
@@ -16,16 +17,17 @@ box-shadow: 0 .5rem 1rem rgba(0,0,0,.03)!important;
     margin-left: 1%;
     position: relative;
     width: 20%;
-    margin-bottom: 0.7%;
+    user-select: none;
+    margin-top: 0.5%;
 }
 .Header .logo .image{
     position: relative;
-    width: 5vw;
-    height: 5vw;
+    width: 4.2vw;
+    height: 4.2vw;
 }
 .Header .logo .logo_name{
 
-    margin-top: 10%;
+    margin-top: 8%;
     margin-left: 2%;
     font-weight: 50px;
     font-size: 1.2vw;
@@ -41,7 +43,7 @@ box-shadow: 0 .5rem 1rem rgba(0,0,0,.03)!important;
 }
 .Header .search .icon{
 position: absolute;
-top: 20%;
+top: 22%;
 left: 3%;
 font-size: 1.5vw;
     color: rgb(133, 133, 133);
@@ -55,12 +57,82 @@ background-color: rgb(237, 237, 237);
     padding-left: 9%;
     border-radius: 30px;
 }
+/* menu card */
+.Header .menu{
+    display: block;
+    width: 20%;
+    margin-left: 2%;
+    padding-top: 1%;
+    justify-content: space-evenly;
+}
+.Header .menu .iconCard{
+    border-radius: 100px;
+    float: left;
+    text-align: center;
+    height: auto;
+    width: 3.2vw;
+  margin: 2%;
+  padding: 3.7% 0;
+cursor: pointer;
+background-color:  rgb(131, 138, 156);
+}
+.Header .menu .iconCard .menu_icon{
+font-size: 1.4vw;
 
+ color: rgb(198, 215, 255);
+}
+.Header .menu .iconCard:hover{ 
+ 
+    background-color:  rgb(35, 41, 57) !important;
 
+}
+
+.active{
+    border-radius: 100px;
+    float: left;
+    text-align: center;
+    height: auto;
+    width: 3.2vw;
+  margin: 2%;
+  padding: 3.7% 0;
+cursor: pointer;
+    background-color:  rgb(35, 41, 57) !important;
+
+}
+
+.Header .menu .active .menu_icon{
+    font-size: 1.4vw;
+    
+     color: rgb(198, 215, 255);
+    }
+    
+.Header .notification{
+margin-left: 4%;
+    width: auto;
+    position: relative;
+    height: 30px;
+    display: flex;
+    justify-content: right;
+padding-top: 1.7%;
+font-size: 2vw;}
+.Header .notification .dot{
+    position: absolute;
+    top: 80%;
+    right: 6%;
+    border-radius: 60px;
+    background-color: rgb(255, 136, 0);
+    width: 35%;
+    height: 30%;
+}
+.notification_icon{
+cursor: pointer;
+    color: rgb(75, 75, 75);
+}
 /* user */
 .Header .user_panel{
 position: relative;
 width: 4%;
+margin-left: 2%;
 margin-top: 0.6%;
 height: 3.8vw;
 }
