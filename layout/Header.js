@@ -22,7 +22,7 @@ export default function Header() {
   const [imagePath, setImagePath] = useState("");
 
   useEffect(() => {
-    console.log("d");
+
     if (session.data != undefined) {
       if (session.data.user.image != undefined) {
         setImageEnable(true);
