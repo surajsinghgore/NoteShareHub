@@ -6,7 +6,6 @@ import { Inter } from 'next/font/google'
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   icons: {
@@ -28,14 +27,18 @@ export const metadata = {
 }
 import { Providers } from "../app/redux/provider";
 import AuthProvider from './components/authProvider/AuthProvider';
+import Header from '@/layout/Header';
+import LeftSideMenu from '@/layout/LeftSideMenu';
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
 
-      <body className={inter.className}>
+      <body >
   <AuthProvider>
       <Providers>
+      <Header />
+      <LeftSideMenu />
       {children}
       </Providers>
  </AuthProvider>

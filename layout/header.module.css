@@ -4,17 +4,18 @@
 
     left: 0;
     right: 0;
-    z-index: 999;
+    z-index: 99;
 width: 100%;
 height: auto;
 display: flex;
 padding-bottom: 0.7%;
+background-color: white;
 box-shadow: 0 .5rem 1rem rgba(0,0,0,.03)!important;
 }
 
 .Header .logo{
     display: flex;
-    margin-left: 1%;
+    margin-left: 3%;
     position: relative;
     width: 20%;
     user-select: none;
@@ -131,8 +132,8 @@ cursor: pointer;
 /* user */
 .Header .user_panel{
 position: relative;
-width: 4%;
+width: 3%;
 margin-left: 2%;
-margin-top: 0.6%;
-height: 3.8vw;
+margin-top: 1.1%;
+height: 3vw;
 }

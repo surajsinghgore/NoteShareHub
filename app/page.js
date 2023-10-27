@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div>
 
-<Header />
+
 {/* <button onClick={() => signIn("google")}>Login</button> */}
     </div>
   )
