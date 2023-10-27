@@ -61,7 +61,7 @@ export default function Header() {
       </div>
 
       <div className={style.user_panel}>
-        <Image src={user} alt="user" layout="fill" />
+       <Link href="/user"> <Image src={user} alt="user" layout="fill" /></Link>
       </div>
     </div>
   );

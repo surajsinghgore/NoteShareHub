@@ -1,0 +1,89 @@
+.user_panel{
+    position: relative;
+padding-top: 5.8%;
+    width: 80%;
+    margin-left: 20%;
+    height: auto;
+    background-color: #fbfcfe;
+    padding-bottom: 2%;
+}
+
+.user_panel .user_container{
+width: 70%;
+margin-top: 2%;
+margin-left: 15%;
+box-shadow: 0px 0px 2px 2px rgb(247, 247, 247);
+border-radius: 6px;
+height: auto;
+padding-bottom: 5%;
+background-color: #ffffff;
+}
+
+.user_panel .user_container h1{
+font-weight: 600;
+font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 2vw;
+    padding-top: 4%;
+    margin-left: 8%;
+    margin-bottom: 5%;
+}
+/* links */
+.user_panel .user_container .links{
+    width: 82%;
+    margin-bottom: 5%;
+    margin-left: 8%;
+}
+
+.user_panel .user_container .links h2{
+
+    font-size: 1vw;
+    color: #757575;
+    font-weight: 600;
+    margin-bottom: 1%;
+}
+
+.user_panel .user_container .links .link{
+    position: relative;
+border-bottom: 1px solid rgb(216, 216, 216);
+display: flex;
+margin-top: 2%;
+justify-content: last;
+}
+.lastLink{
+    border-bottom: none !important;
+
+
+}
+
+.user_panel .user_container .links .link .icon{
+    
+    height: auto;
+    border-radius: 50px;
+    text-align: center;
+    background-color: red;
+    color: white;
+    padding-top: 2%;
+    padding: 1.5% 2.1%;
+font-size: 1vw;
+margin-bottom: 2%;
+}
+.user_panel .user_container .links .link .title{
+    color: #8c8c8c;
+    font-weight: 500;
+    width: 91%;
+    padding-top: 1.3%;
+    padding-left: 2%;
+        font-size: 1.1vw;
+    }
+
+    .right{
+        text-align: right;
+margin-top: 4%;
+font-size: 0.8vw;
+        color: #8c8c8c;
+    }
+.user_panel .user_container .links .link:hover .title,.user_panel .user_container .links .link:hover{
+
+    color: rgb(37 41 56) !important;
+    cursor: pointer;
+}
