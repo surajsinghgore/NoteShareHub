@@ -23,7 +23,6 @@ import { Providers } from "../redux/provider";
 import AuthProvider from "./components/authProvider/AuthProvider";
 import Header from "@/layout/Header";
 import LeftSideMenu from "@/layout/LeftSideMenu";
-import TopLoader from "@/components/TopLoader";
 
 export default function RootLayout({ children }) {
   return (
