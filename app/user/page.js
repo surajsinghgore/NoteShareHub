@@ -1,3 +1,6 @@
+"use client";
+import { signOut } from "next-auth/react";
+
 import style from "./user.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -5,16 +8,24 @@ import {
   faAngleRight,
   faBell,
   faLock,
-  faBookmark,faCircle,
+  faBookmark,
   faFileInvoice,
-  faCircleUser,
   faIdCard,
 } from "@fortawesome/free-solid-svg-icons";
+import ClientLoginVerify from "@/middleware/ClientLoginVerify";
 
-export default function page() {
+import { useRouter } from "next/navigation";
+
+export default function Page() {
+  const router = useRouter();
+  const logOut = async () => {
+    signOut({redirect:false});
+    await localStorage.removeItem("clientLogin");
+    await router.push("/");
+  };
   return (
     <div className={style.user_panel}>
-
+      <ClientLoginVerify />
       <div className={style.user_container}>
         <h1>User Settings</h1>
 
@@ -40,12 +51,15 @@ export default function page() {
           </div>
         </div>
 
-{/* post related */}
-<div className={style.links}>
+        {/* post related */}
+        <div className={style.links}>
           <h2>Activity</h2>
           <div className={style.link}>
             <div className={`${style.icon} ${style.myPost}`}>
-              <FontAwesomeIcon icon={faFileInvoice} className={style.menu_icon} />
+              <FontAwesomeIcon
+                icon={faFileInvoice}
+                className={style.menu_icon}
+              />
             </div>
 
             <div className={style.title}>My Post</div>
@@ -62,8 +76,7 @@ export default function page() {
           </div>
         </div>
 
-
-{/* other services */}
+        {/* other services */}
         <div className={style.links}>
           <h2>Other</h2>
           <div className={style.link}>
@@ -80,7 +93,9 @@ export default function page() {
               <FontAwesomeIcon icon={faLock} className={style.menu_icon} />
             </div>
 
-            <div className={style.title}>Lockout</div>
+            <div className={style.title} onClick={() => logOut()}>
+              Lockout
+            </div>
             <FontAwesomeIcon icon={faAngleRight} className={style.right} />
           </div>
         </div>

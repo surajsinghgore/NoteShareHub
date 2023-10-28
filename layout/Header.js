@@ -26,7 +26,7 @@ export default function Header() {
     if (session.data != undefined) {
       if (session.data.user.image != undefined) {
         setImageEnable(true);
-        console.log(session.data.user.image);
+    
         setImagePath(session.data.user.image);
       }
     }
@@ -38,7 +38,7 @@ export default function Header() {
         <div className={style.image}>
           <Link href="/">
             {" "}
-            <Image src={logo} alt="logo" layout="responsive" />
+            <Image src={logo} alt="logo" layout="responsive" priority/>
           </Link>
         </div>
         <div className={style.logo_name}>
@@ -85,11 +85,12 @@ export default function Header() {
               alt="user"
               layout="fill"
               style={{ borderRadius: "60px" }}
+              priority
             />
           </Link>
         ) : (
           <Link href="/user">
-            <Image src={user} alt="user" layout="fill" />
+            <Image src={user} alt="user" layout="fill" priority/>
           </Link>
         )}
       </div>

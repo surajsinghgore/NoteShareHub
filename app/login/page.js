@@ -5,9 +5,11 @@ import style from './login.module.css';
 import {  signIn, useSession } from "next-auth/react"
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import ClientLoginVerify from '@/middleware/ClientLoginVerify';
 
 export default function Page() {
     const { push } = useRouter();
+    const router = useRouter();
     const session=useSession();
     const LoginWithGoogle=async()=>{
 
@@ -41,16 +43,24 @@ export default function Page() {
         if((name!=undefined)||(email!=undefined)||(image!=undefined)){
             sendDataToDb()
         }
+
+        if (localStorage.getItem("clientLogin")) {
+            router.back();
+          }
     }
     },[session.data]);
     
+
+
+
   return (
     <div className={style.login}>
-      <div className={style.googleBtn} title='Login With Google'>
+    <ClientLoginVerify />
+      <div className={style.googleBtn} title='Login With Google'  onClick={()=>LoginWithGoogle()}>
 <div className={style.googleImage}>
-<Image src="/google.png" alt="google image login btn" layout='fill' />
+<Image src="/google.png" alt="google image login btn" layout='fill' priority/>
 </div>
-<div className={style.title} onClick={()=>LoginWithGoogle()}>Login with Google</div>
+<div className={style.title}>Login with Google</div>
       </div>
     </div>
   )
