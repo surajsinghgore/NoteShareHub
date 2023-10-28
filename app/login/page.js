@@ -41,20 +41,23 @@ export default function Page() {
     }
     }
     useEffect(()=>{
+if(session!=undefined){
 
-        if(session.data!=undefined){      
-        let name=session.data.user.name;
-        let email=session.data.user.email;
-        let image=session.data.user.image;
-        if((name!=undefined)||(email!=undefined)||(image!=undefined)){
-            sendDataToDb()
-        }
-
-        if (localStorage.getItem("clientLogin")) {
-            router.back();
-          }
+  if(session.data!=undefined){      
+    let name=session.data.user.name;
+    let email=session.data.user.email;
+    let image=session.data.user.image;
+    if((name!=undefined)||(email!=undefined)||(image!=undefined)){
+      sendDataToDb()
     }
-    },[session.data]);
+    
+    if (localStorage.getItem("clientLogin")) {
+      router.back();
+    }
+  }
+}
+// eslint-disable-next-line react-hooks/exhaustive-deps
+},[session.data]);
     
 
 
