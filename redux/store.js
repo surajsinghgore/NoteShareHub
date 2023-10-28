@@ -1,13 +1,11 @@
-//store.jsx
-
 "use client";
 import { combineReducers, configureStore  } from "@reduxjs/toolkit";
-import counterReducer from "./hooks";
+import clientLoginReducer from "./slice/ClientLoginInfo";
 
-
+// manage reducer
 const rootReducer = combineReducers({
-  counter: counterReducer,
-  //add all your reducers here
+  clientLoginInfo: clientLoginReducer
+
 },);
 
 export const store = configureStore({

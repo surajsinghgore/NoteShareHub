@@ -7,7 +7,12 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import ClientLoginVerify from '@/middleware/ClientLoginVerify';
 
+
+import { useDispatch } from "react-redux";
+import {  setClientData} from "../../redux/slice/ClientLoginInfo";
+
 export default function Page() {
+  const dispatch = useDispatch();
     const { push } = useRouter();
     const router = useRouter();
     const session=useSession();
@@ -20,6 +25,7 @@ export default function Page() {
         let name=session.data.user.name;
         let email=session.data.user.email;
         let image=session.data.user.image;
+        dispatch(setClientData({name,email,image}))
         if((name!=undefined)||(email!=undefined)||(image!=undefined)){
         let res=await fetch('/api/clientLogin',{
             method:"POST",

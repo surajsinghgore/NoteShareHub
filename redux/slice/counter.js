@@ -1,5 +1,3 @@
-//counterSlice.jsx
-
 "use client"; //this is a client side component
 
 import { createSlice } from "@reduxjs/toolkit";

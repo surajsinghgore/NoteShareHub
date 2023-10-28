@@ -16,7 +16,13 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+
+import { useDispatch } from "react-redux";
+import {  setClientData} from "../redux/slice/ClientLoginInfo";
+
 export default function Header() {
+  const dispatch = useDispatch();
+
   const session = useSession();
   const [imageEnable, setImageEnable] = useState(false);
   const [imagePath, setImagePath] = useState("");
@@ -26,7 +32,7 @@ export default function Header() {
     if (session.data != undefined) {
       if (session.data.user.image != undefined) {
         setImageEnable(true);
-    
+        dispatch(setClientData({name:session.data.user.name,email:session.data.user.email,image:session.data.user.image}))
         setImagePath(session.data.user.image);
       }
     }

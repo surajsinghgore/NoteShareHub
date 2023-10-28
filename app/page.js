@@ -2,9 +2,11 @@
 // import {  signIn, useSession } from "next-auth/react"
 import Header from "../layout/Header";
 
+import {  useSelector } from "react-redux";
 
 export default function Home() {
-//  const session=useSession();
+// get client data
+const count = useSelector((state) => state.clientLoginInfo); // Access the counter state
 
   return (
     <div>
