@@ -14,6 +14,8 @@ export const counterSlice = createSlice({
     // set client data
     clientLoginState: (state, payload) => {
     // set login state
+ 
+    
         state.state = payload.payload;
       
     },

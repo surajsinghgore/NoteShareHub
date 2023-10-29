@@ -24,31 +24,37 @@ import { clientLoginState } from "../redux/slice/ClientLoginState";
 export default function Header() {
   const dispatch = useDispatch();
   const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
+  const loginState = useSelector((state) => state.clientLoginState);
 
   const session = useSession();
   const [imageEnable, setImageEnable] = useState(false);
   const [imagePath, setImagePath] = useState("");
 
   useEffect(() => {
+
+    
     if (session.data != undefined) {
       if (session.data.user.image != undefined) {
-        dispatch(clientLoginState(true));
-        setImageEnable(true);
-        dispatch(
-          setClientData({
-            name: session.data.user.name,
-            email: session.data.user.email,
-            image: session.data.user.image,
-          })
-        );
-        setImagePath(session.data.user.image);
+      
+          dispatch(clientLoginState(true));
+      
+          setImageEnable(true);
+          dispatch(
+            setClientData({
+              name: session.data.user.name,
+              email: session.data.user.email,
+              image: session.data.user.image,
+            })
+            );
+            setImagePath(session.data.user.image);
+         
       }
     }
 
+    
     // manage profile when logout 
     if (clientLoginInfo.image == false) {
       setImageEnable(false);
-
       setImagePath("");
     }
     setImagePath(clientLoginInfo.image);

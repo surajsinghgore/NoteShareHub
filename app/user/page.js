@@ -1,9 +1,6 @@
 "use client";
 import { signOut } from "next-auth/react";
-import { useDispatch, useSelector } from "react-redux";
-
-
-
+import { useDispatch } from "react-redux";
 import style from "./user.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -28,15 +25,19 @@ export default function Page() {
 
 
   const logOut = async () => {
-    signOut({redirect:false});
+    localStorage.removeItem('clientLogin');
     dispatch(clientLoginState(false));
-
     dispatch(setClientData({
       name: '',
       email: '',
       image: false,
     }))
-     router.push("/");
+    
+    signOut({ redirect: false }).then(() => {
+			router.push("/");
+		});
+  
+
   };
   return (
     <div className={style.user_panel}>

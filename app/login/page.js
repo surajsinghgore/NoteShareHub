@@ -22,11 +22,12 @@ export default function Page() {
   }
 
   const LoginWithGoogle = async () => {
-    signIn("google");
+    await signIn("google");
+    sendDataToDb();
   };
 
   const sendDataToDb = async () => {
-    console.log("firedEvent");
+
     let name = session.data.user.name;
     let email = session.data.user.email;
     let image = session.data.user.image;
@@ -37,25 +38,16 @@ export default function Page() {
         body: JSON.stringify({ name, email, image }),
       });
       if (res.status == 200) {
+        localStorage.setItem('clientLogin',true);
         dispatch(clientLoginState(true));
         push("/");
-        return;
+       
       }
     }
   };
-  useEffect(() => {
-    if (session != undefined) {
-      if (session.data != undefined) {
-        let name = session.data.user.name;
-        let email = session.data.user.email;
-        let image = session.data.user.image;
-        if (name != undefined || email != undefined || image != undefined) {
-          sendDataToDb();
-        }
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session.data]);
+ 
+ 
+   
 
   return (
     <div className={style.login}>
