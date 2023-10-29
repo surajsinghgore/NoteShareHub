@@ -1,5 +1,8 @@
 "use client";
 import { signOut } from "next-auth/react";
+import { useDispatch, useSelector } from "react-redux";
+
+
 
 import style from "./user.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,13 +18,25 @@ import {
 import ClientLoginVerify from "@/middleware/ClientLoginVerify";
 
 import { useRouter } from "next/navigation";
+import { setClientData } from "../../redux/slice/ClientLoginInfo";
+import { clientLoginState } from "../../redux/slice/ClientLoginState";
 
 export default function Page() {
+  const dispatch = useDispatch();
   const router = useRouter();
+
+
+
   const logOut = async () => {
     signOut({redirect:false});
-    await localStorage.removeItem("clientLogin");
-    await router.push("/");
+    dispatch(clientLoginState(false));
+
+    dispatch(setClientData({
+      name: '',
+      email: '',
+      image: false,
+    }))
+     router.push("/");
   };
   return (
     <div className={style.user_panel}>

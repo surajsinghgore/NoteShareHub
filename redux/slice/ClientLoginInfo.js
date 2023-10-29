@@ -20,7 +20,6 @@ export const counterSlice = createSlice({
         state.email=email;
         state.image=image;
     },
-    // get Client Data
    
   },
 });

@@ -5,6 +5,7 @@ import logo from "../public/logo.png";
 import user from "../public/user.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSession } from "next-auth/react";
+
 import {
   faMagnifyingGlass,
   faBell,
@@ -16,26 +17,42 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-
-import { useDispatch } from "react-redux";
-import {  setClientData} from "../redux/slice/ClientLoginInfo";
+import { useDispatch, useSelector } from "react-redux";
+import { setClientData } from "../redux/slice/ClientLoginInfo";
+import { clientLoginState } from "../redux/slice/ClientLoginState";
 
 export default function Header() {
   const dispatch = useDispatch();
+  const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
 
   const session = useSession();
   const [imageEnable, setImageEnable] = useState(false);
   const [imagePath, setImagePath] = useState("");
 
   useEffect(() => {
-
     if (session.data != undefined) {
       if (session.data.user.image != undefined) {
+        dispatch(clientLoginState(true));
         setImageEnable(true);
-        dispatch(setClientData({name:session.data.user.name,email:session.data.user.email,image:session.data.user.image}))
+        dispatch(
+          setClientData({
+            name: session.data.user.name,
+            email: session.data.user.email,
+            image: session.data.user.image,
+          })
+        );
         setImagePath(session.data.user.image);
       }
     }
+
+    // manage profile when logout 
+    if (clientLoginInfo.image == false) {
+      setImageEnable(false);
+
+      setImagePath("");
+    }
+    setImagePath(clientLoginInfo.image);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
   return (
     <div className={style.Header}>
@@ -44,7 +61,7 @@ export default function Header() {
         <div className={style.image}>
           <Link href="/">
             {" "}
-            <Image src={logo} alt="logo" layout="responsive" priority/>
+            <Image src={logo} alt="logo" layout="responsive" priority />
           </Link>
         </div>
         <div className={style.logo_name}>
@@ -96,7 +113,7 @@ export default function Header() {
           </Link>
         ) : (
           <Link href="/user">
-            <Image src={user} alt="user" layout="fill" priority/>
+            <Image src={user} alt="user" layout="fill" priority />
           </Link>
         )}
       </div>

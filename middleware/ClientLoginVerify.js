@@ -1,14 +1,19 @@
 "use client";
 
+import {  useSelector } from "react-redux";
+
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-
 export default function ClientLoginVerify() {
   const { push } = useRouter();
 
+  const loginState = useSelector((state) => state.clientLoginState);
+
   useEffect(() => {
-    if (!localStorage.getItem("clientLogin")) {
-      push("/login");
+  
+      if (!loginState.state) {
+        push("/login");
+      
     }
   });
   return <></>;
