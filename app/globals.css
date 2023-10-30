@@ -5,5 +5,235 @@ input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
-  -webkit-appearance:none;
+  -webkit-appearance: none;
+}
+
+/* mediaPost */
+.mediaPost {
+  margin-left: 20%;
+  width: 80%;
+  height: auto;
+  background-color: #fbfcfe;
+  display: flex;
+  position: relative;
+  padding-top: 5.8%;
+  padding-bottom: 5%;
+}
+/* post_section */
+.mediaPost .post_section {
+  position: relative;
+  width: 70%;
+  padding-left: 5%;
+}
+/* post */
+.mediaPost .post_section .post{
+  position: relative;
+  margin-top: 3%;
+  box-shadow: 0px 0px 16px 4px rgb(239, 239, 239);
+border-radius: 10px;
+  width: 90%;
+  border:1px solid  rgb(235, 235, 235);
+  background-color: white;
+}
+/* top secttion */
+.mediaPost .post_section .post .top_section{
+  position: relative;
+display: flex;
+padding-top: 4%;
+padding-bottom: 2%;
+}
+
+.mediaPost .post_section .post .top_section .image_profile{
+
+  position: relative;
+  width: 3.5vw;
+  height: 3.5vw;
+margin-left: 4%;
+}
+
+.mediaPost .post_section .post .top_section .image_profile .profile_image{
+  border-radius: 60px;
+  box-shadow: 0px 0px 3px 2px rgb(244, 244, 244);
+  
+}
+.mediaPost .post_section .post .top_section .user_detail{
+margin-left: 2%;
+  width: 75%;
+}
+
+.mediaPost .post_section .post .top_section .user_detail h2{
+  font-weight: 700;
+  margin-top: 1%;
+  text-transform: capitalize;
+}
+.mediaPost .post_section .post .top_section .user_detail h3{
+font-size: 1vw;
+  font-weight: 380;
+  color: #ababab;
+}
+.mediaPost .post_section .post .top_section .option{
+  background-color: rgb(237, 237, 237);
+  border-radius: 60px;
+width: 3vw;
+cursor: pointer;
+height: 3vw;
+text-align: center;
+}
+.mediaPost .post_section .post .top_section .option .post_icon{
+padding-top: 9%;
+font-size: 1.5vw;
+}
+
+
+
+
+/* post_description */
+.mediaPost .post_section .post .post_description{
+
+  width: 92%;
+  margin-left: 4%;
+  height: auto;
+  font-size: 1vw;
+  font-weight: 400;
+  color: #ababab;
+}
+.mediaPost .post_section .post .post_description p{
+  word-wrap: break-word;
+  width: 90%;
+}
+.mediaPost .post_section .post .post_description span{
+padding-left: 1%;
+font-weight: 500;
+  color: rgb(10, 97, 247);
+}
+ 
+
+/* /media_container */
+.mediaPost .post_section .post .media{
+
+  margin-top: 2%;
+}
+.mediaPost .post_section .post .media_container{
+width: 92%;
+margin-left: 4%;
+  position: relative;
+  width: 92%;
+  height: 23vw;
+  margin-bottom: 3%;
+}
+
+.mediaPost .post_section .post .media_container .media_image1{
+  border-radius: 5px;
+}
+
+
+
+/* bottom section */
+.mediaPost .post_section .post .bottom_section{
+
+  display: flex;
+  justify-content: left;
+margin-bottom: 5%;
+padding-top: 2%;
+margin-left: 1%;
+padding-left: 2%;
+}
+.like{
+  cursor: pointer;
+display: flex;
+margin-left: 1%;
+padding-right: 2%;
+}
+.bottom_like_icon{
+  background-color: rgb(0, 153, 255);
+  border-radius: 60px;
+  width: 2vw;
+  height: 2vw;
+  cursor: pointer;
+  text-align: center;
+}
+
+.bottom_icon{
+  font-size: 1vw;
+color: white  ;
+padding-top: 25%;
+}
+.dislike{
+  background-color: rgb(245, 69, 29) !important;
+}
+.comment{
+  
+  background-color: rgb(4, 47, 240) !important;
+
+}
+.count{
+  margin-left: 4px;
+  font-size: 1vw;
+  color: rgb(84, 84, 84)  ;
+padding-top: 8%;
+font-weight: 500;
+}
+
+
+.share{
+  margin-left: 46%;
+  
+}
+
+
+
+/* hide menu */
+.hide_menu{
+  position: absolute;
+  top: 70%;
+  right: -18%;
+  z-index: 3;
+  margin-top: 3%;
+border-radius: 10px;
+box-shadow: 0px 0px 1px 0px rgb(192, 192, 192);
+  width: 33%;
+  background-color: white;
+list-style: none;
+padding-bottom: 0.5%;
+}
+.hide_menu li{
+  display: flex;
+  margin-top: 2%;
+  cursor: pointer;
+  padding-bottom: 4%;
+}
+.hide_menu li:hover{
+  border-radius: 4px;
+  background-color: rgb(246, 246, 246);
+}
+
+.hidemenu_icons{
+  width: 25%;
+  text-align: center;
+  margin-top: 5%;
+}
+.hidemenu_icon{
+  padding-top: 6%;
+font-size: 1.5vw;
+padding-left: 7%;
+color: rgb(105, 105, 105);
+}
+.hide_menu .hidemenu_desc{
+  width: 80%;
+  margin-top: 4%;
+
+}
+.hide_menu .hidemenu_desc h2{
+font-size: 1vw;
+  font-weight: 600;
+}
+.hide_menu .hidemenu_desc h3{
+  font-size: 0.7vw;
+
+  font-weight: 400;
+color: #848484;
+}
+/* right section */
+.mediaPost .right_section {
+  width: 30%;
 }
