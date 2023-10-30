@@ -17,27 +17,26 @@ import ClientLoginVerify from "@/middleware/ClientLoginVerify";
 import { useRouter } from "next/navigation";
 import { setClientData } from "../../redux/slice/ClientLoginInfo";
 import { clientLoginState } from "../../redux/slice/ClientLoginState";
+import Link from "next/link";
 
 export default function Page() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-
-
   const logOut = async () => {
-    localStorage.removeItem('clientLogin');
+    localStorage.removeItem("clientLogin");
     dispatch(clientLoginState(false));
-    dispatch(setClientData({
-      name: '',
-      email: '',
-      image: false,
-    }))
-    
-    signOut({ redirect: false }).then(() => {
-			router.push("/");
-		});
-  
+    dispatch(
+      setClientData({
+        name: "",
+        email: "",
+        image: false,
+      })
+    );
 
+    signOut({ redirect: false }).then(() => {
+      router.push("/");
+    });
   };
   return (
     <div className={style.user_panel}>
@@ -48,7 +47,9 @@ export default function Page() {
         {/* general sitting links */}
         <div className={style.links}>
           <h2>General</h2>
+          <Link href={"/user/AccountInformation"}>
           <div className={style.link}>
+
             <div className={`${style.icon} ${style.userInfo}`}>
               <FontAwesomeIcon icon={faUser} className={style.menu_icon} />
             </div>
@@ -56,6 +57,7 @@ export default function Page() {
             <div className={style.title}>Account Information</div>
             <FontAwesomeIcon icon={faAngleRight} className={style.right} />
           </div>
+          </Link>
 
           <div className={`${style.link} ${style.lastLink}`}>
             <div className={`${style.icon} ${style.bookMark}`}>

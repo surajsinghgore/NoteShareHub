@@ -13,11 +13,12 @@ export const counterSlice = createSlice({
   reducers: {
     // set client data
     clientLoginState: (state, payload) => {
-    // set login state
- 
-    
-        state.state = payload.payload;
-      
+      // set login state
+
+      state.state = payload.payload;
+      if (localStorage.getItem("clientLogin")) {
+        state.state = true;
+      }
     },
   },
 });

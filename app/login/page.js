@@ -3,13 +3,15 @@
 import Image from "next/legacy/image";
 import style from "./login.module.css";
 import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import LoadingBar from "react-top-loading-bar";
 
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setClientData } from "../../redux/slice/ClientLoginInfo";
 import { clientLoginState } from "../../redux/slice/ClientLoginState";
 export default function Page() {
+  const [progress, setProgress] = useState(100);
   const dispatch = useDispatch();
   const { push } = useRouter();
   const router = useRouter();
@@ -22,34 +24,41 @@ export default function Page() {
   }
 
   const LoginWithGoogle = async () => {
+    setProgress(30);
     await signIn("google");
+    setProgress(60);
     sendDataToDb();
   };
 
   const sendDataToDb = async () => {
-
-    let name = session.data.user.name;
-    let email = session.data.user.email;
-    let image = session.data.user.image;
+    sendDataToDb(70)
+    let name = await session.data.user.name;
+    let email = await session.data.user.email;
+    let image = await session.data.user.image;
     dispatch(setClientData({ name, email, image }));
     if (name != undefined || email != undefined || image != undefined) {
       let res = await fetch("/api/clientLogin", {
         method: "POST",
         body: JSON.stringify({ name, email, image }),
       });
+      setProgress(100);
       if (res.status == 200) {
-        localStorage.setItem('clientLogin',true);
+        localStorage.setItem("clientLogin", true);
         dispatch(clientLoginState(true));
         push("/");
-       
       }
     }
   };
- 
- 
-   
 
   return (
+    <>
+ <LoadingBar
+        color="#242c3f"
+        progress={progress}
+        onLoaderFinished={() => setProgress(progress)}
+        height={6}
+      />
+
     <div className={style.login}>
       <div
         className={style.googleBtn}
@@ -67,5 +76,6 @@ export default function Page() {
         <div className={style.title}>Login with Google</div>
       </div>
     </div>
+    </>
   );
 }

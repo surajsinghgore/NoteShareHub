@@ -1,0 +1,81 @@
+.user_account{
+    position: relative;
+padding-top: 5.8%;
+    width: 80%;
+    margin-left: 20%;
+    height: auto;
+     background-color: #fbfcfe;
+    padding-bottom: 2%;
+}
+
+.user_account .section{
+    width: 70%;
+    margin-top: 2%;
+    margin-left: 15%;
+    box-shadow: 0px 0px 2px 2px rgb(247, 247, 247);
+    border-radius: 6px;
+    height: auto;
+    padding-bottom: 5%;
+    background-color: #ffffff;
+}
+.user_account .top{
+color: white;
+border-radius: 5px;
+    font-size: 1.5vw;
+    padding-left: 4%;
+    display: flex;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    background-color: #242c3f
+}
+
+
+
+.user_account .top .icon{
+    width: auto;
+    cursor: pointer;
+    margin-right: 2%;
+    transition: all 0.3s;
+}
+.user_account .top .icon:hover{
+    transform: translate(-2px);
+}
+
+
+/* profile */
+.user_account .profile{
+    width: 100%;
+    margin-top: 12%;
+
+}
+
+.user_account .profile_image{
+
+    position: relative;
+    width: 8vw;
+    margin-left: 42.5%;
+    height: 8vw;
+    border-radius: 20px;
+}
+.user_account .profile_image .image{
+
+   border-radius: 5px;
+}
+.user_account .name_section{
+    width: 100%;
+    text-align: center;
+    
+    margin-top: 2%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.user_account .name_section h2{
+    text-transform: uppercase;
+    font-weight: 600;
+
+    font-size: 1.2vw;
+}
+.user_account .name_section p{
+margin-top: 2%;
+    font-size: 1.1vw;
+    margin-bottom: 10%;
+}
