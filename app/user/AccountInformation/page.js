@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 
 export default function Page() {
     const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
-    console.log(clientLoginInfo)
+
   return (
       <ClientLoginVerify >
       <div className={style.user_account}>
