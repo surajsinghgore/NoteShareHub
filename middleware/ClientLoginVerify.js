@@ -1,12 +1,10 @@
 "use client";
 
 import { useSelector } from "react-redux";
-
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-export default function ClientLoginVerify() {
+export default function ClientLoginVerify({ children }) {
   const { push } = useRouter();
-
   const loginState = useSelector((state) => state.clientLoginState);
 
   useEffect(() => {
@@ -14,5 +12,6 @@ export default function ClientLoginVerify() {
       push("/login");
     }
   });
-  return <></>;
+  return <div>{loginState && children }</div>;
 }
+ 

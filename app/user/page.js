@@ -39,8 +39,9 @@ export default function Page() {
     });
   };
   return (
+    <ClientLoginVerify >
     <div className={style.user_panel}>
-      <ClientLoginVerify />
+     
       <div className={style.user_container}>
         <h1>User Settings</h1>
 
@@ -118,6 +119,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-    </div>
+    </div></ClientLoginVerify>
   );
 }

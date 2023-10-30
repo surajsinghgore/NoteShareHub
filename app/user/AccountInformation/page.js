@@ -14,8 +14,8 @@ export default function Page() {
     const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
     console.log(clientLoginInfo)
   return (
+      <ClientLoginVerify >
       <div className={style.user_account}>
-      <ClientLoginVerify />
     <div className={style.section}>
 {/* top header section */}
 <div className={style.top}>
@@ -47,5 +47,6 @@ export default function Page() {
 
     </div>
     </div>
+    </ClientLoginVerify>
   )
 }
