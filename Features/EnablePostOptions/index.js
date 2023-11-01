@@ -9,7 +9,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/legacy/image";
 import { useState, useEffect, useRef } from "react";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";  
 export default function Index(props) {
     const dropdown = useRef(null);
 
@@ -115,7 +116,10 @@ export default function Index(props) {
 
               {/* media */}
               <div className="media">
-                <div className="media_container">
+
+              {(Data.media.length==1)? 
+            <> 
+            <div className="media_container">
                   <Image
                     src= {Data.media}
                     alt={Data.media}
@@ -124,6 +128,47 @@ export default function Index(props) {
                     priority
                   />
                 </div>
+            </>  :
+            <>
+              <Swiper 
+        slidesPerView={'auto'}
+        spaceBetween={0}
+        className="mySwiper"
+        >
+              <SwiperSlide > <div className="media_container many">
+            <Image
+              src={"/img.jpg"}
+              alt={"Data.media"}
+              layout="fill"
+              className="media_image1"
+              priority
+            />
+          </div></SwiperSlide>
+        <SwiperSlide> <div className="media_container many">
+            <Image
+              src={"/img2.jpg"}
+              alt={"Data.media"}
+              layout="fill"
+              className="media_image1"
+              priority
+            />
+          </div></SwiperSlide>
+        <SwiperSlide>
+         <div className="media_container many">
+            <Image
+              src={"/img3.jpg"}
+              alt={"Data.media"}
+              layout="fill"
+              className="media_image1"
+              priority
+            />
+          </div></SwiperSlide>
+       
+      </Swiper>
+                
+      </>    
+              }
+              
               </div>
 
               {/* bottom section */}

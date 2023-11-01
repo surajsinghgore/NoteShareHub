@@ -39,39 +39,39 @@ const Data = [
 ];
 
 import InfiniteScroll from "react-infinite-scroll-component";
-import {  useState,useRef } from "react";
+import { useState, useRef } from "react";
 import Card from "../../Features/EnablePostOptions";
 
 
-export default function HomePostCard() {
-    const countRef = useRef(2);
-    const countData = useRef(Data.slice(0,2));
 
-const [data,setData]=useState(Data.slice(0,2))
+
+export default function HomePostCard() {
+  const countRef = useRef(2);
+  const countData = useRef(Data.slice(0, 2));
+
+  const [data, setData] = useState(Data.slice(0, 2));
 
   const fetchData = async () => {
     countRef.current = countRef.current + 2;
-    countData.current=Data.slice(0,countRef.current)
-    setData(countData.current)
-
+    countData.current = Data.slice(0, countRef.current);
+    setData(countData.current);
   };
-
 
   return (
     <>
       <InfiniteScroll
         dataLength={data.length} //current data length
         next={fetchData}
-        hasMore={Data.length !==data.length} //Total Size != current data size
-        loader={<h4>Loading...</h4>} // loading 
+        hasMore={Data.length !== data.length} //Total Size != current data size
+        loader={<h4>Loading...</h4>} // loading
         endMessage="Finish" //once finished
-        
       >
         {data.length > 0 &&
           data.map((item) => {
             return <Card Data={item} key={item.id} />;
           })}
       </InfiniteScroll>
+
     </>
   );
 }

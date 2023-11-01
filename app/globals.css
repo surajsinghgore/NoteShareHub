@@ -106,6 +106,8 @@ input[type="search"]::-webkit-search-results-decoration {
 .mediaPost .post_section .post .media {
   margin-top: 2%;
 }
+
+
 .mediaPost .post_section .post .media_container {
   width: 92%;
   margin-left: 4%;
@@ -113,7 +115,29 @@ input[type="search"]::-webkit-search-results-decoration {
   width: 92%;
   height: 23vw;
   margin-bottom: 3%;
+
 }
+
+
+.swiper {
+  width: 92%;
+  height: 100%; 
+}
+
+.many{
+  margin-left: 0% !important;
+}
+.swiper-slide:nth-child(1n) {
+  width: 91%;
+}
+.swiper-slide:nth-child(2n) {
+  width: 60%;
+}
+
+.swiper-slide:nth-child(3n) {
+  width: 50%;
+}
+
 
 .mediaPost .post_section .post .media_container .media_image1 {
   border-radius: 5px;
@@ -174,8 +198,8 @@ input[type="search"]::-webkit-search-results-decoration {
 .hide_menu {
   position: absolute;
   top: 70%;
-  right: -18%;
-  z-index: 3;
+  right: -11%;
+  z-index: 88;
   margin-top: 3%;
   border-radius: 10px;
   box-shadow: 0px 0px 1px 0px rgb(192, 192, 192);
