@@ -1,7 +1,8 @@
+"use client";
 const Data = [
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh1",
     time: "3 hours before",
     id: 1,
     description:
@@ -13,7 +14,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh2",
     time: "3 hours before",
     id: 2,
     description:
@@ -25,7 +26,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh3",
     time: "3 hours before",
     id: 3,
     description:
@@ -37,7 +38,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh4",
     time: "3 hours before",
     id: 19,
     description:
@@ -49,7 +50,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh5",
     time: "3 hours before",
     id: 4,
     description:
@@ -61,7 +62,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh6",
     time: "3 hours before",
     id: 5,
     description:
@@ -73,7 +74,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh7",
     time: "3 hours before",
     id: 6,
     description:
@@ -85,7 +86,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh8",
     time: "3 hours before",
     id: 7,
     description:
@@ -97,7 +98,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh9",
     time: "3 hours before",
     id: 8,
     description:
@@ -109,7 +110,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh10",
     time: "3 hours before",
     id: 9,
     description:
@@ -121,7 +122,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh11",
     time: "3 hours before",
     id: 10,
     description:
@@ -133,7 +134,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh12",
     time: "3 hours before",
     id: 11,
     description:
@@ -145,7 +146,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh13",
     time: "3 hours before",
     id: 12,
     description:
@@ -157,7 +158,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh14",
     time: "3 hours before",
     id: 13,
     description:
@@ -169,7 +170,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh15",
     time: "3 hours before",
     id: 14,
     description:
@@ -181,7 +182,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh16",
     time: "3 hours before",
     id: 15,
     description:
@@ -193,7 +194,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh17",
     time: "3 hours before",
     id: 16,
     description:
@@ -205,7 +206,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh18",
     time: "3 hours before",
     id: 17,
     description:
@@ -217,7 +218,7 @@ const Data = [
   },
   {
     image: "/profile.webp",
-    name: "suraj singh",
+    name: "suraj singh19",
     time: "3 hours before",
     id: 18,
     description:
@@ -228,14 +229,41 @@ const Data = [
     comment: "1 k",
   },
 ];
+
+import InfiniteScroll from "react-infinite-scroll-component";
+import {  useState,useRef } from "react";
 import Card from "../../Features/EnablePostOptions";
+
+
 export default function HomePostCard() {
+    const countRef = useRef(2);
+    const countData = useRef(Data.slice(0,2));
+
+const [data,setData]=useState(Data.slice(0,2))
+
+  const fetchData = async () => {
+    countRef.current = countRef.current + 2;
+    countData.current=Data.slice(0,countRef.current)
+    setData(countData.current)
+
+  };
+
+
   return (
     <>
-      {Data.length > 0 &&
-        Data.map((item) => {
-          return <Card Data={item} key={item.id} />;
-        })}
+      <InfiniteScroll
+        dataLength={data.length} //current data length
+        next={fetchData}
+        hasMore={Data.length !==data.length} //Total Size != current data size
+        loader={<h4>Loading...</h4>} // loading 
+        endMessage="Finish" //once finished
+        
+      >
+        {data.length > 0 &&
+          data.map((item) => {
+            return <Card Data={item} key={item.id} />;
+          })}
+      </InfiniteScroll>
     </>
   );
 }

@@ -106,7 +106,8 @@ export default function Index(props) {
 
               {/* description */}
               <div className="post_description">
-                <p>{Data.description.split(0,168)}
+                <p>
+                {Data.description.split(0,168)}
               
                   <span>See More</span>
                 </p>
