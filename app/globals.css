@@ -30,7 +30,7 @@ input[type="search"]::-webkit-search-results-decoration {
 .mediaPost .post_section .post {
   position: relative;
   margin-top: 3%;
-  box-shadow: 0px 0px 16px 4px rgb(239, 239, 239);
+  box-shadow: 0px 2px 16px 4px rgb(248, 248, 248);
   border-radius: 10px;
   width: 90%;
   border: 1px solid rgb(235, 235, 235);
@@ -106,8 +106,6 @@ input[type="search"]::-webkit-search-results-decoration {
 .mediaPost .post_section .post .media {
   margin-top: 2%;
 }
-
-
 .mediaPost .post_section .post .media_container {
   width: 92%;
   margin-left: 4%;
@@ -115,29 +113,7 @@ input[type="search"]::-webkit-search-results-decoration {
   width: 92%;
   height: 23vw;
   margin-bottom: 3%;
-
 }
-
-
-.swiper {
-  width: 92%;
-  height: 100%; 
-}
-
-.many{
-  margin-left: 0% !important;
-}
-.swiper-slide:nth-child(1n) {
-  width: 91%;
-}
-.swiper-slide:nth-child(2n) {
-  width: 60%;
-}
-
-.swiper-slide:nth-child(3n) {
-  width: 50%;
-}
-
 
 .mediaPost .post_section .post .media_container .media_image1 {
   border-radius: 5px;
@@ -198,8 +174,8 @@ input[type="search"]::-webkit-search-results-decoration {
 .hide_menu {
   position: absolute;
   top: 70%;
-  right: -11%;
-  z-index: 88;
+  right: -18%;
+  z-index: 3;
   margin-top: 3%;
   border-radius: 10px;
   box-shadow: 0px 0px 1px 0px rgb(192, 192, 192);
