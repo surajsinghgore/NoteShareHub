@@ -1,0 +1,184 @@
+
+.mainUploadContainer{
+    width: 120%;
+    margin-top: 3%;
+background:#fff;
+    border: 2px solid rgb(224, 224, 224);
+}
+ .upload{
+    position: relative;
+    width: 96%;
+    margin-top: 3%;
+    padding-bottom: 2%;
+    height: auto;
+    margin-left: 2%;
+border-radius: 10px;
+box-shadow: 0px 0px 20px 10px rgb(244, 244, 244);
+}
+
+.upload .TopIcon{
+    position: relative;
+    width: 100%;
+    font-style: 3vw;
+}
+.upload .postIcon{
+    width: 40px;
+    margin-top: 3%;
+    margin-left: 4%;
+    height: 40px;
+    background-color: rgb(239, 239, 239);
+    border-radius: 60px;
+    color: rgb(69, 69, 69);
+}
+
+.upload .deleteIcon{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.upload .deleteIcon{
+    position: absolute;
+    top: 0.3%;
+    right: 2%;
+background-color: red;
+}
+.upload .deleteIcon{
+    width: 20px;
+    margin-top: 3%;
+    margin-left: 4%;
+    height: 20px;
+    cursor: pointer;
+    background-color: rgb(239, 239, 239);
+    border-radius: 60px;
+    color: rgb(251, 7, 7);
+}
+.upload .TopIcon span{
+    position: absolute;
+    top: 45%;
+    left: 10%;
+    font-size: 1.2vw;
+    margin-left: 2%;
+    color: rgb(179, 179, 179);
+}
+
+.upload .innerUpload{
+    display: flex;
+}
+.upload .innerUpload .leftMedia{
+   width: 60%;
+}
+
+.upload .innerUpload .leftMedia .post_info{
+width: 100%;
+}
+.upload .innerUpload .leftMedia .post_info li{
+    width: 100%;
+    margin-top: 4%;
+    list-style: none;
+}
+
+.upload .innerUpload .leftMedia .post_info li .title {
+    width: 100%;
+    margin-top: 2%;
+    padding-left: 5%;
+    font-size: 1.2vw;
+}
+
+.upload .innerUpload .leftMedia .post_info li .input {
+    width: 100%; padding-left: 4%;
+    font-size: 1.2vw;
+    margin-top: 1%;
+}
+.upload .innerUpload .leftMedia .post_info li .input input{
+width: 93%;
+    outline: none;
+    padding: 0.5% 2%;
+    border-radius: 10px;
+    border: 2px solid rgb(224, 224, 224);
+}
+
+.upload .innerUpload .leftMedia .post_info li .input select{
+    width: 33%;
+        outline: none;
+        text-align: center;
+        padding: 0.5% 2%;
+        border-radius: 10px;
+        border: 2px solid rgb(224, 224, 224);
+    }
+.upload .innerUpload .leftMedia .post_info li .input textarea{
+    width: 93%;
+resize: none;
+        outline: none;
+        padding: 0.5% 2%;
+        border-radius: 10px;
+        height: 10vw;
+        border: 2px solid rgb(224, 224, 224);
+    }
+
+
+    .upload .innerUpload .rightMedia{
+        width: 38%;
+        padding-top: 3%;
+    }
+    .upload .innerUpload .rightMedia .title{
+        padding-left: 4%;
+    }
+
+/* upload media preview */
+.upload .innerUpload .rightMedia .mediaImages{
+    width: 94%;
+    margin-left: 4%;
+height: 20vw;
+box-shadow: 0px 0px 10px 3px rgb(247, 247, 247);
+margin-top: 4%;
+    position: relative;
+}
+.upload .innerUpload .rightMedia .imageMediaDes{
+    background-color: rgb(235, 235, 235);
+    width: 94%;
+
+    margin-top: 0%; 
+    margin-left: 4%;
+    height: auto;
+padding-bottom: 6%;
+}
+
+    .upload .innerUpload .rightMedia .imageMediaDes h2{
+        padding-left: 2%;
+        padding-top: 2%;
+        font-size: 0.8vw;
+        color: rgb(82, 82, 82);
+    }
+    .upload .innerUpload .rightMedia .imageMediaDes p{
+        padding-left: 2%;
+        font-size: 1.1vw;
+        padding-top: 0%;
+        color: rgb(0, 0, 0);
+    }
+
+/* bottom send btn */
+
+.uploadBtn{
+background-color: rgb(235, 235, 235);
+width: 100%;
+margin-top: 2%;
+height: 5vw;
+}
+
+.uploadBtn button{
+    position: relative;
+    float: right;
+    margin-right: 2%;
+    margin-top: 2.5%;
+    padding: 0.5% 0;
+    width: 20%;
+    font-size: 1.5vw;
+    color: rgb(198, 215, 255);
+    background-color: rgb(35, 41, 57);
+}
+.uploadBtn button:hover{
+    background-color: rgb(14, 18, 31);
+    color: rgb(198, 215, 255);
+
+
+}
