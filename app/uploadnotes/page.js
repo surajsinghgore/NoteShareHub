@@ -1,23 +1,69 @@
-import HomePostCard from "@/components/Card/HomePostCard";
+"use client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/legacy/image";
+import { FileUploader } from "react-drag-drop-files";
+const fileTypes = ["JPG", "PNG", "GIF"];
+
 import style from "./uploadnotes.module.css";
 import {
    faPenNib,
     faTrash,
-  faPaperPlane
+  faPaperPlane,faCloudArrowUp
   } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 <FontAwesomeIcon icon="fa-solid fa-pen-nib" />
   
-export default function page() {
+export default function Page() {
+    const [file, setFile] = useState(null);
+    const handleChange = (file) => {
+      setFile(file);
+    };
+
+    const handleChanges = async (e) => {
+      
+          setFile(e.target.files);
+      };
+    useEffect(()=>{
+
+console.log(file)
+    },[file])
   return (
     <div>
 
     <div className="mediaPost">
     
     {/* post section */}
-    <div className="post_section">
+    {(file)==null? <><div className="post_section">
+    <FileUploader handleChange={handleChange}  multiple={true} name="file" types={fileTypes} >
+   <div className={style.uploadMedia}>
+<h1>File Upload</h1>
+<div className={style.fileUpload}>
+<div className={style.uploadIconsMedia}>
+<label className={style.menuIcon} htmlFor="upload">
+<FontAwesomeIcon
+            icon={faCloudArrowUp}
+         
+            className={style.uploadMedias}
+          /> </label>
+
+</div>
+<h2>Drag and Drop Files</h2>
+<h3><hr /> or <hr/></h3>
+<div className={style.container}>
+      <div className={style.button_wrap}>
     
+        <label className={style.button} htmlFor="upload">Upload Notes</label>
+        <input id="upload" type="file" onChange={handleChanges} multiple/>
+      </div>
+    </div>
+
+</div>
+   </div>
+</FileUploader>
+
+    </div></>:<>
+    {/* after upload files */}
     <div className={style.mainUploadContainer}>
 
     
@@ -108,14 +154,16 @@ export default function page() {
 
 
     </div>
+    </>
+    
+    }
+   
 
-
-
-    </div>
     
     
     
- 
+    
+
     
     </div>
     

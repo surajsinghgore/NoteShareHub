@@ -20,6 +20,7 @@
     "next-auth": "^4.24.3",
     "react": "latest",
     "react-dom": "latest",
+    "react-drag-drop-files": "^2.3.10",
     "react-infinite-scroll-component": "^6.1.0",
     "react-redux": "^8.1.2",
     "react-top-loading-bar": "^2.3.1",

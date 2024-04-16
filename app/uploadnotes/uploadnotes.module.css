@@ -1,4 +1,95 @@
+/* before upload  media */
+.uploadMedia{
+border-radius: 30px;
+    width: 120%;
+    margin-top: 6%;
+background:#fff;
+padding-bottom: 4%;
+}
 
+.uploadMedia h1{
+    padding-top: 2%;
+    padding-left: 5%;
+    font-size:3vw;
+    color: rgb(36 44 63);
+}
+
+.uploadMedia .fileUpload{
+    width: 90%;
+    margin-top: 2%;
+    margin-left: 5%;
+    border: 3px dotted rgb(29, 37, 59);
+    height: 25vw;
+}
+.uploadMedia .fileUpload h2{
+    text-align: center;
+    font-size: 1.4vw;
+    margin-top: 1%;
+}
+.uploadMedia .fileUpload h3{   
+     text-align: center;
+    font-size: 1.4vw;
+    display: flex;
+    justify-content: center;
+    margin-top: 1%;
+}
+.uploadMedia .fileUpload h3 hr{
+    width: 20%;
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
+}   
+
+.uploadMedia .fileUpload .uploadIconsMedia{
+    text-align: center;
+    width: 100%;
+}
+.uploadMedia .fileUpload .uploadIconsMedia .uploadMedias{
+margin-top: 10%;
+
+    font-size: 5vw;
+    color: rgb(115, 115, 250);
+}
+
+
+.uploadMedia .fileUpload .container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+  }
+  
+  .uploadMedia .fileUpload input[type="file"] {
+    position: absolute;
+    z-index: -1;
+    top: 10px;
+    left: 8px;
+    cursor: pointer;
+    font-size: 17px;
+    color: #b8b8b8;
+  }
+  
+  .uploadMedia .fileUpload .button_wrap {
+    
+    position: relative;
+  }
+  .menuIcon{
+    cursor: pointer;
+  }
+  .uploadMedia .fileUpload .button{
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 10%;
+    border-radius: 60px;
+    padding: 3% 10%;
+    margin-left: 148%;
+    font-size: 1.5vw;
+    width: 200px;
+    text-align: center;
+    color: white;
+    background-color: rgb(115, 115, 250);
+  }
+/* after upload media */
 .mainUploadContainer{
     width: 120%;
     margin-top: 3%;
@@ -169,7 +260,7 @@ height: 5vw;
     position: relative;
     float: right;
     margin-right: 2%;
-    margin-top: 2.5%;
+    margin-top: 2%;
     padding: 0.5% 0;
     width: 20%;
     font-size: 1.5vw;
