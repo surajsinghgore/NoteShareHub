@@ -5,7 +5,8 @@ import logo from "../public/logo.png";
 import user from "../public/user.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSession } from "next-auth/react";
-
+import { usePathname } from 'next/navigation'
+ 
 import {
   faMagnifyingGlass,
   faBell,
@@ -24,7 +25,7 @@ import { clientLoginState } from "../redux/slice/ClientLoginState";
 export default function Header() {
   const dispatch = useDispatch();
   const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
-  
+  const pathname = usePathname()
   const session = useSession();
   const [imageEnable, setImageEnable] = useState(false);
   const [imagePath, setImagePath] = useState("");
@@ -82,20 +83,22 @@ export default function Header() {
 
       {/* small menu  */}
       <div className={style.menu}>
-        <div className={style.active} title="Home Page">
+      <Link href="/"> <div className={(pathname==="/")?style.active:style.iconCard} title="Home Page">
+      
           <FontAwesomeIcon icon={faHouse} className={style.menu_icon} />
-        </div>
-        <div className={style.iconCard} title="Saved Notes">
+        </div></Link>
+        <Link href="/"> <div className={(pathname==="/savednotes")?style.active:style.iconCard} title="Saved Notes">
           <FontAwesomeIcon icon={faBookmark} className={style.menu_icon} />
-        </div>
-        <div className={style.iconCard} title="upload Notes">
+        </div></Link>
+
+        <Link href="/uploadnotes"><div className={(pathname==="/uploadnotes")?style.active:style.iconCard} title="Upload Notes">
           <FontAwesomeIcon
             icon={faArrowUpFromBracket}
             className={style.menu_icon}
           />
-        </div>
+        </div></Link>
       </div>
-      <div className={style.notification} title="check Notification">
+      <div className={style.notification} title="Check Notification">
         <div className={style.dot}></div>
         <FontAwesomeIcon icon={faBell} className={style.notification_icon} />
       </div>
