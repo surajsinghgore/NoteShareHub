@@ -12,6 +12,7 @@ import {
   } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import ClientLoginVerify from "@/middleware/ClientLoginVerify";
 <FontAwesomeIcon icon="fa-solid fa-pen-nib" />
   
 export default function Page() {
@@ -78,7 +79,7 @@ const postMedia=()=>{
 }
   return (
     <div>
-
+<ClientLoginVerify />
     <div className="mediaPost">
     <div className="post_section">
 
