@@ -1,14 +1,22 @@
+.mainUploadContainerParent{
+    width: 130%;
+    
+    margin-left: 3%;
+    margin-top: 3.5%;
+background:#fff;
+    border: 2px solid rgb(224, 224, 224);
+}
+
 /* before upload  media */
 .uploadMedia{
 border-radius: 30px;
-    width: 120%;
+    width: 100%;
     margin-top: 6%;
 background:#fff;
 padding-bottom: 4%;
 }
 
 .uploadMedia h1{
-    padding-top: 2%;
     padding-left: 5%;
     font-size:3vw;
     color: rgb(36 44 63);
@@ -82,19 +90,23 @@ margin-top: 10%;
     margin-top: 10%;
     border-radius: 60px;
     padding: 3% 10%;
-    margin-left: 148%;
+    margin-left: 165%;
     font-size: 1.5vw;
     width: 200px;
     text-align: center;
     color: white;
     background-color: rgb(115, 115, 250);
   }
+
+
 /* after upload media */
+
 .mainUploadContainer{
-    width: 120%;
-    margin-top: 3%;
+    width: 100%;
+  
+    margin-top: 1%;
 background:#fff;
-    border: 2px solid rgb(224, 224, 224);
+
 }
  .upload{
     position: relative;
