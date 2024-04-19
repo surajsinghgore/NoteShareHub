@@ -99,6 +99,59 @@ else{
   }
 }
 
+
+
+// ! [keywords field]
+  // check weather keywords field is not empty
+  if(Object.keys(keyword).length==0){
+
+    toast.warning('Please Enter Keywords for the Post');
+    return
+  }
+//  getting values in keywords field
+  let keywordsValueGets = Object.entries(keyword)
+// if all post keywords not inserted
+     if(keywordsValueGets.length!=fileArr.length){
+      toast.warning('Please Enter Keywords in all the Post');
+      return
+    }
+else{
+  for(let i=0;i<keywordsValueGets.length;i++){
+    // means some keywords field is empty after writing
+    if(keywordsValueGets[i][1]==""){
+      toast.warning(`Please Enter Keywords in Post ${++i}`);
+      return
+    }
+  }
+}
+
+
+
+
+// ! [Description field]
+  // check weather Description field is not empty
+  if(Object.keys(description).length==0){
+
+    toast.warning('Please Enter Description for the Post');
+    return
+  }
+//  getting values in Description field
+  let descriptionValueGets = Object.entries(description)
+// if all post Description not inserted
+     if(descriptionValueGets.length!=fileArr.length){
+      toast.warning('Please Enter Description in all the Post');
+      return
+    }
+else{
+  for(let i=0;i<descriptionValueGets.length;i++){
+    // means some Description field is empty after writing
+    if(descriptionValueGets[i][1]==""){
+      toast.warning(`Please Enter Description in Post ${++i}`);
+      return
+    }
+  }
+}
+
 }
   return (
     <div>
@@ -180,7 +233,7 @@ else{
 <li>
 <div className={style.title}>Enter Keywords</div>
 <div className={style.input}>
-<input type="text" value={keyword[item[1].name]} onChange={(e)=>handleInputKeyword(e,item[1].name)} placeholder="Enter Keywords Of This Post"/>
+<input type="text" value={keyword[item[1].name]} onChange={(e)=>handleInputKeyword(e,item[1].name)} placeholder="Enter Keywords Of This Post like web,android,iot"/>
 </div>
 </li>
 
