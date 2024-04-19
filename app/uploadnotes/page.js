@@ -80,7 +80,7 @@ export default function Page() {
     //  getting values in title field
     let titleValueGets = Object.entries(title);
 
-    // if all post title not inserted
+    // check weather all  title post must insert title
 
     if (titleValueGets.length != fileArr.length) {
       let newArray = Array.from(fileArr);
@@ -122,53 +122,116 @@ export default function Page() {
     }
 
     // ! [keywords field]
-    // check weather keywords field is not empty
+    
+    // check weather keyword field is not empty
     if (Object.keys(keyword).length == 0) {
-      toast.warning("Please Enter Keywords in Post 1");
+      toast.warning("Please Enter Keyword in Post 1");
       return;
     }
-    //  getting values in keywords field
-    let keywordsValueGets = Object.entries(keyword);
-    // if all post keywords not inserted
-    if (keywordsValueGets.length != fileArr.length) {
-      toast.warning(
-        `Please Enter Keywords in Post ${++keywordsValueGets.length}`
-      );
-      return;
+    //  getting values in keyword field
+    let keywordValueGets = Object.entries(keyword);
+
+    // check weather all  keyword post must insert keyword
+
+    if (keywordValueGets.length != fileArr.length) {
+      let newArray = Array.from(fileArr);
+
+      for (let index = 0; index < keywordValueGets.length; index++) {
+        for (let i = 0; i <= fileArr.length; i++) {
+          if (keywordValueGets[index][0] == fileArr[i][1].name) {
+            let newArr = await newArray.filter((item) => {
+              return item[1].name != keywordValueGets[index][0];
+            });
+
+            newArray = newArr;
+
+            break;
+          }
+        }
+      }
+
+      if (newArray.length != 0) {
+        for (let index = 0; index < fileArr.length; index++) {
+          if (newArray[0][1].name == fileArr[index][1].name) {
+            toast.warning(`Please Enter Keywords in Post ${++index}`);
+            return;
+          }
+        }
+      }
     } else {
-      for (let i = 0; i < keywordsValueGets.length; i++) {
-        // means some keywords field is empty after writing
-        if (keywordsValueGets[i][1] == "") {
-          toast.warning(`Please Enter Keywords in Post ${++i}`);
-          return;
+      for (let i = 0; i < keywordValueGets.length; i++) {
+        // means some keyword field is empty after writing
+        if (keywordValueGets[i][1] == "") {
+          for (let index = 0; index < fileArr.length; index++) {
+            if (fileArr[index][1].name == keywordValueGets[i][0]) {
+              toast.warning(`Please Enter Keywords in Post ${++index}`);
+              return;
+            }
+          }
         }
       }
     }
 
+
+
+
+
+
+
+
+
+
     // ! [Description field]
-    // check weather Description field is not empty
+    // check weather description field is not empty
     if (Object.keys(description).length == 0) {
       toast.warning("Please Enter Description in Post 1");
       return;
     }
-    //  getting values in Description field
+    //  getting values in description field
     let descriptionValueGets = Object.entries(description);
-    // if all post Description not inserted
-    if (descriptionValueGets.length != fileArr.length) {
-      toast.warning(
-        `Please Enter Description in Post ${++descriptionValueGets.length}`
-      );
 
-      return;
+    // check weather all  description post must insert description
+
+    if (descriptionValueGets.length != fileArr.length) {
+      let newArray = Array.from(fileArr);
+
+      for (let index = 0; index < descriptionValueGets.length; index++) {
+        for (let i = 0; i <= fileArr.length; i++) {
+          if (descriptionValueGets[index][0] == fileArr[i][1].name) {
+            let newArr = await newArray.filter((item) => {
+              return item[1].name != descriptionValueGets[index][0];
+            });
+
+            newArray = newArr;
+
+            break;
+          }
+        }
+      }
+
+      if (newArray.length != 0) {
+        for (let index = 0; index < fileArr.length; index++) {
+          if (newArray[0][1].name == fileArr[index][1].name) {
+            toast.warning(`Please Enter Descriptions in Post ${++index}`);
+            return;
+          }
+        }
+      }
     } else {
       for (let i = 0; i < descriptionValueGets.length; i++) {
-        // means some Description field is empty after writing
+        // means some description field is empty after writing
         if (descriptionValueGets[i][1] == "") {
-          toast.warning(`Please Enter Description in Post ${++i}`);
-          return;
+          for (let index = 0; index < fileArr.length; index++) {
+            if (fileArr[index][1].name == descriptionValueGets[i][0]) {
+              toast.warning(`Please Enter Description in Post ${++index}`);
+              return;
+            }
+          }
         }
       }
     }
+
+
   };
   return (
     <div>
