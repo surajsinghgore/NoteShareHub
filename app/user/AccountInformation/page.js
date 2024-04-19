@@ -34,7 +34,7 @@ export default function Page() {
 <div className={style.profile}>
 
 <div className={style.profile_image}>
-<Image src={clientLoginInfo.image} alt="client profile " layout='fill' className={style.image}/>
+<Image src={clientLoginInfo.image} alt="client profile " layout='fill' className={style.image} priority/>
 
 </div>
 

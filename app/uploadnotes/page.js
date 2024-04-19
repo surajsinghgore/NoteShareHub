@@ -386,6 +386,7 @@ export default function Page() {
                                     src={URL.createObjectURL(item[1])}
                                     alt="media"
                                     layout="fill"
+                                    priority
                                   />
                                 </div>
                                 <div className={style.imageMediaDes}>
