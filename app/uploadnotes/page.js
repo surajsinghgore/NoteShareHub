@@ -1,4 +1,5 @@
 "use client";
+import { Toaster, toast } from 'sonner'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/legacy/image";
 import { FileUploader } from "react-drag-drop-files";
@@ -74,11 +75,34 @@ setFileArr(Object.entries(file))
 
 
 const postMedia=()=>{
- 
+// ! [title field]
+  // check weather title field is not empty
+  if(Object.keys(title).length==0){
+
+    toast.warning('Please Enter Title for the Post');
+    return
+  }
+//  getting values in title field
+  let titleValueGets = Object.entries(title)
+// if all post title not inserted
+     if(titleValueGets.length!=fileArr.length){
+      toast.warning('Please Enter Title in all the Post');
+      return
+    }
+else{
+  for(let i=0;i<titleValueGets.length;i++){
+    // means some title field is empty after writing
+    if(titleValueGets[i][1]==""){
+      toast.warning(`Please Enter Title in Post ${++i}`);
+      return
+    }
+  }
+}
 
 }
   return (
     <div>
+    <Toaster position="bottom-center" richColors   closeButton />
 <ClientLoginVerify />
     <div className="mediaPost">
     <div className="post_section">
