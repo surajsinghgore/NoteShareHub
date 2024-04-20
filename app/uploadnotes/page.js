@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/legacy/image";
 import { FileUploader } from "react-drag-drop-files";
 const fileTypes = ["JPG", "PNG", "GIF"];
-
+import { createWorker } from "tesseract.js";
 import style from "./uploadnotes.module.css";
 import {
   faPenNib,
@@ -13,6 +13,7 @@ import {
   faCloudArrowUp,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+
 import { useEffect, useState } from "react";
 import ClientLoginVerify from "@/middleware/ClientLoginVerify";
 <FontAwesomeIcon icon="fa-solid fa-pen-nib" />;
@@ -26,14 +27,38 @@ export default function Page() {
   const [file, setFile] = useState([]);
   const [fileArr, setFileArr] = useState([]);
 
+  // extract
+  const extractTextFromImage = async (file) => {
+    let fileArray = Object.entries(file);
+    let result = [];
+    for (let index = 0; index < fileArray.length; index++) {
+      await setDescription({ ...description, [fileArray[index][1].name]: "Processing your image. Please wait ... "});
+      const worker = await createWorker("eng");
+      const ret = await worker.recognize(
+        URL.createObjectURL(fileArray[index][1])
+      );
+      result.push([ret.data.text, fileArray[index][1].name]);
+      await worker.terminate();
+    }
+    let textFromImageObjects = {};
+    for (let index = 0; index < result.length; index++) {
+      Object.assign(textFromImageObjects, {
+        [result[index][1]]: result[index][0],
+      });
+    }
+
+    setDescription(textFromImageObjects);
+  };
   // drag and drop function
-  const handleChange = (file) => {
+  const handleChange = async (file) => {
     setFile(file);
+    extractTextFromImage(file);
   };
 
   // file upload from button click
   const handleChanges = async (e) => {
     setFile(e.target.files);
+    extractTextFromImage(e.target.files);
   };
 
   const handleInput = (e, name) => {
@@ -122,7 +147,7 @@ export default function Page() {
     }
 
     // ! [keywords field]
-    
+
     // check weather keyword field is not empty
     if (Object.keys(keyword).length == 0) {
       toast.warning("Please Enter Keyword in Post 1");
@@ -171,15 +196,6 @@ export default function Page() {
         }
       }
     }
-
-
-
-
-
-
-
-
-
 
     // ! [Description field]
     // check weather description field is not empty
@@ -230,8 +246,6 @@ export default function Page() {
         }
       }
     }
-
-
   };
   return (
     <div>
