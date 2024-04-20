@@ -32,7 +32,10 @@ export default function Page() {
     let fileArray = Object.entries(file);
     let result = [];
     for (let index = 0; index < fileArray.length; index++) {
-      await setDescription({ ...description, [fileArray[index][1].name]: "Processing your image. Please wait ... "});
+      await setDescription({
+        ...description,
+        [fileArray[index][1].name]: "Processing your image. Please wait ... ",
+      });
       const worker = await createWorker("eng");
       const ret = await worker.recognize(
         URL.createObjectURL(fileArray[index][1])
