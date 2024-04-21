@@ -64,6 +64,9 @@ export default function Page() {
     extractTextFromImage(e.target.files);
   };
 
+
+
+
   const handleInput = (e, name) => {
     setTitle({ ...title, [name]: e.target.value });
   };
