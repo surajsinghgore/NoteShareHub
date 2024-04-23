@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import DbConnection from "../controller/DatabaseConnection";
 import clientPersonalData from "../models/clientPersonalSchema";
 import uploadPosts from "../models/uploadposts";
-import { split } from "postcss/lib/list";
 
 
 cloudinary.v2.config({
@@ -107,15 +106,6 @@ let sendpostdata=new uploadPosts({
 
 }
  
-        
-
-
-
-
-
-        // this will be used to upload the file
-    //  console.log(res.url)
-
     return NextResponse.json(
         {
           message: "Post Successfully Uploaded",
