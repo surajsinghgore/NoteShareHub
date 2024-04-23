@@ -4,7 +4,7 @@ import { Toaster, toast } from "sonner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/legacy/image";
 import { FileUploader } from "react-drag-drop-files";
-const fileTypes = ["JPG", "PNG", "GIF"];
+const fileTypes = ["JPG", "PNG", "GIF","WEBP","JPEG"];
 import { createWorker } from "tesseract.js";
 import style from "./uploadnotes.module.css";
 import {
@@ -114,7 +114,7 @@ export default function Page() {
   // }, [file]);
 
   const postMedia = async () => {
-    console.log(file)
+  
     // ! [title field]
     // check weather title field is not empty
     if (Object.keys(title).length == 0) {
@@ -268,26 +268,54 @@ export default function Page() {
 
 let userActiveEmail=session.data.user.email;
 
+
+
     const data = new FormData();
   
 
 // title array append to form data
 let titleArr=Object.entries(title);
-  data.append("title",JSON.stringify(titleArr))
+
+  for (let index = 0; index < titleArr.length; index++) {
+
+    data.append("title",titleArr[index])
+    
+  }
+
+
+
+
+
+
 // keywords array append to form data
 let keywordsArr=Object.entries(keyword);
-  data.append("keyword",JSON.stringify(keywordsArr))
+  for (let index = 0; index < keywordsArr.length; index++) {
 
+    data.append("keyword",keywordsArr[index])
+    
+  }
 // visibility array append to form data
 let visibilityArr=Object.entries(visibility);
-  data.append("visibility",JSON.stringify(visibilityArr))
+  for (let index = 0; index < visibilityArr.length; index++) {
+
+    data.append("visibility",visibilityArr[index])
+    
+  }
+
 // description array append to form data
 let descriptionArr=Object.entries(description);
-  data.append("description",JSON.stringify(descriptionArr))
+  for (let index = 0; index < descriptionArr.length; index++) {
+
+    data.append("description",descriptionArr[index])
+    
+  }
+
+
+
 // setting files to form data
 for (let index = 0; index < fileArr.length; index++) {
 
-  data.set("files",fileArr[index][1])
+  data.append("files",fileArr[index][1])
   
 }
 
