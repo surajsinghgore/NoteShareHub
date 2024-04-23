@@ -1,4 +1,5 @@
 "use client";
+import { useSession } from "next-auth/react";
 import { Toaster, toast } from "sonner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/legacy/image";
@@ -19,6 +20,7 @@ import ClientLoginVerify from "@/middleware/ClientLoginVerify";
 <FontAwesomeIcon icon="fa-solid fa-pen-nib" />;
 
 export default function Page() {
+  const session = useSession();
   const [title, setTitle] = useState([]);
   const [keyword, setKeyword] = useState([]);
   const [visibility, setVisibility] = useState([]);
@@ -61,6 +63,7 @@ export default function Page() {
   // file upload from button click
   const handleChanges = async (e) => {
     setFile(e.target.files);
+ 
     extractTextFromImage(e.target.files);
   };
 
@@ -98,10 +101,20 @@ export default function Page() {
   useEffect(() => {
     if (file.length != 0) {
       setFileArr(Object.entries(file));
+      let obj={};
+      for (let i = 0; i < file.length; i++) {
+     
+     obj[file[i].name]="public";
+
+    
+   }
+   setVisibility(obj)
     }
   }, [file]);
+  // }, [file]);
 
   const postMedia = async () => {
+  console.log(visibility)
     // ! [title field]
     // check weather title field is not empty
     if (Object.keys(title).length == 0) {
@@ -252,7 +265,40 @@ export default function Page() {
         }
       }
     }
+
+let userActiveEmail=session.data.user.email;
+
+    const data = new FormData();
+  
+
+// title array append to form data
+let titleArr=Object.entries(title);
+  data.append("title",JSON.stringify(titleArr))
+// keywords array append to form data
+let keywordsArr=Object.entries(keyword);
+  data.append("keyword",JSON.stringify(keywordsArr))
+  console.log(keywordsArr)
+// visibility array append to form data
+let visibilityArr=Object.entries(visibility);
+  data.append("visibility",JSON.stringify(visibilityArr))
+// description array append to form data
+let descriptionArr=Object.entries(description);
+  data.append("description",JSON.stringify(descriptionArr))
+// setting files to form data
+  data.append("files",fileArr)
+
+data.append("userActiveEmail",userActiveEmail)
+
+    let postMedia=await fetch('/api/uploadposts',{
+      method:"POST",
+      headers:{ 'Accept': 'application/json'},
+      body:data,
+    })
+    let res=await postMedia.json()
+   
   };
+
+
   return (
     <div>
       <Toaster position="bottom-center" richColors closeButton />
@@ -306,7 +352,8 @@ export default function Page() {
                 {fileArr.length != 0 ? (
                   <>
                     {fileArr.map((item, index) => (
-                      <div key={index}>
+                      <div key={index} >
+                     
                         <div className={style.mainUploadContainer}>
                           <div className={style.upload}>
                             <div className={style.TopIcon}>
