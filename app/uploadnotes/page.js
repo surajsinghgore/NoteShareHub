@@ -1,4 +1,8 @@
 "use client";
+
+import LoadingBar from "react-top-loading-bar";
+import { useRouter } from 'next/navigation';
+
 import { useSession } from "next-auth/react";
 import { Toaster, toast } from "sonner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,6 +25,8 @@ import ClientLoginVerify from "@/middleware/ClientLoginVerify";
 
 export default function Page() {
   const session = useSession();
+  const [progress, setProgress] = useState(100);
+  const { push } = useRouter();
   const [title, setTitle] = useState([]);
   const [keyword, setKeyword] = useState([]);
   const [visibility, setVisibility] = useState([]);
@@ -114,7 +120,8 @@ export default function Page() {
   // }, [file]);
 
   const postMedia = async () => {
-  
+   
+    setProgress(0)
     // ! [title field]
     // check weather title field is not empty
     if (Object.keys(title).length == 0) {
@@ -164,6 +171,7 @@ export default function Page() {
         }
       }
     }
+    setProgress(20)
 
     // ! [keywords field]
 
@@ -215,6 +223,7 @@ export default function Page() {
         }
       }
     }
+    setProgress(40)
 
     // ! [Description field]
     // check weather description field is not empty
@@ -265,6 +274,7 @@ export default function Page() {
         }
       }
     }
+    setProgress(50)
 
 let userActiveEmail=session.data.user.email;
 
@@ -282,6 +292,7 @@ let titleArr=Object.entries(title);
     
   }
 
+  setProgress(60)
 
 
 
@@ -301,6 +312,7 @@ let visibilityArr=Object.entries(visibility);
     data.append("visibility",visibilityArr[index])
     
   }
+  setProgress(70)
 
 // description array append to form data
 let descriptionArr=Object.entries(description);
@@ -318,6 +330,7 @@ for (let index = 0; index < fileArr.length; index++) {
   data.append("files",fileArr[index][1])
   
 }
+setProgress(80)
 
 data.append("userActiveEmail",userActiveEmail)
 
@@ -326,13 +339,42 @@ data.append("userActiveEmail",userActiveEmail)
       headers:{ 'Accept': 'application/json'},
       body:data,
     })
-    let res=await postMedia.json()
-   
+    let res=await postMedia.json();
+   console.log(res.message,postMedia.status)
+    setProgress(100)
+   if(postMedia.status=="500"){
+    toast.error(res.message);
+    return;
+   }
+   if(postMedia.status=="404"){
+    toast.error(res.message);
+    return;
+   }
+   if(postMedia.status=="400"){
+    toast.warning(res.message);
+    return;
+   }
+   if(postMedia.status=="201"){
+    toast.success(res.message);
+  
+setTimeout(()=>{
+
+
+  push('/');
+},1500)
+ 
+   }
   };
 
 
   return (
     <div>
+<LoadingBar
+        color="#242c3f"
+        progress={progress}
+      
+        height={6}
+      />
       <Toaster position="bottom-center" richColors closeButton />
       <ClientLoginVerify />
       <div className="mediaPost">

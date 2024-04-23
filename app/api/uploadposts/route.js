@@ -124,10 +124,10 @@ let sendpostdata=new uploadPosts({
 
     return NextResponse.json(
         {
-          message: "Post Uploaded",
+          message: "Post Successfully Uploaded",
         },
         {
-          status: 200,
+          status: 201,
         }
       );
 

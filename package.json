@@ -19,6 +19,7 @@
     "mongoose": "^7.6.3",
     "next": "latest",
     "next-auth": "^4.24.3",
+    "nextjs-toploader": "^1.6.12",
     "react": "latest",
     "react-dom": "latest",
     "react-drag-drop-files": "^2.3.10",
