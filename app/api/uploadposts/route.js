@@ -5,12 +5,6 @@ import clientPersonalData from "../models/clientPersonalSchema";
 import uploadPosts from "../models/uploadposts";
 import { split } from "postcss/lib/list";
 
-//set bodyparser
-export const config = {
-  api: {
-    bodyParser: false
-  }
-}
 
 cloudinary.v2.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
