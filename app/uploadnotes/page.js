@@ -114,7 +114,7 @@ export default function Page() {
   // }, [file]);
 
   const postMedia = async () => {
-  console.log(visibility)
+    console.log(file)
     // ! [title field]
     // check weather title field is not empty
     if (Object.keys(title).length == 0) {
@@ -277,7 +277,7 @@ let titleArr=Object.entries(title);
 // keywords array append to form data
 let keywordsArr=Object.entries(keyword);
   data.append("keyword",JSON.stringify(keywordsArr))
-  console.log(keywordsArr)
+
 // visibility array append to form data
 let visibilityArr=Object.entries(visibility);
   data.append("visibility",JSON.stringify(visibilityArr))
@@ -285,7 +285,11 @@ let visibilityArr=Object.entries(visibility);
 let descriptionArr=Object.entries(description);
   data.append("description",JSON.stringify(descriptionArr))
 // setting files to form data
-  data.append("files",fileArr)
+for (let index = 0; index < fileArr.length; index++) {
+
+  data.set("files",fileArr[index][1])
+  
+}
 
 data.append("userActiveEmail",userActiveEmail)
 
