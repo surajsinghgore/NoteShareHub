@@ -9,10 +9,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/legacy/image";
 import { useState, useEffect, useRef } from "react";
-
+import { Toaster, toast } from "sonner";
 import "swiper/css";  
 import Link from "next/link";
+import { useSelector } from "react-redux";
 export default function Index(props) {
+  const loginState = useSelector((state) => state.clientLoginState);
+  const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
+
     const dropdown = useRef(null);
 const [date,setDate]=useState("");
 const [time,setTime]=useState("");
@@ -24,6 +28,7 @@ const [time,setTime]=useState("");
     setShowAllDescription(true)
         }         
 useEffect(()=>{
+
   const currentDate = new Date(Data.postData.dateandtime);
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
@@ -55,9 +60,37 @@ useEffect(()=>{
     // clean up
     return () => window.removeEventListener("click", handleClick);
   }, [optionState]);
+
+
+
+
+  const likePost=async(id)=>{
+
+    // first check weather user login in or not
+if(loginState.state){
+  let activeUserEmail=clientLoginInfo.email;
+  console.log(activeUserEmail)
+let likePost=await fetch('/api/likepost',{
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': activeUserEmail
+  },body: JSON.stringify({ postId: id }),
+})
+
+let res=await likePost.json();
+console.log(res)
+
+
+}else{
+  toast.error("Please Log In to give a like to this post.");
+  return; 
+}
+  }
   return (
  
             <div className="post" ref={dropdown}>
+             <Toaster position="bottom-center" richColors closeButton />
               {/* top section */}
               <div className="top_section">
                 {/* hide menu on click */}
@@ -166,7 +199,7 @@ useEffect(()=>{
               {/* bottom section */}
               <div className="bottom_section">
                 {/* like */}
-                <div className="like">
+                <div className="like" onClick={()=>likePost(Data.postData._id)}>
                   <div className="bottom_like_icon">
                     <FontAwesomeIcon
                       icon={faThumbsUp}
@@ -188,9 +221,9 @@ useEffect(()=>{
                 </div>
 
                 {/* comment */}
-                <div className="like">
-                  <div className="bottom_like_icon comment">
-                    <FontAwesomeIcon icon={faComment} className="bottom_icon" />
+                <div className="like" >
+                  <div className="bottom_like_icon comment" title="Like This Post">
+                    <FontAwesomeIcon icon={faComment} className="bottom_icon" title="Like This Post"/>
                   </div>
                   <div className="count">{Data.postData.comments.length}</div>
                 </div>

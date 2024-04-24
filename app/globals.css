@@ -187,6 +187,10 @@ input[type="search"]::-webkit-search-results-decoration {
   color: white;
   padding-top: 25%;
 }
+.like:hover .bottom_icon{
+transform: translateY(-5px);
+}
+
 .dislike {
   background-color: rgb(245, 69, 29) !important;
 }
