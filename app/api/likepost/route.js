@@ -3,6 +3,7 @@ import clientPersonalData from "../models/clientPersonalSchema";
 import uploadPosts from "../models/uploadposts";
 import likePosts from "../models/likeposts";
 import { headers } from 'next/headers'
+import disLikePosts from "../models/dislikepost";
  
 
 
@@ -55,44 +56,118 @@ if(findPostData==null){
       );
 }
 let likePostId=findPostData._id;
-let likeCounter=parseInt(findPostData.like);
+let LikeCounter=parseInt(findPostData.like);
+let disLikeCounter=parseInt(findPostData.dislike);
 
 // check weather already give like or not
 // now update the post
+let findWeatherAlreadyDisLikeToThisPostOrNot=await disLikePosts.find({autherId:userLikeId,postId:likePostId});
 
 let findWeatherAlreadyLikeToThisPostOrNot=await likePosts.find({autherId:userLikeId,postId:likePostId});
-// means already give rate to this id
-if(findWeatherAlreadyLikeToThisPostOrNot.length!=0){
-    return NextResponse.json(
-        {
-          message: "You Already Like This Post",
-        },
-        {
-          status: 200,
-        }
-      );
-}
-else{
-    ++likeCounter;
-    await uploadPosts.findByIdAndUpdate(likePostId,{ $set: { like: likeCounter}});
-    let likePostEntry = new likePosts({
-        autherId:userLikeId,
-        postId:likePostId,
+
+
+
+
+// means dislike is given by user ,so decrement dislike and increment like
+if(findWeatherAlreadyDisLikeToThisPostOrNot.length!=0){
+  
+  // means already give like to this id
+  if(findWeatherAlreadyLikeToThisPostOrNot.length!=0){
+      return NextResponse.json(
+          {
+            message: "You Already Like This Post",
+          },
+          {
+            status: 200,
+          }
+        );
+  }
+  // means like
+  else{
+  
+   let disLikeIdPost=findWeatherAlreadyDisLikeToThisPostOrNot[0]._id;
+  
+   ++LikeCounter;
+   --disLikeCounter;
+  
+      await uploadPosts.findByIdAndUpdate(likePostId,{ $set: { like: LikeCounter,dislike:disLikeCounter}});
+      let LikePostEntry = new likePosts({
+          autherId:userLikeId,
+          postId:likePostId
+      
+        });
+  await LikePostEntry.save();
+  
+  // remove like from db
+  await disLikePosts.findByIdAndRemove(disLikeIdPost);
+  
+  
+  return NextResponse.json(
+      {
+        message: "Post Like Successfully",
+      },
+      {
+        status: 200,
+      }
+    );
+  }
+  
+  
+  
+  
     
-      });
-await likePostEntry.save();
-}
+  }
+  
+  // means not dislike given ,first time like
+  else{
 
-return NextResponse.json(
-    {
-      message: "Post Like Successfully",
-    },
-    {
-      status: 200,
-    }
-  );
+  // means already give rate to this id
+  if(findWeatherAlreadyLikeToThisPostOrNot.length!=0){
+      return NextResponse.json(
+          {
+            message: "You Already Like This Post",
+          },
+          {
+            status: 200,
+          }
+        );
+  }
+  // means dislike
+  else{
+  
+   
+  
+      ++LikeCounter;
+  
+      await uploadPosts.findByIdAndUpdate(likePostId,{ $set: { like: LikeCounter}});
+      let likePostEntry = new likePosts({
+          autherId:userLikeId,
+          postId:likePostId
+      
+        });
+  await likePostEntry.save();
+  
+  
+  return NextResponse.json(
+      {
+        message: "Post Like Successfully",
+      },
+      {
+        status: 200,
+      }
+    );
+  
+  
+  }
+  
+  
+  }
+  
+  
+  
 
-//   check weather user is login or not
+
+
 
 
   } catch (error) {

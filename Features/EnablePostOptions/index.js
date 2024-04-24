@@ -149,7 +149,7 @@ if(likePost.status=="404"){
 if(likePost.status=="200"){
   toast.success(res.message);
 
-  if(res.message=="You Already Like This Post"){
+  if(res.message=="You Already Dislike This Post"){
 return;
   }
   let value=Boolean(postState.state);
