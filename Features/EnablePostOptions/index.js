@@ -9,8 +9,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/legacy/image";
 import { useState, useEffect, useRef } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+
 import "swiper/css";  
+import Link from "next/link";
 export default function Index(props) {
     const dropdown = useRef(null);
 const [date,setDate]=useState("");
@@ -105,17 +106,17 @@ useEffect(()=>{
 
                 {/* profile */}
                 <div className="image_profile">
-                  <Image
+                 <Link href={"/users/"+Data.userData.authorEmail}> <Image
                     src={Data.userData.autherProfile}
                     alt={Data.userData.autherProfile}
                     layout="fill"
                     className="profile_image"
                     priority
-                  />
+                  /></Link>
                 </div>
                 {/* User Name */}
                 <div className="user_detail">
-                  <h2>{Data.userData.autherName}</h2>
+                <Link href={"/users/"+Data.userData.authorEmail}>  <h2>{Data.userData.autherName}</h2></Link>
                   <h3>{time} {date} </h3>
                 </div>
 

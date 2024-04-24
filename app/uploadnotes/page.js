@@ -17,11 +17,8 @@ import {
   faPaperPlane,
   faCloudArrowUp,
 } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
-
 import { useEffect, useState } from "react";
 import ClientLoginVerify from "@/middleware/ClientLoginVerify";
-<FontAwesomeIcon icon="fa-solid fa-pen-nib" />;
 
 export default function Page() {
   const session = useSession();
@@ -105,7 +102,9 @@ export default function Page() {
     }
   };
   useEffect(() => {
+  
     if (file.length != 0) {
+     
       setFileArr(Object.entries(file));
       let obj={};
       for (let i = 0; i < file.length; i++) {
@@ -114,6 +113,7 @@ export default function Page() {
 
     
    }
+   
    setVisibility(obj)
     }
   }, [file]);
@@ -340,7 +340,7 @@ data.append("userActiveEmail",userActiveEmail)
       body:data,
     })
     let res=await postMedia.json();
-   console.log(res.message,postMedia.status)
+
     setProgress(100)
    if(postMedia.status=="500"){
     toast.error(res.message);
@@ -381,6 +381,7 @@ setTimeout(()=>{
         <div className="post_section">
           <div className={style.mainUploadContainerParent}>
             {/* post section */}
+           
             {file.length == 0 ? (
               <>
                 <FileUploader
@@ -523,6 +524,7 @@ setTimeout(()=>{
                                   Selected Media
                                 </div>
                                 <div className={style.mediaImages}>
+                              
                                   <Image
                                     src={URL.createObjectURL(item[1])}
                                     alt="media"
