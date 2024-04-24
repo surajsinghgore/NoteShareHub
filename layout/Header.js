@@ -33,7 +33,7 @@ export default function Header() {
   useEffect(() => {
     if (session.data != undefined) {
       if (session.data.user.image != undefined) {
-        console.log(session.data.user.image)
+      
         dispatch(clientLoginState(true));
 
         setImageEnable(true);
@@ -109,9 +109,9 @@ export default function Header() {
           <Link href="/user">
             <Image
               src={imagePath}
-              alt="user"
+              alt="user profile"
               layout="fill"
-              style={{ borderRadius: "60px" }}
+              className={style.profileImage}
               priority
             />
           </Link>

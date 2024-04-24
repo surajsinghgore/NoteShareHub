@@ -133,9 +133,13 @@ cursor: pointer;
 .Header .user_panel{
 position: relative;
 width: 3%;
+
 margin-left: 2%;
 margin-top: 1.1%;
 
 cursor: pointer;
 height: 3vw;
+}
+.profileImage{
+    border-radius: 120px;
 }
