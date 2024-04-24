@@ -13,14 +13,36 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";  
 export default function Index(props) {
     const dropdown = useRef(null);
-
+const [date,setDate]=useState("");
+const [time,setTime]=useState("");
   const { Data } = props;
+  const [showAllDescription,setShowAllDescription]=useState(false);
+
+      // show all description 
+  const expandDescription=()=>{
+    setShowAllDescription(true)
+        }         
+useEffect(()=>{
+  const currentDate = new Date(Data.dateandtime);
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
+  const day = currentDate.getDate();
+
+  // Extract time components
+  const hours = currentDate.getHours();
+  const minutes = currentDate.getMinutes();
+  const amOrPm = hours >= 12 ? 'PM' : 'AM';
+
+  setDate(`${day}-${month}-${year}`)
+  setTime(`${hours}:${minutes} ${amOrPm}`)
+},[])
   const [optionState, setOptionsState] = useState(false);
   const enableOption = () => {
     setOptionsState(!optionState);
   };
 //   disable on outside click
   useEffect(() => {
+    
     // only add the event listener when the dropdown is opened
     if (!optionState) return;
     function handleClick(event) {
@@ -84,8 +106,8 @@ export default function Index(props) {
                 {/* profile */}
                 <div className="image_profile">
                   <Image
-                    src={Data.image}
-                    alt={Data.media}
+                    src={Data.autherProfile}
+                    alt={Data.autherProfile}
                     layout="fill"
                     className="profile_image"
                     priority
@@ -93,8 +115,8 @@ export default function Index(props) {
                 </div>
                 {/* User Name */}
                 <div className="user_detail">
-                  <h2>{Data.name}</h2>
-                  <h3>{Data.time}</h3>
+                  <h2>{Data.autherName}</h2>
+                  <h3>{time} {date} </h3>
                 </div>
 
                 {/* option btn */}
@@ -105,69 +127,38 @@ export default function Index(props) {
                 </div>
               </div>
 
+              {/* title */}
+              <div className="post_title">
+                <h2>
+                {Data.title}
+              
+                 
+                </h2>
+              </div>
               {/* description */}
               <div className="post_description">
                 <p>
-                {Data.description.split(0,168)}
-              
-                  <span>See More</span>
+               
+              {(showAllDescription)?<>{Data.description}</>:<> {(Data.description.length>158)?<>{Data.description.slice(0,158)}<span onClick={()=>expandDescription()}>See More</span></> :Data.description}
+                 </>}
+             
                 </p>
               </div>
 
               {/* media */}
               <div className="media">
 
-              {(Data.media.length==1)? 
-            <> 
+            
             <div className="media_container">
                   <Image
-                    src= {Data.media}
-                    alt={Data.media}
+                    src= {Data.post_media}
+                    alt={Data.post_media}
                     layout="fill"
                     className="media_image1"
                     priority
                   />
                 </div>
-            </>  :
-            <>
-              <Swiper 
-        slidesPerView={'auto'}
-        spaceBetween={0}
-        className="mySwiper"
-        >
-              <SwiperSlide > <div className="media_container many">
-            <Image
-              src={"/img.jpg"}
-              alt={"Data.media"}
-              layout="fill"
-              className="media_image1"
-              priority
-            />
-          </div></SwiperSlide>
-        <SwiperSlide> <div className="media_container many">
-            <Image
-              src={"/img2.jpg"}
-              alt={"Data.media"}
-              layout="fill"
-              className="media_image1"
-              priority
-            />
-          </div></SwiperSlide>
-        <SwiperSlide>
-         <div className="media_container many">
-            <Image
-              src={"/img3.jpg"}
-              alt={"Data.media"}
-              layout="fill"
-              className="media_image1"
-              priority
-            />
-          </div></SwiperSlide>
-       
-      </Swiper>
-                
-      </>    
-              }
+           
               
               </div>
 
@@ -200,7 +191,7 @@ export default function Index(props) {
                   <div className="bottom_like_icon comment">
                     <FontAwesomeIcon icon={faComment} className="bottom_icon" />
                   </div>
-                  <div className="count">{Data.comment}</div>
+                  <div className="count">{Data.comments.length}</div>
                 </div>
 
                 {/* share */}

@@ -84,6 +84,22 @@ input[type="search"]::-webkit-search-results-decoration {
   font-size: 1.5vw;
 }
 
+/* post_post_title */
+.mediaPost .post_section .post .post_title {
+  width: 92%;
+  margin-left: 4%;
+  height: auto;
+  font-size: 1vw;
+  font-weight: 400;
+  color: #1f1f1f;
+}
+.mediaPost .post_section .post .post_title h2 {
+  word-wrap: break-word;
+  width: 90%;
+  text-transform: capitalize;
+  font-size: 1.4vw;
+}
+
 /* post_description */
 .mediaPost .post_section .post .post_description {
   width: 92%;
@@ -95,11 +111,12 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 .mediaPost .post_section .post .post_description p {
   word-wrap: break-word;
-  width: 90%;
+  width: 100%;
 }
 .mediaPost .post_section .post .post_description span {
   padding-left: 1%;
   font-weight: 500;
+  cursor: pointer;
   color: rgb(10, 97, 247);
 }
 
@@ -113,7 +130,7 @@ input[type="search"]::-webkit-search-results-decoration {
   margin-left: 4%;
   position: relative;
   width: 92%;
-  height: 23vw;
+  height: 43vw;
   margin-bottom: 3%;
 }
 
