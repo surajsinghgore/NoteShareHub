@@ -9,7 +9,7 @@ import ClientLoginVerify from '@/middleware/ClientLoginVerify';
 
 export default function Page() {
     const { push } = useRouter();
-    const router = useRouter();
+
     const session=useSession();
     const LoginWithGoogle=async()=>{
 

@@ -1,3 +1,4 @@
+"use client"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBookmark,
@@ -14,41 +15,31 @@ import "swiper/css";
 import Link from "next/link";
 import { useSelector ,useDispatch} from "react-redux";
 import { useRouter } from 'next/navigation';
-
+import { useSearchParams } from 'next/navigation'
+ 
 
 import { PostReloadState } from "../../redux/slice/ReloadPostsState";
 
-export default function Index(props) {
+export default function Index() {
+    const[data,setData]=useState([]);
+    const[postOwner,setPostOwner]=useState([]);
   const dispatch = useDispatch();
   const { push } = useRouter();
+  const searchParams = useSearchParams()
   const loginState = useSelector((state) => state.clientLoginState);
   const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
   const postState = useSelector((state) => state.PostReloadState);
     const dropdown = useRef(null);
 const [date,setDate]=useState("");
 const [time,setTime]=useState("");
-  const { Data } = props;
+ 
   const [showAllDescription,setShowAllDescription]=useState(false);
 
       // show all description 
   const expandDescription=()=>{
     setShowAllDescription(true)
         }         
-useEffect(()=>{
 
-  const currentDate = new Date(Data.postData.dateandtime);
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
-  const day = currentDate.getDate();
-
-  // Extract time components
-  const hours = currentDate.getHours();
-  const minutes = currentDate.getMinutes();
-  const amOrPm = hours >= 12 ? 'PM' : 'AM';
-
-  setDate(`${day}-${month}-${year}`)
-  setTime(`${hours}:${minutes} ${amOrPm}`)
-},[])
   const [optionState, setOptionsState] = useState(false);
   const enableOption = () => {
     setOptionsState(!optionState);
@@ -178,8 +169,59 @@ if(loginState.state){
   return; 
 }
   }
+
+const fetchSinglePost=async()=>{
+let postId=searchParams.get('post');
+let fetchSinglePost=await fetch(`/api/getuploadposts?post=${postId}`);
+let res=await fetchSinglePost.json();
+
+if(fetchSinglePost.status=="404"){
+    toast.error(res.message);
+    setTimeout(()=>{
+        push("/")
+
+    },1500)
+}
+if(fetchSinglePost.status=="500"){
+    toast.error("Post Not Found");
+    setTimeout(()=>{
+        push("/")
+
+    },1500)
+}
+
+ setData(res.data);
+ setPostOwner(res.postOwner)
+
+ const currentDate = new Date(res.data.dateandtime);
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
+  const day = currentDate.getDate();
+
+  // Extract time components
+  const hours = currentDate.getHours();
+  const minutes = currentDate.getMinutes();
+  const amOrPm = hours >= 12 ? 'PM' : 'AM';
+
+  setDate(`${day}-${month}-${year}`)
+  setTime(`${hours}:${minutes} ${amOrPm}`)
+}
+  useEffect(()=>{
+    fetchSinglePost();
+  },[])
   return (
  
+
+    <div>
+
+    <div className="mediaPost">
+    
+    {/* post section */}
+    <div className="post_section">
+
+    {(data!=undefined)?<>
+      
+          
             <div className="post" ref={dropdown}>
              <Toaster position="bottom-center" richColors closeButton />
               {/* top section */}
@@ -230,9 +272,9 @@ if(loginState.state){
 
                 {/* profile */}
                 <div className="image_profile">
-                 <Link href={"/users/"+Data.userData.authorEmail}> <Image
-                    src={Data.userData.autherProfile}
-                    alt={Data.userData.autherProfile}
+                 <Link href={"/users/"+postOwner.authorEmail}> <Image
+                    src={postOwner.autherProfile}
+                    alt={postOwner.autherProfile}
                     layout="fill"
                     className="profile_image"
                     priority
@@ -240,12 +282,12 @@ if(loginState.state){
                 </div>
                 {/* User Name */}
                 <div className="user_detail">
-                <Link href={"/users/"+Data.userData.authorEmail}>  <h2>{Data.userData.autherName}</h2></Link>
+                <Link href={"/users/"+postOwner.authorEmail}>  <h2>{postOwner.autherName}</h2></Link>
                   <h3>{time} {date} </h3>
                 </div>
 
                 {/* option btn */}
-                <div className="option" onClick={() => enableOption()}>
+                <div className="option" >
                   <div className="post_icon">
                     <FontAwesomeIcon icon={faEllipsis} />
                   </div>
@@ -255,7 +297,7 @@ if(loginState.state){
               {/* title */}
               <div className="post_title">
                 <h2>
-                {Data.postData.title}
+                {data.title}
               
                  
                 </h2>
@@ -264,9 +306,10 @@ if(loginState.state){
               <div className="post_description">
                 <p>
                
-              {(showAllDescription)?<>{Data.postData.description}</>:<> {(Data.postData.description.length>158)?<>{Data.postData.description.slice(0,158)}<span onClick={()=>expandDescription()}>See More</span></> :Data.postData.description}
-                 </>}
-             
+               {(data.description==undefined)?"":<>{(showAllDescription)?<>{data.description}</>:<> {(data.description.length>158)?<>{data.description.slice(0,158)}<span onClick={()=>expandDescription()}>See More</span></> :data.description}
+                 </>}</>
+             }
+                 
                 </p>
               </div>
 
@@ -276,8 +319,8 @@ if(loginState.state){
             
             <div className="media_container">
                   <Image
-                    src= {Data.postData.post_media}
-                    alt={Data.postData.post_media}
+                    src= {data.post_media}
+                    alt={data.post_media}
                     layout="fill"
                     className="media_image1"
                     priority
@@ -290,33 +333,33 @@ if(loginState.state){
               {/* bottom section */}
               <div className="bottom_section">
                 {/* like */}
-                <div className="like" onClick={()=>likePost(Data.postData._id)}>
+                <div className="like" onClick={()=>likePost(data._id)}>
                   <div className="bottom_like_icon">
                     <FontAwesomeIcon
                       icon={faThumbsUp}
                       className="bottom_icon"
                     />
                   </div>
-                  <div className="count">{Data.postData.like}</div>
+                  <div className="count">{data.like}</div>
                 </div>
 
                 {/* dislike */}
-                <div className="like" onClick={()=>diskLikePost(Data.postData._id)}>
+                <div className="like" onClick={()=>diskLikePost(data._id)}>
                   <div className="bottom_like_icon dislike">
                     <FontAwesomeIcon
                       icon={faThumbsDown}
                       className="bottom_icon"
                     />
                   </div>
-                  <div className="count">{Data.postData.dislike}</div>
+                  <div className="count">{data.dislike}</div>
                 </div>
 
                 {/* comment */}
-                <div className="like" onClick={()=>commentsToThePost(Data.postData._id)}>
+                <div className="like" onClick={()=>commentsToThePost(data._id)}>
                   <div className="bottom_like_icon comment">
                     <FontAwesomeIcon icon={faComment} className="bottom_icon" />
                   </div>
-                  <div className="count">{Data.postData.comments.length}</div>
+                  <div className="count">{(data.comments==undefined)?"":data.comments.length}</div>
                 </div>
 
                 {/* share */}
@@ -331,6 +374,28 @@ if(loginState.state){
                 </div>
               </div>
             </div>
+       
+    </>:""}
+    
+   
+    
+    
+    
+    
+    </div>
+    
+    
+    
+    {/* right section */}
+    <div className="right_section">
+    
+    
+    </div>
+    
+    </div>
+    
+        </div>
+         
           );
        
 }
