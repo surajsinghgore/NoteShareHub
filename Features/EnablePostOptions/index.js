@@ -114,6 +114,53 @@ return;
   return; 
 }
   }
+
+
+  const diskLikePost=async(id)=>{
+
+    // first check weather user login in or not
+if(loginState.state){
+
+  let activeUserEmail=clientLoginInfo.email;
+
+let likePost=await fetch('/api/dislikeposts',{
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': activeUserEmail
+  },body: JSON.stringify({ postId: id }),
+})
+
+let res=await likePost.json();
+
+if(likePost.status=="500"){
+  toast.error(res.message);
+  return;
+}
+if(likePost.status=="400"){
+  toast.warning(res.message);
+  return;
+}
+if(likePost.status=="404"){
+  toast.error(res.message);
+  return;
+}
+
+if(likePost.status=="200"){
+  toast.success(res.message);
+
+  if(res.message=="You Already Like This Post"){
+return;
+  }
+  let value=Boolean(postState.state);
+
+  dispatch(PostReloadState(!value));
+}
+}else{
+  toast.error("Please Log In to give a like to this post.");
+  return; 
+}
+  }
   return (
  
             <div className="post" ref={dropdown}>
@@ -237,7 +284,7 @@ return;
                 </div>
 
                 {/* dislike */}
-                <div className="like">
+                <div className="like" onClick={()=>diskLikePost(Data.postData._id)}>
                   <div className="bottom_like_icon dislike">
                     <FontAwesomeIcon
                       icon={faThumbsDown}
