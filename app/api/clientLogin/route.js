@@ -75,7 +75,15 @@ export async function POST(req) {
       
           
     }
-   
+    else{
+      let oldImage=data.image;
+      if(oldImage!==image){
+await clientPersonalData.findByIdAndUpdate(data._id,{ $set: { image: image}});
+
+      }
+      
+
+    }
     return NextResponse.json(
         {
           message: "user successfully login",
