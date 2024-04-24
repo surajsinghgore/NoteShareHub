@@ -33,6 +33,7 @@ export default function Header() {
   useEffect(() => {
     if (session.data != undefined) {
       if (session.data.user.image != undefined) {
+        console.log(session.data.user.image)
         dispatch(clientLoginState(true));
 
         setImageEnable(true);

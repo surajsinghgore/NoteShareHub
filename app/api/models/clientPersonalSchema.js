@@ -22,7 +22,7 @@ const ClientData = new mongoose.Schema(
       
       image: {
       type: String,
-      required: true,lowercase: true
+      required: true,
     },
       
   },

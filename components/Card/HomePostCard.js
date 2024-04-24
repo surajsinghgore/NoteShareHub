@@ -85,7 +85,7 @@ const fetchPosts=async()=>{
       >
         {data.length > 0 &&
           data.map((item) => {
-            return <Card Data={item} key={item.id} />;
+            return <Card Data={item} key={item._id} />;
           })}
       </InfiniteScroll>:""}
     
