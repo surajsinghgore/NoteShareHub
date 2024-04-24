@@ -1,42 +1,5 @@
 "use client";
-// const Data = [
-//   {
-//     image: "/profile.webp",
-//     name: "suraj singh1",
-//     time: "3 hours before",
-//     id: 1,
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quisquam, et repellendus ducimus tenetur sapiente ullam dolorum tempora neque nobis expedita omnis",
-//     media: "/img.jpg",
-//     like: "22 k",
-//     dislike: "32 k",
-//     comment: "12 k",
-//   },
-//   {
-//     image: "/profile.webp",
-//     name: "suraj singh2",
-//     time: "3 hours before",
-//     id: 2,
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quisquam, et repellendus ducimus tenetur sapiente ullam dolorum tempora neque nobis expedita omnis",
-//     media: "/img.jpg",
-//     like: "2 k",
-//     dislike: "3 k",
-//     comment: "1 k",
-//   },
-//   {
-//     image: "/profile.webp",
-//     name: "suraj singh2",
-//     time: "3 hours before",
-//     id: 3,
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quisquam, et repellendus ducimus tenetur sapiente ullam dolorum tempora neque nobis expedita omnis",
-//     media: "/img.jpg",
-//     like: "2 k",
-//     dislike: "3 k",
-//     comment: "1 k",
-//   },
-// ];
+import { useSelector } from "react-redux";
 
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState, useRef, useEffect } from "react";
@@ -46,6 +9,7 @@ import Card from "../../Features/EnablePostOptions";
 
 
 export default function HomePostCard() {
+  const postState = useSelector((state) => state.PostReloadState);
   const countRef = useRef(2);
   const [Data,setDatas]=useState([]);
   const countData = useRef();
@@ -72,8 +36,9 @@ const fetchPosts=async()=>{
   }
 }
   useEffect(()=>{
+  
     fetchPosts()
-  },[])
+  },[postState.state])
   return (
     <>
 

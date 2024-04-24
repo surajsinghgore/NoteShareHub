@@ -12,11 +12,16 @@ import { useState, useEffect, useRef } from "react";
 import { Toaster, toast } from "sonner";
 import "swiper/css";  
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useSelector ,useDispatch} from "react-redux";
+
+
+import { PostReloadState } from "../../redux/slice/ReloadPostsState";
+
 export default function Index(props) {
+  const dispatch = useDispatch();
   const loginState = useSelector((state) => state.clientLoginState);
   const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
-
+  const postState = useSelector((state) => state.PostReloadState);
     const dropdown = useRef(null);
 const [date,setDate]=useState("");
 const [time,setTime]=useState("");
@@ -68,8 +73,9 @@ useEffect(()=>{
 
     // first check weather user login in or not
 if(loginState.state){
+
   let activeUserEmail=clientLoginInfo.email;
-  console.log(activeUserEmail)
+
 let likePost=await fetch('/api/likepost',{
   method: 'POST',
   headers: {
@@ -79,9 +85,30 @@ let likePost=await fetch('/api/likepost',{
 })
 
 let res=await likePost.json();
-console.log(res)
 
+if(likePost.status=="500"){
+  toast.error(res.message);
+  return;
+}
+if(likePost.status=="400"){
+  toast.warning(res.message);
+  return;
+}
+if(likePost.status=="404"){
+  toast.error(res.message);
+  return;
+}
 
+if(likePost.status=="200"){
+  toast.success(res.message);
+
+  if(res.message=="You Already Like This Post"){
+return;
+  }
+  let value=Boolean(postState.state);
+
+  dispatch(PostReloadState(!value));
+}
 }else{
   toast.error("Please Log In to give a like to this post.");
   return; 
