@@ -10,7 +10,9 @@ const uploadPost = new mongoose.Schema(
  
    
     },
-      
+    autherProfile:{type:String},
+    autherName:{type:String},
+      mainId:{type:String},
       title: {
       type: String,
       required: true,
