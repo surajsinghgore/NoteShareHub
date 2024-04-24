@@ -2,17 +2,7 @@ import mongoose from "mongoose";
 
 const uploadPost = new mongoose.Schema(
   {autherId:{ ref: 'clientpersonaldatas',type: String},
-      authorEmail: 
-      {
-        ref: 'clientpersonaldatas',
-       type: String, require: true,  
-       lowercase: true,
- 
-   
-    },
-    autherProfile:{type:String},
-    autherName:{type:String},
-      mainId:{type:String},
+    mainId:{type:String},
       title: {
       type: String,
       required: true,

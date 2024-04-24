@@ -55,9 +55,7 @@ if((title==undefined)||(keyword==undefined)||(visibility==undefined)||(descripti
 
   }
   let userActiveId=data._id;
-  let userActiveName=data.name;
-  let userActiveProfile=data.image;
- 
+
   // check all post like title, keywords , description,visibility is equal to post size
   if((files.length!==title.length)||(files.length!==keyword.length)||(files.length!==visibility.length)||(files.length!==description.length)){
     return NextResponse.json(
@@ -111,15 +109,13 @@ let url=res.url;
 
 let sendpostdata=new uploadPosts({
   autherId:userActiveId,
-  authorEmail:userActiveEmail,
+ 
   title:titleValue,
   keyword:keywordArray,
   description:descriptionValue,
   post_media:url,
   visibility:visibilityValue,
   mainId:uniqueNumber,
-  autherProfile:userActiveProfile,
-  autherName:userActiveName,
   })
   await sendpostdata.save();
 

@@ -23,7 +23,7 @@ const [time,setTime]=useState("");
     setShowAllDescription(true)
         }         
 useEffect(()=>{
-  const currentDate = new Date(Data.dateandtime);
+  const currentDate = new Date(Data.postData.dateandtime);
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
   const day = currentDate.getDate();
@@ -106,8 +106,8 @@ useEffect(()=>{
                 {/* profile */}
                 <div className="image_profile">
                   <Image
-                    src={Data.autherProfile}
-                    alt={Data.autherProfile}
+                    src={Data.userData.autherProfile}
+                    alt={Data.userData.autherProfile}
                     layout="fill"
                     className="profile_image"
                     priority
@@ -115,7 +115,7 @@ useEffect(()=>{
                 </div>
                 {/* User Name */}
                 <div className="user_detail">
-                  <h2>{Data.autherName}</h2>
+                  <h2>{Data.userData.autherName}</h2>
                   <h3>{time} {date} </h3>
                 </div>
 
@@ -130,7 +130,7 @@ useEffect(()=>{
               {/* title */}
               <div className="post_title">
                 <h2>
-                {Data.title}
+                {Data.postData.title}
               
                  
                 </h2>
@@ -139,7 +139,7 @@ useEffect(()=>{
               <div className="post_description">
                 <p>
                
-              {(showAllDescription)?<>{Data.description}</>:<> {(Data.description.length>158)?<>{Data.description.slice(0,158)}<span onClick={()=>expandDescription()}>See More</span></> :Data.description}
+              {(showAllDescription)?<>{Data.postData.description}</>:<> {(Data.postData.description.length>158)?<>{Data.postData.description.slice(0,158)}<span onClick={()=>expandDescription()}>See More</span></> :Data.postData.description}
                  </>}
              
                 </p>
@@ -151,8 +151,8 @@ useEffect(()=>{
             
             <div className="media_container">
                   <Image
-                    src= {Data.post_media}
-                    alt={Data.post_media}
+                    src= {Data.postData.post_media}
+                    alt={Data.postData.post_media}
                     layout="fill"
                     className="media_image1"
                     priority
@@ -172,7 +172,7 @@ useEffect(()=>{
                       className="bottom_icon"
                     />
                   </div>
-                  <div className="count">{Data.like}</div>
+                  <div className="count">{Data.postData.like}</div>
                 </div>
 
                 {/* dislike */}
@@ -183,7 +183,7 @@ useEffect(()=>{
                       className="bottom_icon"
                     />
                   </div>
-                  <div className="count">{Data.dislike}</div>
+                  <div className="count">{Data.postData.dislike}</div>
                 </div>
 
                 {/* comment */}
@@ -191,7 +191,7 @@ useEffect(()=>{
                   <div className="bottom_like_icon comment">
                     <FontAwesomeIcon icon={faComment} className="bottom_icon" />
                   </div>
-                  <div className="count">{Data.comments.length}</div>
+                  <div className="count">{Data.postData.comments.length}</div>
                 </div>
 
                 {/* share */}

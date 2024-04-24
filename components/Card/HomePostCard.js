@@ -65,6 +65,7 @@ const fetchPosts=async()=>{
   let fetchData=await fetch('/api/getuploadposts');
   let res=await fetchData.json();
   if(fetchData.status==200){
+   
     setDatas(res.data);
     setData(res.data.slice(0,2));
     countData.current= Data.slice(0, 2)
@@ -85,7 +86,7 @@ const fetchPosts=async()=>{
       >
         {data.length > 0 &&
           data.map((item) => {
-            return <Card Data={item} key={item._id} />;
+            return <Card Data={item} key={item.postData._id} />;
           })}
       </InfiniteScroll>:""}
     
