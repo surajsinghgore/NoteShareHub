@@ -35,7 +35,7 @@ const uploadPost = new mongoose.Schema(
        like:{type:Number,default:0},
        dislike:{type:Number,default:0},
        comments:{type:Array}, 
-dateandtime:{type:Date},
+dateandtime:{type:Date, default: Date.now },
 
   },
   { timestamps: true }
