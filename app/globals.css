@@ -296,3 +296,38 @@ transform: translateY(-5px);
 .mediaPost .right_section {
   width: 30%;
 }
+
+
+
+/* home page skeleton */
+/* skeleton style */
+
+ .card1{
+  position: relative;
+  width: 90%;
+  height: auto;
+  padding-bottom: 1%;
+  overflow: hidden;
+  margin-bottom: 4%;
+  border: 1px solid rgb(214, 214, 214);
+  box-shadow: 0px 2px 12px 4px rgb(244, 244, 244);
+}
+ .card1 .image_container1{
+  position: relative;
+  width: 96%;
+display: flex;
+margin-left: 2%;
+  height: 100px;
+  background-color: #dadada;
+
+}
+ .card1 .article1{
+  position: relative;
+  width: 90%;
+display: flex;
+margin-left: 5%;
+margin-top: 5%;
+  height: 610px;
+  background-color: #dadada;
+
+}

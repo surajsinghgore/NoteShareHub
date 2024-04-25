@@ -203,8 +203,9 @@ return;
     setShareState(!shareState);
   };
   return (
- 
-            <div className="post" ref={dropdown}>
+ <>
+          
+          <div className="post" ref={dropdown}>
              <Toaster position="bottom-center" richColors closeButton />
               {/* top section */}
               <div className="top_section">
@@ -413,6 +414,7 @@ return;
 
               </div>
             </div>
+ </>
           );
        
 }

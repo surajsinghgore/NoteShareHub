@@ -5,6 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useState, useRef, useEffect } from "react";
 import Card from "../../Features/EnablePostOptions";
 
+import HomePageSkeletion from '../HomePageSkeleton'
 
 
 
@@ -46,14 +47,14 @@ const fetchPosts=async()=>{
         dataLength={data.length} //current data length
         next={fetchData}
         hasMore={Data.length !== data.length} //Total Size != current data size
-        loader={<h4>Loading...</h4>} // loading
+        loader={<HomePageSkeletion number={2}/>} // loading
         endMessage="" //once finished
       >
         {data.length > 0 &&
           data.map((item) => {
             return <Card Data={item} key={item.postData._id} />;
           })}
-      </InfiniteScroll>:""}
+      </InfiniteScroll>:<HomePageSkeletion number={2}/>}
     
 
     </>

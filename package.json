@@ -24,6 +24,7 @@
     "react-dom": "latest",
     "react-drag-drop-files": "^2.3.10",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-loading-skeleton": "^3.4.0",
     "react-redux": "^8.1.2",
     "react-share": "^5.1.0",
     "react-top-loading-bar": "^2.3.1",
