@@ -21,6 +21,7 @@ import style from "./commentStyle.module.css";
 
 import { PostReloadState } from "../../redux/slice/ReloadPostsState";
 import ClientLoginState from "@/redux/slice/ClientLoginState";
+import { fetchData } from "next-auth/client/_utils";
 
 export default function Index() {
   const router = useRouter();
@@ -102,21 +103,39 @@ export default function Index() {
 
 
 const submitComment=async(id)=>{
-console.log(id,comment)
+
 if(comment==""){
   
   toast.warning("please enter comment");
   return 
 }
 let userEmail=clientLoginInfo.email;
-console.log(userEmail)
+
+
 let sendComments=await fetch('/api/commentstopost',{
   method:"POST",
  body:JSON.stringify({comment,userEmail,postId:id})
  
 })
 let res=await sendComments.json();
-console.log(res)
+if(sendComments.status=="500"){
+  toast.error(res.message);
+  return
+}
+if(sendComments.status=="404"){
+  toast.error(res.message);
+  return
+}
+if(sendComments.status=="400"){
+  toast.warning(res.message);
+  return
+}
+if(sendComments.status=="200"){
+  toast.warning(res.message);
+fetchData();
+}
+
+
 }
 
   return (

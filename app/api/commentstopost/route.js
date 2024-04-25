@@ -77,7 +77,7 @@ let fulldate=`${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
 var fulltime = `${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
 
 let arrays={userId:userData._id,comment:comment,postDate:fulldate,posttime:fulltime};
-console.log(arrays)
+
 postData.comments.push(arrays);
 await postData.save();
 
