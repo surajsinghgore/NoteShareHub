@@ -1,7 +1,9 @@
 "use client";
+import style from './users.module.css'
+
+import { useParams } from 'next/navigation';
 import { signOut } from "next-auth/react";
 import { useDispatch } from "react-redux";
-import style from "./user.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -15,19 +17,26 @@ import {
 import ClientLoginVerify from "@/middleware/ClientLoginVerify";
 
 import { useRouter } from "next/navigation";
-import { setClientData } from "../../redux/slice/ClientLoginInfo";
-import { clientLoginState } from "../../redux/slice/ClientLoginState";
+
+import { clientLoginState } from "../../../redux/slice/ClientLoginState";
 import Link from "next/link";
+import { useState } from 'react';
 
 export default function Page() {
+    const getParams = useParams();
+    const [param,setParam]=useState(getParams.user[0])
   const dispatch = useDispatch();
   const router = useRouter();
 
  
   return (
    
-   <div className="user">
-    <h1>suraj</h1>
+   <div className={style.users}>
+   <div className={style.mainUserBody}>
+
+    <h1>{param}</h1>
+
+   </div>
    </div>
     
     

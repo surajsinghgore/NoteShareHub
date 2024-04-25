@@ -329,7 +329,7 @@ if(fetchSinglePost.status == "200"){
 
                       {/* profile */}
                       <div className={style.image_profile}>
-                        <Link href={"/users/" + postOwner.authorEmail}>
+                        <Link href={"/user/" + postOwner.authorEmail}>
                           {" "}
                           <Image
                             src={postOwner.autherProfile}
@@ -342,7 +342,7 @@ if(fetchSinglePost.status == "200"){
                       </div>
                       {/* User Name */}
                       <div className={style.user_detail}>
-                        <Link href={"/users/" + postOwner.authorEmail}>
+                        <Link href={"/user/" + postOwner.authorEmail}>
                           {" "}
                           <h2>{postOwner.autherName}</h2>
                         </Link>

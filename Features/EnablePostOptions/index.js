@@ -255,7 +255,7 @@ return;
 
                 {/* profile */}
                 <div className="image_profile">
-                 <Link href={"/users/"+Data.userData.authorEmail}> <Image
+                 <Link href={"/user/"+Data.userData.authorEmail}> <Image
                     src={Data.userData.autherProfile}
                     alt={Data.userData.autherProfile}
                     layout="fill"
@@ -265,7 +265,7 @@ return;
                 </div>
                 {/* User Name */}
                 <div className="user_detail">
-                <Link href={"/users/"+Data.userData.authorEmail}>  <h2>{Data.userData.autherName}</h2></Link>
+                <Link href={"/user/"+Data.userData.authorEmail}>  <h2>{Data.userData.autherName}</h2></Link>
                   <h3>{time} {date} </h3>
                 </div>
 
