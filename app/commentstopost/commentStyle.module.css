@@ -341,9 +341,9 @@ position: relative;
    
 }
 .mainCommentDiv .postComments .comment1  .comments p{
-  
+  display: inline-block;
 color: rgb(95, 95, 95);
-    width: 96%;
+    width: 25vw;  
 }
 
 /* comment To Post */

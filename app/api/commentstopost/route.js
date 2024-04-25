@@ -4,15 +4,25 @@ import uploadPosts from "../models/uploadposts";
 import likePosts from "../models/likeposts";
 import { headers } from 'next/headers'
 import disLikePosts from "../models/dislikepost";
- 
+ import mongoose from "mongoose";
 export async function GET(req,res){
 
   if(req.nextUrl.searchParams.get('post')!=undefined){
     let postId=req.nextUrl.searchParams.get('post')
   
   
-    let data=await uploadPosts.findById(postId).select("-autherId -mainId -title -createdAt -description -post_media -visibility -dateandtime -__v -_id -like -dislike -updatedAt -keyword").sort({ dateandtime: -1 });
+    let data=await uploadPosts.findById(postId).select("-autherId -mainId -title -createdAt -description -post_media -visibility -dateandtime -__v -_id -like -dislike -updatedAt -keyword");
     
+
+
+
+    let newData=await uploadPosts.aggregate([ 
+      { $match : { _id: new mongoose.Types.ObjectId(postId) } },
+      { "$unwind": "$comments" }, // Unwind the comments array
+  { "$sort": { "comments.dateandtime": -1 } }, // Sort comments by dateandtime in descending order
+  { "$group": { "_id": "$_id", "comments": { "$push": "$comments" } } }
+    ])
+ 
     if(data==null){
       return NextResponse.json(
         {
@@ -43,7 +53,7 @@ export async function GET(req,res){
   
     return NextResponse.json(
       {
-        data: data,postOwner:arr,message:"Success"
+        data: newData[0],postOwner:arr,message:"Success"
       },
       {
         status: 200,
@@ -182,7 +192,8 @@ if(userData==null){
 
 
 // check post is valid or not
-let postData=await uploadPosts.findById(postId);
+let postData=await uploadPosts.findById(postId)
+
 if(postData==null){
   return NextResponse.json(
     {

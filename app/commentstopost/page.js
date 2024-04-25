@@ -69,7 +69,7 @@ export default function Index() {
     let postId = searchParams.get("post");
     let fetchCommentsPost = await fetch(`/api/commentstopost?post=${postId}`);
 let res=await fetchCommentsPost.json();
-console.log(res)
+
 if(fetchCommentsPost.status=="200"){
   setCommentData(res.data.comments)
   setCommentUserData(res.postOwner)
