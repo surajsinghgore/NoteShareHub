@@ -100,8 +100,7 @@ export default function Index() {
     <>
       {/* hide background div */}
       <div className={style.commentBgHide}></div>
-
-<div className={style.commentDiv}>
+      {(data!=undefined)?<><div className={style.commentDiv}>
 <div className={style.mainCommentContainer}>
 
 
@@ -111,11 +110,11 @@ export default function Index() {
         {/* top title of the post */}
         <div className={style.topFixed}>
         <div className={style.topTitle}>
-          <h1>TITLTE oF THE POST IS</h1>
+          <h1> {data.title}</h1>
 
-          <div className={style.closeCommentBtn} title="Close this comment">
+          <Link href="/"><div className={style.closeCommentBtn} title="Close this comment">
             <FontAwesomeIcon icon={faXmark} />
-          </div>
+          </div></Link>
         </div>
         </div>
 
@@ -162,9 +161,9 @@ export default function Index() {
 
                 {/* profile */}
                 <div className={style.image_profile}>
-                 <Link href={"/users/"}> <Image
-                    src={clientLoginInfo.image}
-                    alt={clientLoginInfo.image}
+                 <Link href={"/users/"+postOwner.authorEmail}> <Image
+                    src={postOwner.autherProfile}
+                    alt={postOwner.autherProfile}
                     layout="fill"
                     className={style.profile_image}
                     priority
@@ -172,8 +171,8 @@ export default function Index() {
                 </div>
                 {/* User Name */}
                 <div className={style.user_detail}>
-                <Link href={"/users/"}>  <h2>{clientLoginInfo.name}</h2></Link>
-                  <h3>23:23 Am 23/24/20203 </h3>
+                <Link href={"/users/"+postOwner.authorEmail}>  <h2>{postOwner.autherName}</h2></Link>
+                  <h3>{time} {date}</h3>
                 </div>
 
                 {/* option btn */}
@@ -188,9 +187,11 @@ export default function Index() {
 <div className={style.post_description}>
                 <p>
                
-              {/* {(showAllDescription)?<>{Data.postData.description}</>:<> {(Data.postData.description.length>158)?<>{Data.postData.description.slice(0,158)}<span onClick={()=>expandDescription()}>See More</span></> :"sshh88"}
-                 </>} */}
-             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab modi ullam earum non, fugiat rerum, 
+              {(showAllDescription)?<>{data.description}</>:<> {(data.description!=undefined)?<>
+                {((data.description.length)>158)?<>{data.description.slice(0,158)}<span onClick={()=>expandDescription()}>See More</span></> :data.description}
+              </>:""}
+                 </>}
+         
                 </p>
               </div>
 </div>
@@ -202,8 +203,8 @@ export default function Index() {
             
 <div className={style.media_container}>
       <Image
-        src= {"/note.jpg"}
-        alt={"/note.jpg"}
+        src= {data.post_media}
+        alt={data.post_media}
         layout="fill"
         className={style.media_image1}
         priority
@@ -254,6 +255,25 @@ export default function Index() {
 
 
               {/* shows comments of user */}
+
+<div className={style.postComments}>
+<div className={style.comment1}>
+<div className={style.user}>
+<Link href={"/user"}>
+<Image src={clientLoginInfo.image} alt={clientLoginInfo.image} className={style.userCommentImage} layout="fill" priority/></Link>
+</div>
+
+<div className={style.comments}>
+<Link href={"/user"}><h3>Suraj singh</h3></Link>
+<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex, pariatur.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
 </div>
 
 
@@ -282,6 +302,8 @@ export default function Index() {
 
       </div>
       </div>
+      </>:""}
+
     </>
   );
 }
