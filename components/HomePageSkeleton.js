@@ -5,14 +5,24 @@ export default function SkeletonComp({number}) {
   return (
     Array(number).fill(0).map((_,index)=>{
 return    <div className="card1" key={index}>
-<div className="image_container1"  style={{marginTop:"5px",paddingBottom:"5px"}}>
-<Skeleton count={1} height={30} />
+<div className="topHomePageSkeleton">
+  <div className="profileHomePageSkeleton">
+  <Skeleton count={1} height={50} style={{borderRadius:"60px"}}/>
+  </div>
+  <div className="profileHomePageSkeletonTitle">
+  <Skeleton count={1} height={50} />
+  </div>
+ 
 </div>
-<div className="article1" style={{marginTop:"10px"}} >
-<Skeleton count={3} height={20}/>
+ <div className="profileHomePageSkeletonDescription">
+  <Skeleton count={1} height={50} />
+  </div>
+
+<div className="profileHomePageSkeletonMedia" style={{marginTop:"10px"}} >
+<Skeleton count={1} height={540}/>
 </div>
-<div className="image_container1"  style={{marginTop:"10px",paddingBottom:"5px"}}>
-<Skeleton count={1} height={40} />
+<div className="profileHomePageSkeletonBottom"  >
+<Skeleton count={1} height={50} />
 </div>
 </div>
     })
