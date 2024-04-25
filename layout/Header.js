@@ -57,7 +57,7 @@ export default function Header() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
   return (
-    <div className={style.Header}>
+    <div className={style.Header} style={(pathname==="/commentstopost")?{zIndex:-1}:""}>
       {/* logo */}
       <div className={style.logo}>
         <div className={style.image}>

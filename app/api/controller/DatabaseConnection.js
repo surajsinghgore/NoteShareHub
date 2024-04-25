@@ -10,7 +10,7 @@ try {
 
   }
   else{
-console.log(res)
+console.log('res')
     return NextResponse.json(
         {
           message: "Internal Server Error In Database Connection",

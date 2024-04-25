@@ -1,4 +1,5 @@
 import "./globals.css";
+
 // import font awesome
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
@@ -25,6 +26,7 @@ import Header from "@/layout/Header";
 import LeftSideMenu from "@/layout/LeftSideMenu";
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en">
       <body>
@@ -43,6 +45,10 @@ export default function RootLayout({ children }) {
   <div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
   zIndex={1600}
   showAtBottom={false}/>
+
+
+
+
             <LeftSideMenu />
             <Header />
             {children}

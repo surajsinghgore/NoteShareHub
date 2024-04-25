@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import DbConnection from "../controller/DatabaseConnection";
 import clientPersonalData from "../models/clientPersonalSchema";
@@ -6,7 +7,7 @@ import uploadPosts from "../models/uploadposts";
 // get all post data which is public
 export async function GET(req,res) {
 try {
-
+  await DbConnection();
 
 // find single post only
 if(req.nextUrl.searchParams.get('post')!=undefined){
@@ -57,7 +58,7 @@ data.autherName=userName;
 }
 // find all post
 else{
-  await DbConnection();
+
     let data=await uploadPosts.find({visibility:"public"}).select("-createdAt -updatedAt -keyword").sort({ dateandtime: -1 });
   
 let newData=[];

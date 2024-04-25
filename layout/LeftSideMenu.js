@@ -1,12 +1,17 @@
+"use client";
 import style from './LeftSideMenu.module.css';
 // font awesome
+import { usePathname } from 'next/navigation'
+ 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 faNewspaper
 } from "@fortawesome/free-solid-svg-icons";
 export default function LeftSideMenu() {
+    const pathname = usePathname()
   return (
-    <div className={style.leftSideMenu}>
+//    <div className={style.leftSideMenu} style={{zIndex:-1}}>
+   <div className={style.leftSideMenu} style={(pathname==="/commentstopost")?{zIndex:-1}:""}> 
       <div className={style.links_container}>
 
 
