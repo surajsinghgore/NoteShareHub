@@ -4,13 +4,11 @@
 import {
   FacebookShareButton,
   LinkedinShareButton,
-  PinterestShareButton,
   TelegramShareButton,
   TwitterShareButton,
   WhatsappShareButton,
   FacebookIcon,
   LinkedinIcon,
-  PinterestIcon,
   TelegramIcon,
   TwitterIcon,
   WhatsappIcon,
@@ -105,28 +103,31 @@ const [currentShareAddress,setCurrentShareAddress]=useState(`${process.env.NEXT_
         push("/");
       }, 1500);
     }
+
     if (fetchSinglePost.status == "500") {
       toast.error("Post Not Found");
       setTimeout(() => {
         push("/");
       }, 1500);
     }
+if(fetchSinglePost.status == "200"){
+  setData(res.data);
+  setPostOwner(res.postOwner);
 
-    setData(res.data);
-    setPostOwner(res.postOwner);
+  const currentDate = new Date(res.data.dateandtime);
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
+  const day = currentDate.getDate();
 
-    const currentDate = new Date(res.data.dateandtime);
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
-    const day = currentDate.getDate();
+  // Extract time components
+  const hours = currentDate.getHours();
+  const minutes = currentDate.getMinutes();
+  const amOrPm = hours >= 12 ? "PM" : "AM";
 
-    // Extract time components
-    const hours = currentDate.getHours();
-    const minutes = currentDate.getMinutes();
-    const amOrPm = hours >= 12 ? "PM" : "AM";
-
-    setDate(`${day}-${month}-${year}`);
-    setTime(`${hours}:${minutes} ${amOrPm}`);
+  setDate(`${day}-${month}-${year}`);
+  setTime(`${hours}:${minutes} ${amOrPm}`);
+}
+   
   };
   useEffect(() => {
     fetchSinglePost();
@@ -454,7 +455,7 @@ const [currentShareAddress,setCurrentShareAddress]=useState(`${process.env.NEXT_
 <WhatsappShareButton
     url={currentShareAddress}
     title={"This this handwritten notes on "+data.title}
-    separator={"::"}
+    separator={":: "}
     className={style.Demo__some_network__share_button}
   >
     <WhatsappIcon round={true} size="30"  className={style.Icons}></WhatsappIcon>

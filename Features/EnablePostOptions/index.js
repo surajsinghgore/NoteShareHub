@@ -7,6 +7,18 @@ import {
   faThumbsDown,
   faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  FacebookIcon,
+  LinkedinIcon,
+  TelegramIcon,
+  TwitterIcon,
+  WhatsappIcon,
+} from "react-share";
 import Image from "next/legacy/image";
 import { useState, useEffect, useRef } from "react";
 import { Toaster, toast } from "sonner";
@@ -21,12 +33,18 @@ import { PostReloadState } from "../../redux/slice/ReloadPostsState";
 export default function Index(props) {
   const dispatch = useDispatch();
   const { push } = useRouter();
+
   const loginState = useSelector((state) => state.clientLoginState);
   const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
   const postState = useSelector((state) => state.PostReloadState);
     const dropdown = useRef(null);
 const [date,setDate]=useState("");
 const [time,setTime]=useState("");
+const [shareState, setShareState] = useState(false);
+
+
+const [currentShareAddress,setCurrentShareAddress]=useState();
+
   const { Data } = props;
   const [showAllDescription,setShowAllDescription]=useState(false);
 
@@ -35,6 +53,8 @@ const [time,setTime]=useState("");
     setShowAllDescription(true)
         }         
 useEffect(()=>{
+if(Data!=undefined){
+
 
   const currentDate = new Date(Data.postData.dateandtime);
   const year = currentDate.getFullYear();
@@ -48,6 +68,7 @@ useEffect(()=>{
 
   setDate(`${day}-${month}-${year}`)
   setTime(`${hours}:${minutes} ${amOrPm}`)
+}
 },[])
   const [optionState, setOptionsState] = useState(false);
   const enableOption = () => {
@@ -174,6 +195,13 @@ return;
 
 
   }
+
+
+  
+  const share = (id) => {
+    setCurrentShareAddress(`${process.env.NEXT_PUBLIC_WEBSITE_DOMAIN}/commentstopost?post=${id}`)
+    setShareState(!shareState);
+  };
   return (
  
             <div className="post" ref={dropdown}>
@@ -316,7 +344,7 @@ return;
                 </div>
 
                 {/* share */}
-                <div className="like share">
+                <div className="like share" onClick={()=>share(Data.postData._id)}>
                   <div className="bottom_like_icon">
                     <FontAwesomeIcon
                       icon={faShareNodes}
@@ -325,6 +353,64 @@ return;
                   </div>
                   <div className="count">SHARE</div>
                 </div>
+
+          {/* share options */}
+          {(shareState)?<> <div className="shareOptions">
+
+<li>
+
+<WhatsappShareButton
+    url={currentShareAddress}
+    title={"This this handwritten notes on "+Data.postData.title}
+    separator={":: "}
+    className="Demo__some_network__share_button"
+  >
+    <WhatsappIcon round={true} size="30"  className="Icons"></WhatsappIcon>
+  </WhatsappShareButton>
+</li>
+  <li>
+    <FacebookShareButton
+      url={currentShareAddress}
+   
+    
+    >
+      <FacebookIcon
+        round={true}
+        size="30"
+        className="Icons"
+      ></FacebookIcon>
+    </FacebookShareButton>
+  </li>
+
+  <li> <TwitterShareButton
+    url={currentShareAddress}
+    
+    title={Data.postData.title}
+
+  >
+    <TwitterIcon round={true} size="30" className="Icons"></TwitterIcon>
+  </TwitterShareButton></li>
+
+
+  <li><LinkedinShareButton
+    url={currentShareAddress}
+    
+  >
+    <LinkedinIcon round={true} size="30" className="Icons"></LinkedinIcon>
+  </LinkedinShareButton></li>
+
+  <li>
+  <TelegramShareButton
+    url={currentShareAddress}
+    title={Data.postData.title}
+  >
+    <TelegramIcon round={true} size="30" className="Icons"></TelegramIcon>
+  </TelegramShareButton>
+  </li>
+</div></>:""}
+
+
+
               </div>
             </div>
           );
