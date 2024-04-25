@@ -18,7 +18,7 @@ return    <div className="card1" key={index}>
   <Skeleton count={1} height={50} />
   </div>
 
-<div className="profileHomePageSkeletonMedia" style={{marginTop:"10px"}} >
+<div className="profileHomePageSkeletonMedia">
 <Skeleton count={1} height={540}/>
 </div>
 <div className="profileHomePageSkeletonBottom"  >

@@ -335,7 +335,7 @@ transform: translateY(-5px);
 }
 .card1  .profileHomePageSkeletonDescription{
   width: 94%;
-  height: 2vw;
+  height: 3vw;
   margin-top: -3%;
   margin-left: 3%;
   border-radius: 50px;
@@ -343,7 +343,7 @@ transform: translateY(-5px);
 .card1  .profileHomePageSkeletonMedia{
   width: 94%;
   height: 39vw;
-  margin-top: -3%;
+  margin-top: 2%;
   margin-left: 3%;
   border-radius: 50px;
 }
