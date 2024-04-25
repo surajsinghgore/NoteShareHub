@@ -20,7 +20,6 @@ import { useSearchParams } from "next/navigation";
 import style from "./commentStyle.module.css";
 
 import { PostReloadState } from "../../redux/slice/ReloadPostsState";
-import ClientLoginState from "@/redux/slice/ClientLoginState";
 
 export default function Index() {
   const router = useRouter();
@@ -71,8 +70,14 @@ export default function Index() {
 let res=await fetchCommentsPost.json();
 
 if(fetchCommentsPost.status=="200"){
-  setCommentData(res.data.comments)
-  setCommentUserData(res.postOwner)
+  if(res.data!=undefined){
+
+    if(res.data.comments.length!=0){
+      setCommentData(res.data.comments)
+      
+      setCommentUserData(res.postOwner)
+    }
+  }
 }
 
   }
@@ -156,8 +161,103 @@ if(sendComments.status=="200"){
 
 }
 
+
+
+
+const likePost=async(id)=>{
+
+  // first check weather user login in or not
+if(loginState.state){
+
+let activeUserEmail=clientLoginInfo.email;
+
+let likePost=await fetch('/api/likepost',{
+method: 'POST',
+headers: {
+  'Content-Type': 'application/json',
+  'Authorization': activeUserEmail
+},body: JSON.stringify({ postId: id }),
+})
+
+let res=await likePost.json();
+
+if(likePost.status=="500"){
+toast.error(res.message);
+return;
+}
+if(likePost.status=="400"){
+toast.warning(res.message);
+return;
+}
+if(likePost.status=="404"){
+toast.error(res.message);
+return;
+}
+
+if(likePost.status=="200"){
+toast.success(res.message);
+
+if(res.message=="You Already Like This Post"){
+return;
+}
+fetchSinglePost();
+fetchComments()
+}
+}else{
+toast.error("Please Log In to give a like to this post.");
+return; 
+}
+}
+
+
+const diskLikePost=async(id)=>{
+
+  // first check weather user login in or not
+if(loginState.state){
+
+let activeUserEmail=clientLoginInfo.email;
+
+let likePost=await fetch('/api/dislikeposts',{
+method: 'POST',
+headers: {
+  'Content-Type': 'application/json',
+  'Authorization': activeUserEmail
+},body: JSON.stringify({ postId: id }),
+})
+
+let res=await likePost.json();
+
+if(likePost.status=="500"){
+toast.error(res.message);
+return;
+}
+if(likePost.status=="400"){
+toast.warning(res.message);
+return;
+}
+if(likePost.status=="404"){
+toast.error(res.message);
+return;
+}
+
+if(likePost.status=="200"){
+toast.success(res.message);
+
+if(res.message=="You Already Dislike This Post"){
+return;
+}
+fetchSinglePost();
+fetchComments();
+}
+}else{
+toast.error("Please Log In to give a Dislike to this post.");
+return; 
+}
+}
+
   return (
     <>
+
              <Toaster position="bottom-center" richColors closeButton />
 
       {/* hide background div */}
@@ -183,7 +283,7 @@ if(sendComments.status=="200"){
 
 
 {/* main post section */}
-<div className={style.mainPostParent}>
+<div className={style.mainPostParent} style={((loginState.state==false)?{height:"38.6vw"}:{height:"30.6vw"})}>
 
 {/* post title */}
 <div className={style.postTitleDetail}>
@@ -275,10 +375,10 @@ if(sendComments.status=="200"){
 
   
   </div>
-{/* bottom like share */}
+{/* bottom like dislike share */}
 <div className={style.bottom_section}>
                 {/* like */}
-                <div className={style.like} >
+                <div className={style.like} onClick={()=>likePost(data._id)}>
                   <div className={style.bottom_like_icon}>
                     <FontAwesomeIcon
                       icon={faThumbsUp}
@@ -289,7 +389,7 @@ if(sendComments.status=="200"){
                 </div>
 
                 {/* dislike */}
-                <div className={style.like}>
+                <div className={style.like} onClick={()=>diskLikePost(data._id)}>
                   <div className={`${style.bottom_like_icon} ${style.dislike}`}>
                     <FontAwesomeIcon
                       icon={faThumbsDown}
@@ -350,10 +450,8 @@ if(sendComments.status=="200"){
 
 
 
-
-
-        {/* write comments to post */}
-        <div className={style.commentFixed}>
+        {/* write comments to post after login only*/}
+{(loginState.state)? <div className={style.commentFixed}>
 <div className={style.commentSend}>
 {/* user profile active */}
 <div className={style.userActiveProfile}>
@@ -367,7 +465,9 @@ if(sendComments.status=="200"){
 </div>
 </div>
 
-        </div>
+        </div>:""}
+
+       
       </div>
 
       </div>

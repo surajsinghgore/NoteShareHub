@@ -168,15 +168,11 @@ return;
 
   const commentsToThePost=async(id)=>{
 
-    // first check weather user login in or not
-if(loginState.state){
+
 
   push(`/commentstopost?post=${id}`);
 
-}else{
-  toast.error("Please Log In to give a Comments to this post.");
-  return; 
-}
+
   }
   return (
  
