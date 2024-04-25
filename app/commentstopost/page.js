@@ -21,12 +21,13 @@ import style from "./commentStyle.module.css";
 
 import { PostReloadState } from "../../redux/slice/ReloadPostsState";
 import ClientLoginState from "@/redux/slice/ClientLoginState";
-import { fetchData } from "next-auth/client/_utils";
 
 export default function Index() {
   const router = useRouter();
   const[comment,setComment]=useState("");
   const [data, setData] = useState([]);
+  const [commentData, setCommentData] = useState([]);
+  const [commentUserData, setCommentUserData] = useState([]);
   const [postOwner, setPostOwner] = useState([]);
   const dispatch = useDispatch();
   const { push } = useRouter();
@@ -63,6 +64,18 @@ export default function Index() {
     return () => window.removeEventListener("click", handleClick);
   }, [optionState]);
 
+
+  const fetchComments=async()=>{
+    let postId = searchParams.get("post");
+    let fetchCommentsPost = await fetch(`/api/commentstopost?post=${postId}`);
+let res=await fetchCommentsPost.json();
+console.log(res)
+if(fetchCommentsPost.status=="200"){
+  setCommentData(res.data.comments)
+  setCommentUserData(res.postOwner)
+}
+
+  }
   const fetchSinglePost = async () => {
     let postId = searchParams.get("post");
     let fetchSinglePost = await fetch(`/api/getuploadposts?post=${postId}`);
@@ -96,9 +109,13 @@ export default function Index() {
 
     setDate(`${day}-${month}-${year}`);
     setTime(`${hours}:${minutes} ${amOrPm}`);
+
+
+
   };
   useEffect(() => {
     fetchSinglePost();
+    fetchComments()
   }, []);
 
 
@@ -131,8 +148,9 @@ if(sendComments.status=="400"){
   return
 }
 if(sendComments.status=="200"){
-  toast.warning(res.message);
-fetchData();
+  toast.success(res.message);
+  fetchComments();
+  setComment("");
 }
 
 
@@ -301,20 +319,28 @@ fetchData();
               {/* shows comments of user */}
 
 <div className={style.postComments}>
-<div className={style.comment1}>
+
+{(commentData.length!=0)?<>
+
+    {commentData.map((items,index)=>{
+  return <div className={style.comment1} key={items._id}>
 <div className={style.user}>
-<Link href={"/user"}>
-<Image src={clientLoginInfo.image} alt={clientLoginInfo.image} className={style.userCommentImage} layout="fill" priority/></Link>
+<Link href={"/user"+commentUserData[index].userEmail}>
+<Image src={commentUserData[index].userImage} alt={commentUserData[index].userImage} className={style.userCommentImage} layout="fill" priority/></Link>
 </div>
 
 <div className={style.comments}>
-<Link href={"/user"}><h3>Suraj singh</h3></Link>
-<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex, pariatur.</p>
+<Link href={"/user"+commentUserData[index].userEmail}><h3>{commentUserData[index].userName}</h3></Link>
+<p>{items.comment}</p>
 </div>
 </div>
+})}
 
 
 
+
+
+</>:""}
 
 </div>
 

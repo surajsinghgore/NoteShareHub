@@ -31,19 +31,11 @@ const uploadPost = new mongoose.Schema(
                 required: true
             },
            
-            posttime:{
-                type: String,
-                required: true
-            },
-           
-            postDate:{
-                type: String,
-                required: true
-            },
+         
             comment:{
                 type:String,
                 required:true
-            }
+            },dateandtime:{type:Date, default: Date.now }
         }
             
            ], 

@@ -325,6 +325,7 @@ position: relative;
 .mainCommentDiv .postComments .comment1  .comments{
     width: auto;
     margin-left: 2%;
+    padding-right: 4%;
 
     height: auto;
     padding-bottom: 2%;
@@ -340,9 +341,8 @@ position: relative;
    
 }
 .mainCommentDiv .postComments .comment1  .comments p{
-    word-break: keep-all;
+  
 color: rgb(95, 95, 95);
-
     width: 96%;
 }
 
