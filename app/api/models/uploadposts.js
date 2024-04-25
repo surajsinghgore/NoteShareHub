@@ -24,7 +24,29 @@ const uploadPost = new mongoose.Schema(
        visibility:{type:String,lowercase:true,required:true},
        like:{type:Number,default:0},
        dislike:{type:Number,default:0},
-       comments:{type:Array}, 
+       comments:[
+        {
+          userId:{
+                type: String,
+                required: true
+            },
+           
+            posttime:{
+                type: String,
+                required: true
+            },
+           
+            postDate:{
+                type: String,
+                required: true
+            },
+            comment:{
+                type:String,
+                required:true
+            }
+        }
+            
+           ], 
 dateandtime:{type:Date, default: Date.now },
 
   },

@@ -20,8 +20,11 @@ import { useSearchParams } from "next/navigation";
 import style from "./commentStyle.module.css";
 
 import { PostReloadState } from "../../redux/slice/ReloadPostsState";
+import ClientLoginState from "@/redux/slice/ClientLoginState";
 
 export default function Index() {
+  const router = useRouter();
+  const[comment,setComment]=useState("");
   const [data, setData] = useState([]);
   const [postOwner, setPostOwner] = useState([]);
   const dispatch = useDispatch();
@@ -96,8 +99,30 @@ export default function Index() {
   useEffect(() => {
     fetchSinglePost();
   }, []);
+
+
+const submitComment=async(id)=>{
+console.log(id,comment)
+if(comment==""){
+  
+  toast.warning("please enter comment");
+  return 
+}
+let userEmail=clientLoginInfo.email;
+console.log(userEmail)
+let sendComments=await fetch('/api/commentstopost',{
+  method:"POST",
+ body:JSON.stringify({comment,userEmail,postId:id})
+ 
+})
+let res=await sendComments.json();
+console.log(res)
+}
+
   return (
     <>
+             <Toaster position="bottom-center" richColors closeButton />
+
       {/* hide background div */}
       <div className={style.commentBgHide}></div>
       {(data!=undefined)?<><div className={style.commentDiv}>
@@ -112,9 +137,9 @@ export default function Index() {
         <div className={style.topTitle}>
           <h1> {data.title}</h1>
 
-          <Link href="/"><div className={style.closeCommentBtn} title="Close this comment">
+       <div className={style.closeCommentBtn} title="Close this comment" onClick={() => router.back()}>
             <FontAwesomeIcon icon={faXmark} />
-          </div></Link>
+          </div>
         </div>
         </div>
 
@@ -223,7 +248,7 @@ export default function Index() {
                       className={style.bottom_icon}
                     />
                   </div>
-                  <div className={style.count}>2</div>
+                  <div className={style.count}>{data.like}</div>
                 </div>
 
                 {/* dislike */}
@@ -234,7 +259,7 @@ export default function Index() {
                       className={style.bottom_icon}
                     />
                   </div>
-                  <div className="count">34</div>
+                  <div className="count">{data.dislike}</div>
                 </div>
 
             
@@ -292,8 +317,8 @@ export default function Index() {
 {/* write comment */}
 <div className={style.writeComment}>
 
-<textarea name="" placeholder={"Comment as "+clientLoginInfo.name}></textarea>
-<button title="Post This Comment"> <FontAwesomeIcon icon={faLocationArrow} className={style.sendPostArrow}/></button>
+<textarea name="comment" value={comment} onChange={(e)=>{setComment(e.target.value)}} placeholder={"Comment as "+clientLoginInfo.name}></textarea>
+<button title="Post This Comment" onClick={()=>submitComment(data._id)}> <FontAwesomeIcon icon={faLocationArrow} className={style.sendPostArrow}/></button>
 </div>
 </div>
 
