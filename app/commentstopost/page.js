@@ -1,4 +1,21 @@
 "use client";
+
+// share post on media
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  PinterestShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  FacebookIcon,
+  LinkedinIcon,
+  PinterestIcon,
+  TelegramIcon,
+  TwitterIcon,
+  WhatsappIcon,
+} from "react-share";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faXmark,
@@ -16,20 +33,20 @@ import { Toaster, toast } from "sonner";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
 import style from "./commentStyle.module.css";
-
-
+import { usePathname,useSearchParams  } from 'next/navigation'
 export default function Index() {
   const router = useRouter();
-  const[comment,setComment]=useState("");
+  const pathname = usePathname()
+  const [comment, setComment] = useState("");
   const [data, setData] = useState([]);
   const [commentData, setCommentData] = useState([]);
   const [commentUserData, setCommentUserData] = useState([]);
   const [postOwner, setPostOwner] = useState([]);
- 
-  const { push } = useRouter();
   const searchParams = useSearchParams();
+const [currentShareAddress,setCurrentShareAddress]=useState(`${process.env.NEXT_PUBLIC_WEBSITE_DOMAIN}${pathname}?post=${searchParams.get('post')}`);
+  const { push } = useRouter();
+
   const loginState = useSelector((state) => state.clientLoginState);
   const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
 
@@ -38,7 +55,7 @@ export default function Index() {
   const [time, setTime] = useState("");
 
   const [showAllDescription, setShowAllDescription] = useState(false);
-
+  const [shareState, setShareState] = useState(false);
   // show all description
   const expandDescription = () => {
     setShowAllDescription(true);
@@ -62,24 +79,21 @@ export default function Index() {
     return () => window.removeEventListener("click", handleClick);
   }, [optionState]);
 
-
-  const fetchComments=async()=>{
+  const fetchComments = async () => {
     let postId = searchParams.get("post");
     let fetchCommentsPost = await fetch(`/api/commentstopost?post=${postId}`);
-let res=await fetchCommentsPost.json();
+    let res = await fetchCommentsPost.json();
 
-if(fetchCommentsPost.status=="200"){
-  if(res.data!=undefined){
+    if (fetchCommentsPost.status == "200") {
+      if (res.data != undefined) {
+        if (res.data.comments.length != 0) {
+          setCommentData(res.data.comments);
 
-    if(res.data.comments.length!=0){
-      setCommentData(res.data.comments)
-      
-      setCommentUserData(res.postOwner)
+          setCommentUserData(res.postOwner);
+        }
+      }
     }
-  }
-}
-
-  }
+  };
   const fetchSinglePost = async () => {
     let postId = searchParams.get("post");
     let fetchSinglePost = await fetch(`/api/getuploadposts?post=${postId}`);
@@ -113,366 +127,473 @@ if(fetchCommentsPost.status=="200"){
 
     setDate(`${day}-${month}-${year}`);
     setTime(`${hours}:${minutes} ${amOrPm}`);
-
-
-
   };
   useEffect(() => {
     fetchSinglePost();
-    fetchComments()
+    fetchComments();
   }, []);
 
+  const submitComment = async (id) => {
+    if (comment == "") {
+      toast.warning("please enter comment");
+      return;
+    }
+    let userEmail = clientLoginInfo.email;
 
-const submitComment=async(id)=>{
+    let sendComments = await fetch("/api/commentstopost", {
+      method: "POST",
+      body: JSON.stringify({ comment, userEmail, postId: id }),
+    });
+    let res = await sendComments.json();
+    if (sendComments.status == "500") {
+      toast.error(res.message);
+      return;
+    }
+    if (sendComments.status == "404") {
+      toast.error(res.message);
+      return;
+    }
+    if (sendComments.status == "400") {
+      toast.warning(res.message);
+      return;
+    }
+    if (sendComments.status == "200") {
+      toast.success(res.message);
+      fetchComments();
+      setComment("");
+    }
+  };
 
-if(comment==""){
-  
-  toast.warning("please enter comment");
-  return 
-}
-let userEmail=clientLoginInfo.email;
+  const likePost = async (id) => {
+    // first check weather user login in or not
+    if (loginState.state) {
+      let activeUserEmail = clientLoginInfo.email;
 
+      let likePost = await fetch("/api/likepost", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: activeUserEmail,
+        },
+        body: JSON.stringify({ postId: id }),
+      });
 
-let sendComments=await fetch('/api/commentstopost',{
-  method:"POST",
- body:JSON.stringify({comment,userEmail,postId:id})
- 
-})
-let res=await sendComments.json();
-if(sendComments.status=="500"){
-  toast.error(res.message);
-  return
-}
-if(sendComments.status=="404"){
-  toast.error(res.message);
-  return
-}
-if(sendComments.status=="400"){
-  toast.warning(res.message);
-  return
-}
-if(sendComments.status=="200"){
-  toast.success(res.message);
-  fetchComments();
-  setComment("");
-}
+      let res = await likePost.json();
 
+      if (likePost.status == "500") {
+        toast.error(res.message);
+        return;
+      }
+      if (likePost.status == "400") {
+        toast.warning(res.message);
+        return;
+      }
+      if (likePost.status == "404") {
+        toast.error(res.message);
+        return;
+      }
 
-}
+      if (likePost.status == "200") {
+        toast.success(res.message);
 
+        if (res.message == "You Already Like This Post") {
+          return;
+        }
+        fetchSinglePost();
+        fetchComments();
+      }
+    } else {
+      toast.error("Please Log In to give a like to this post.");
+      return;
+    }
+  };
 
+  const diskLikePost = async (id) => {
+    // first check weather user login in or not
+    if (loginState.state) {
+      let activeUserEmail = clientLoginInfo.email;
 
+      let likePost = await fetch("/api/dislikeposts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: activeUserEmail,
+        },
+        body: JSON.stringify({ postId: id }),
+      });
 
-const likePost=async(id)=>{
+      let res = await likePost.json();
 
-  // first check weather user login in or not
-if(loginState.state){
+      if (likePost.status == "500") {
+        toast.error(res.message);
+        return;
+      }
+      if (likePost.status == "400") {
+        toast.warning(res.message);
+        return;
+      }
+      if (likePost.status == "404") {
+        toast.error(res.message);
+        return;
+      }
 
-let activeUserEmail=clientLoginInfo.email;
+      if (likePost.status == "200") {
+        toast.success(res.message);
 
-let likePost=await fetch('/api/likepost',{
-method: 'POST',
-headers: {
-  'Content-Type': 'application/json',
-  'Authorization': activeUserEmail
-},body: JSON.stringify({ postId: id }),
-})
+        if (res.message == "You Already Dislike This Post") {
+          return;
+        }
+        fetchSinglePost();
+        fetchComments();
+      }
+    } else {
+      toast.error("Please Log In to give a Dislike to this post.");
+      return;
+    }
+  };
 
-let res=await likePost.json();
-
-if(likePost.status=="500"){
-toast.error(res.message);
-return;
-}
-if(likePost.status=="400"){
-toast.warning(res.message);
-return;
-}
-if(likePost.status=="404"){
-toast.error(res.message);
-return;
-}
-
-if(likePost.status=="200"){
-toast.success(res.message);
-
-if(res.message=="You Already Like This Post"){
-return;
-}
-fetchSinglePost();
-fetchComments()
-}
-}else{
-toast.error("Please Log In to give a like to this post.");
-return; 
-}
-}
-
-
-const diskLikePost=async(id)=>{
-
-  // first check weather user login in or not
-if(loginState.state){
-
-let activeUserEmail=clientLoginInfo.email;
-
-let likePost=await fetch('/api/dislikeposts',{
-method: 'POST',
-headers: {
-  'Content-Type': 'application/json',
-  'Authorization': activeUserEmail
-},body: JSON.stringify({ postId: id }),
-})
-
-let res=await likePost.json();
-
-if(likePost.status=="500"){
-toast.error(res.message);
-return;
-}
-if(likePost.status=="400"){
-toast.warning(res.message);
-return;
-}
-if(likePost.status=="404"){
-toast.error(res.message);
-return;
-}
-
-if(likePost.status=="200"){
-toast.success(res.message);
-
-if(res.message=="You Already Dislike This Post"){
-return;
-}
-fetchSinglePost();
-fetchComments();
-}
-}else{
-toast.error("Please Log In to give a Dislike to this post.");
-return; 
-}
-}
+  const share = () => {
+    setShareState(!shareState);
+  };
 
   return (
     <>
 
-             <Toaster position="bottom-center" richColors closeButton />
+      <Toaster position="bottom-center" richColors closeButton />
 
       {/* hide background div */}
       <div className={style.commentBgHide}></div>
-      {(data!=undefined)?<><div className={style.commentDiv}>
-<div className={style.mainCommentContainer}>
+      {data != undefined ? (
+        <>
+          <div className={style.commentDiv}>
+            <div className={style.mainCommentContainer}>
+              <div className={style.mainCommentDiv}>
+                {/* top title of the post */}
+                <div className={style.topFixed}>
+                  <div className={style.topTitle}>
+                    <h1> {data.title}</h1>
 
+                    <div
+                      className={style.closeCommentBtn}
+                      title="Close this comment"
+                      onClick={() => router.back()}
+                    >
+                      <FontAwesomeIcon icon={faXmark} />
+                    </div>
+                  </div>
+                </div>
 
-      <div className={style.mainCommentDiv}>
-       
-       
-        {/* top title of the post */}
-        <div className={style.topFixed}>
-        <div className={style.topTitle}>
-          <h1> {data.title}</h1>
+                {/* main post section */}
+                <div
+                  className={style.mainPostParent}
+                  style={
+                    loginState.state == false
+                      ? { height: "38.6vw" }
+                      : { height: "30.6vw" }
+                  }
+                >
+                  {/* post title */}
+                  <div className={style.postTitleDetail}>
+                    <div className={style.top_section}>
+                      {/* hide menu on click */}
+                      {optionState && (
+                        <div className={style.hide_menu}>
+                          <li>
+                            <div className={style.hidemenu_icons}>
+                              <FontAwesomeIcon
+                                icon={faBookmark}
+                                className={style.hidemenu_icon}
+                              />
+                            </div>
+                            <div className={style.hidemenu_desc}>
+                              <h2>Save Post</h2>
+                              <h3>Add this to your saved items</h3>
+                            </div>
+                          </li>
 
-       <div className={style.closeCommentBtn} title="Close this comment" onClick={() => router.back()}>
-            <FontAwesomeIcon icon={faXmark} />
-          </div>
-        </div>
-        </div>
+                          <li>
+                            <div className={style.hidemenu_icons}>
+                              <FontAwesomeIcon
+                                icon={faBookmark}
+                                className={style.hidemenu_icon}
+                              />
+                            </div>
+                            <div className={style.hidemenu_desc}>
+                              <h2>Save Post</h2>
+                              <h3>Add this to your saved items</h3>
+                            </div>
+                          </li>
+                        </div>
+                      )}
 
+                      {/* profile */}
+                      <div className={style.image_profile}>
+                        <Link href={"/users/" + postOwner.authorEmail}>
+                          {" "}
+                          <Image
+                            src={postOwner.autherProfile}
+                            alt={postOwner.autherProfile}
+                            layout="fill"
+                            className={style.profile_image}
+                            priority
+                          />
+                        </Link>
+                      </div>
+                      {/* User Name */}
+                      <div className={style.user_detail}>
+                        <Link href={"/users/" + postOwner.authorEmail}>
+                          {" "}
+                          <h2>{postOwner.autherName}</h2>
+                        </Link>
+                        <h3>
+                          {time} {date}
+                        </h3>
+                      </div>
 
+                      {/* option btn */}
+                      <div
+                        className={style.option}
+                        onClick={() => enableOption()}
+                      >
+                        <div className={style.post_icon}>
+                          <FontAwesomeIcon icon={faEllipsis} />
+                        </div>
+                      </div>
+                    </div>
 
-{/* main post section */}
-<div className={style.mainPostParent} style={((loginState.state==false)?{height:"38.6vw"}:{height:"30.6vw"})}>
+                    {/* post description */}
+                    <div className={style.post_description}>
+                      <p>
+                        {showAllDescription ? (
+                          <>{data.description}</>
+                        ) : (
+                          <>
+                            {" "}
+                            {data.description != undefined ? (
+                              <>
+                                {data.description.length > 158 ? (
+                                  <>
+                                    {data.description.slice(0, 158)}
+                                    <span onClick={() => expandDescription()}>
+                                      See More
+                                    </span>
+                                  </>
+                                ) : (
+                                  data.description
+                                )}
+                              </>
+                            ) : (
+                              ""
+                            )}
+                          </>
+                        )}
+                      </p>
+                    </div>
+                  </div>
 
-{/* post title */}
-<div className={style.postTitleDetail}>
-<div className={style.top_section}>
-                {/* hide menu on click */}
-                {optionState && (
-                  <div className={style.hide_menu} >
-                    <li>
-                      <div className={style.hidemenu_icons}>
+                  {/* post media */}
+                  <div className={style.media}>
+                    <div className={style.media_container}>
+                      <Image
+                        src={data.post_media}
+                        alt={data.post_media}
+                        layout="fill"
+                        className={style.media_image1}
+                        priority
+                      />
+                    </div>
+                  </div>
+                  {/* bottom like dislike share */}
+                  <div className={style.bottom_section}>
+                    {/* like */}
+                    <div
+                      className={style.like}
+                      onClick={() => likePost(data._id)}
+                    >
+                      <div className={style.bottom_like_icon}>
                         <FontAwesomeIcon
-                          icon={faBookmark}
-                          className={style.hidemenu_icon}
+                          icon={faThumbsUp}
+                          className={style.bottom_icon}
                         />
                       </div>
-                      <div className={style.hidemenu_desc}>
-                        <h2>Save Post</h2>
-                        <h3>Add this to your saved items</h3>
-                      </div>
-                    </li>
+                      <div className={style.count}>{data.like}</div>
+                    </div>
 
+                    {/* dislike */}
+                    <div
+                      className={style.like}
+                      onClick={() => diskLikePost(data._id)}
+                    >
+                      <div
+                        className={`${style.bottom_like_icon} ${style.dislike}`}
+                      >
+                        <FontAwesomeIcon
+                          icon={faThumbsDown}
+                          className={style.bottom_icon}
+                        />
+                      </div>
+                      <div className="count">{data.dislike}</div>
+                    </div>
+
+                    {/* share */}
+                    <div className={`${style.like} ${style.share}`} onClick={()=>share()}>
+                      <div className={style.bottom_like_icon}>
+                        <FontAwesomeIcon
+                          icon={faShareNodes}
+                          className={style.bottom_icon}
+                        />
+                      </div>
+                      <div className={style.count}>SHARE</div>
+                    </div>
+
+                    {/* share options */}
+{(shareState)?<> <div className={style.shareOptions}>
+
+<li>
+
+<WhatsappShareButton
+    url={currentShareAddress}
+    title={"This this handwritten notes on "+data.title}
+    separator={"::"}
+    className={style.Demo__some_network__share_button}
+  >
+    <WhatsappIcon round={true} size="30"  className={style.Icons}></WhatsappIcon>
+  </WhatsappShareButton>
+</li>
+  <li>
+    <FacebookShareButton
+      url={currentShareAddress}
+   
+    
+    >
+      <FacebookIcon
+        round={true}
+        size="30"
+        className={style.Icons}
+      ></FacebookIcon>
+    </FacebookShareButton>
+  </li>
+
+  <li> <TwitterShareButton
+    url={currentShareAddress}
+    
+    title={data.title}
+
+  >
+    <TwitterIcon round={true} size="30" className={style.Icons}></TwitterIcon>
+  </TwitterShareButton></li>
+
+
+  <li><LinkedinShareButton
+    url={currentShareAddress}
+    
+  >
+    <LinkedinIcon round={true} size="30" className={style.Icons}></LinkedinIcon>
+  </LinkedinShareButton></li>
+
+  <li>
+  <TelegramShareButton
+    url={currentShareAddress}
+    title={data.title}
+  >
+    <TelegramIcon round={true} size="30" className={style.Icons}></TelegramIcon>
+  </TelegramShareButton>
+  </li>
+</div></>:""}
                    
+                  </div>
 
-                    <li>
-                      <div className={style.hidemenu_icons}>
-                        <FontAwesomeIcon
-                          icon={faBookmark}
-                          className={style.hidemenu_icon}
+                  {/* shows comments of user */}
+
+                  <div className={style.postComments}>
+                    {commentData.length != 0 ? (
+                      <>
+                        {commentData.map((items, index) => {
+                          return (
+                            <div className={style.comment1} key={items._id}>
+                              <div className={style.user}>
+                                <Link
+                                  href={
+                                    "/user" + commentUserData[index].userEmail
+                                  }
+                                >
+                                  <Image
+                                    src={commentUserData[index].userImage}
+                                    alt={commentUserData[index].userImage}
+                                    className={style.userCommentImage}
+                                    layout="fill"
+                                    priority
+                                  />
+                                </Link>
+                              </div>
+
+                              <div className={style.comments}>
+                                <Link
+                                  href={
+                                    "/user" + commentUserData[index].userEmail
+                                  }
+                                >
+                                  <h3>{commentUserData[index].userName}</h3>
+                                </Link>
+                                <p>{items.comment}</p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </div>
+
+                {/* write comments to post after login only*/}
+                {loginState.state ? (
+                  <div className={style.commentFixed}>
+                    <div className={style.commentSend}>
+                      {/* user profile active */}
+                      <div className={style.userActiveProfile}>
+                        <Image
+                          src={clientLoginInfo.image}
+                          alt={clientLoginInfo.image}
+                          className={style.userActiveProfileImage}
+                          layout="fill"
+                          priority
                         />
                       </div>
-                      <div className={style.hidemenu_desc}>
-                        <h2>Save Post</h2>
-                        <h3>Add this to your saved items</h3>
+                      {/* write comment */}
+                      <div className={style.writeComment}>
+                        <textarea
+                          name="comment"
+                          value={comment}
+                          onChange={(e) => {
+                            setComment(e.target.value);
+                          }}
+                          placeholder={"Comment as " + clientLoginInfo.name}
+                        ></textarea>
+                        <button
+                          title="Post This Comment"
+                          onClick={() => submitComment(data._id)}
+                        >
+                          {" "}
+                          <FontAwesomeIcon
+                            icon={faLocationArrow}
+                            className={style.sendPostArrow}
+                          />
+                        </button>
                       </div>
-                    </li>
+                    </div>
                   </div>
+                ) : (
+                  ""
                 )}
-
-                {/* profile */}
-                <div className={style.image_profile}>
-                 <Link href={"/users/"+postOwner.authorEmail}> <Image
-                    src={postOwner.autherProfile}
-                    alt={postOwner.autherProfile}
-                    layout="fill"
-                    className={style.profile_image}
-                    priority
-                  /></Link>
-                </div>
-                {/* User Name */}
-                <div className={style.user_detail}>
-                <Link href={"/users/"+postOwner.authorEmail}>  <h2>{postOwner.autherName}</h2></Link>
-                  <h3>{time} {date}</h3>
-                </div>
-
-                {/* option btn */}
-                <div className={style.option} onClick={() => enableOption()}>
-                  <div className={style.post_icon}>
-                    <FontAwesomeIcon icon={faEllipsis} />
-                  </div>
-                </div>
               </div>
-
-              {/* post description */}
-<div className={style.post_description}>
-                <p>
-               
-              {(showAllDescription)?<>{data.description}</>:<> {(data.description!=undefined)?<>
-                {((data.description.length)>158)?<>{data.description.slice(0,158)}<span onClick={()=>expandDescription()}>See More</span></> :data.description}
-              </>:""}
-                 </>}
-         
-                </p>
-              </div>
-</div>
-
-
-{/* post media */}
-<div className={style.media}>
-
-            
-<div className={style.media_container}>
-      <Image
-        src= {data.post_media}
-        alt={data.post_media}
-        layout="fill"
-        className={style.media_image1}
-        priority
-      />
-    </div>
-
-  
-  </div>
-{/* bottom like dislike share */}
-<div className={style.bottom_section}>
-                {/* like */}
-                <div className={style.like} onClick={()=>likePost(data._id)}>
-                  <div className={style.bottom_like_icon}>
-                    <FontAwesomeIcon
-                      icon={faThumbsUp}
-                      className={style.bottom_icon}
-                    />
-                  </div>
-                  <div className={style.count}>{data.like}</div>
-                </div>
-
-                {/* dislike */}
-                <div className={style.like} onClick={()=>diskLikePost(data._id)}>
-                  <div className={`${style.bottom_like_icon} ${style.dislike}`}>
-                    <FontAwesomeIcon
-                      icon={faThumbsDown}
-                      className={style.bottom_icon}
-                    />
-                  </div>
-                  <div className="count">{data.dislike}</div>
-                </div>
-
-            
-
-                {/* share */}
-                <div className={`${style.like} ${style.share}`}>
-                  <div className={style.bottom_like_icon}>
-                    <FontAwesomeIcon
-                      icon={faShareNodes}
-                      className={style.bottom_icon}
-                    />
-                  </div>
-                  <div className={style.count}>SHARE</div>
-                </div>
-              </div>
-
-
-
-
-              {/* shows comments of user */}
-
-<div className={style.postComments}>
-
-{(commentData.length!=0)?<>
-
-    {commentData.map((items,index)=>{
-  return <div className={style.comment1} key={items._id}>
-<div className={style.user}>
-<Link href={"/user"+commentUserData[index].userEmail}>
-<Image src={commentUserData[index].userImage} alt={commentUserData[index].userImage} className={style.userCommentImage} layout="fill" priority/></Link>
-</div>
-
-<div className={style.comments}>
-<Link href={"/user"+commentUserData[index].userEmail}><h3>{commentUserData[index].userName}</h3></Link>
-<p>{items.comment}</p>
-</div>
-</div>
-})}
-
-
-
-
-
-</>:""}
-
-</div>
-
-</div>
-
-
-
-
-
-        {/* write comments to post after login only*/}
-{(loginState.state)? <div className={style.commentFixed}>
-<div className={style.commentSend}>
-{/* user profile active */}
-<div className={style.userActiveProfile}>
-<Image src={clientLoginInfo.image} alt={clientLoginInfo.image} className={style.userActiveProfileImage} layout="fill" priority/>
-</div>
-{/* write comment */}
-<div className={style.writeComment}>
-
-<textarea name="comment" value={comment} onChange={(e)=>{setComment(e.target.value)}} placeholder={"Comment as "+clientLoginInfo.name}></textarea>
-<button title="Post This Comment" onClick={()=>submitComment(data._id)}> <FontAwesomeIcon icon={faLocationArrow} className={style.sendPostArrow}/></button>
-</div>
-</div>
-
-        </div>:""}
-
-       
-      </div>
-
-      </div>
-      </div>
-      </>:""}
-
+            </div>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
     </>
   );
 }
