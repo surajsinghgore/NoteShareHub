@@ -12,14 +12,13 @@ import {
 import Image from "next/legacy/image";
 import { useState, useEffect, useRef } from "react";
 import { Toaster, toast } from "sonner";
-import "swiper/css";
+
 import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import style from "./commentStyle.module.css";
 
-import { PostReloadState } from "../../redux/slice/ReloadPostsState";
 
 export default function Index() {
   const router = useRouter();
@@ -28,12 +27,12 @@ export default function Index() {
   const [commentData, setCommentData] = useState([]);
   const [commentUserData, setCommentUserData] = useState([]);
   const [postOwner, setPostOwner] = useState([]);
-  const dispatch = useDispatch();
+ 
   const { push } = useRouter();
   const searchParams = useSearchParams();
   const loginState = useSelector((state) => state.clientLoginState);
   const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
-  const postState = useSelector((state) => state.PostReloadState);
+
   const dropdown = useRef(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
