@@ -16,7 +16,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import Image from "next/legacy/image";
-import { useRouter } from "next/navigation";
 
 import Link from "next/link";
 import { useEffect, useState } from 'react';
@@ -29,13 +28,12 @@ export default function Page() {
     const [param,setParam]=useState(decodeURIComponent(getParams.user[0]))
  const [postData,setPostData]=useState([])
  const [userData,setUserData]=useState([])
-  const router = useRouter();
+
   const dispatch = useDispatch();
-const [loginSatatus,setLoginStatus]=useState(false);
 
 //  fetching user data
 const fetchUserData=async()=>{
-  console.log("res")
+ 
   // if user not login ,means normal user search
   if(loginState.state==false){
     let fetchUserData=await fetch(`/api/userdata?user=${param}&userLogin=no`);
@@ -94,7 +92,7 @@ useEffect(() => {
     
       dispatch(clientLoginState(true));
    
-      setLoginStatus(true)
+      
       dispatch(
         setClientData({
           name: session.data.user.name,
@@ -110,12 +108,59 @@ useEffect(() => {
   }
 
 }, [session]);
+
+
+const followUser=async()=>{
+  console.log(clientLoginInfo.email,userData.email)
+// first login need to login before follow user
+
+if(loginState.state==false){
+  toast.error("Please Login to follow this account");
+  return;
+}
+
+// check weather same user will not follow themselves
+if(clientLoginInfo.email==userData.email){
+  toast.warning("Sorry, you do not follow yourself");
+  return;
+
+}
+
+let followToUserReq=await fetch("/api/followuser",{
+  method:"POST",
+  body:JSON.stringify({userwhofollow:clientLoginInfo.email,usertowhofollow:userData.email})
+})
+
+    let res=await followToUserReq.json();
+
+    if(followToUserReq.status=="500"){
+      toast.error(res.message);
+      return;
+    }
+
+    if(followToUserReq.status=="404"){
+   
+      toast.error(res.message);
+      return;
+     }
+
+    if(followToUserReq.status=="400"){
+   
+      toast.warning(res.message);
+      return;
+     }
+    if(followToUserReq.status=="200"){
+      fetchUserData();
+
+     }
+
+}
   return (
    <>
+      <Toaster position="bottom-center" richColors closeButton />
 
    {(userData.length!=0)?<>
    <div className={style.users}>
-      <Toaster position="bottom-center" richColors closeButton />
 
    <div className={style.mainUserBody}>
 
@@ -132,7 +177,7 @@ useEffect(() => {
 <div className={style.top}>
 <h2>{userData.name}</h2>
 
-<button className={style.followBtn}>Follow</button>
+<button className={style.followBtn} onClick={()=>followUser()}>Follow</button>
 <button className={style.MessageBtn}>Message</button>
 
 {(loginState.state)?
@@ -208,7 +253,7 @@ useEffect(() => {
 </div>
 <div className={style.like}>
 <FontAwesomeIcon icon={faComment} className={style.numbersOfPostIcon} />
-<span>{item.dislike}</span>
+<span>{item.comments.length}</span>
 
 </div>
 </div>

@@ -19,7 +19,9 @@ export default function Page() {
     const sendDataToDb=async()=>{
         let name=session.data.user.name;
         let email=session.data.user.email;
-        let image=session.data.user.image;
+        let lowQualityImageFromGoogle=session.data.user.image;
+     
+        let image=lowQualityImageFromGoogle.replace(/=s\d+-c$/, "");
         if((name!=undefined)||(email!=undefined)||(image!=undefined)){
         let res=await fetch('/api/clientLogin',{
             method:"POST",
