@@ -1,9 +1,12 @@
 "use client";
-
+import { useSession } from "next-auth/react";
 import style from './users.module.css'
 import { useParams } from 'next/navigation';
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { Toaster, toast } from "sonner";
+
+import { setClientData } from "../../../redux/slice/ClientLoginInfo";
+import { clientLoginState } from "../../../redux/slice/ClientLoginState";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -15,26 +18,29 @@ import {
 import Image from "next/legacy/image";
 import { useRouter } from "next/navigation";
 
-
 import Link from "next/link";
 import { useEffect, useState } from 'react';
 
 export default function Page() {
+  const session = useSession();
   const loginState = useSelector((state) => state.clientLoginState);
+  const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
     const getParams = useParams();
     const [param,setParam]=useState(decodeURIComponent(getParams.user[0]))
  const [postData,setPostData]=useState([])
  const [userData,setUserData]=useState([])
   const router = useRouter();
+  const dispatch = useDispatch();
+const [loginSatatus,setLoginStatus]=useState(false);
 
 //  fetching user data
 const fetchUserData=async()=>{
-
+  console.log("res")
   // if user not login ,means normal user search
   if(loginState.state==false){
     let fetchUserData=await fetch(`/api/userdata?user=${param}&userLogin=no`);
     let res=await fetchUserData.json();
-console.log(res)
+
     if(fetchUserData.status=="500"){
       toast.error(res.message);
       return;
@@ -46,6 +52,31 @@ console.log(res)
       return;
      }
     if(fetchUserData.status=="200"){
+      if(res.postdata.length!=0){
+        setPostData(res.postdata)
+
+      }
+      setUserData(res.userdata)
+
+     }
+  }
+  // if login
+  else{
+    let fetchUserData=await fetch(`/api/userdata?user=${param}&userLogin=${clientLoginInfo.email}`);
+    let res=await fetchUserData.json();
+
+    if(fetchUserData.status=="500"){
+      toast.error(res.message);
+      return;
+    }
+
+    if(fetchUserData.status=="404"){
+   
+      toast.error(res.message);
+      return;
+     }
+    if(fetchUserData.status=="200"){
+     
       setPostData(res.postdata)
       setUserData(res.userdata)
 
@@ -54,10 +85,34 @@ console.log(res)
 }
 
 useEffect(()=>{
-fetchUserData()
+  fetchUserData();
 },[])
+
+useEffect(() => {
+  if (session.data != undefined) {
+    if (session.data.user.image != undefined) {
+    
+      dispatch(clientLoginState(true));
+   
+      setLoginStatus(true)
+      dispatch(
+        setClientData({
+          name: session.data.user.name,
+          email: session.data.user.email,
+          image: session.data.user.image,
+        })
+      );
+      fetchUserData();
+    }else{
+      fetchUserData();
+
+    }
+  }
+
+}, [session]);
   return (
    <>
+
    {(userData.length!=0)?<>
    <div className={style.users}>
       <Toaster position="bottom-center" richColors closeButton />
@@ -80,10 +135,12 @@ fetchUserData()
 <button className={style.followBtn}>Follow</button>
 <button className={style.MessageBtn}>Message</button>
 
-
-<div className={style.settingIcon} title="Open Setting">
+{(loginState.state)?
+<>{(clientLoginInfo.email==param)?<div className={style.settingIcon} title="Open Setting">
 <Link href="/user"><FontAwesomeIcon icon={faGear} className={style.settingUser} /></Link>
-</div>
+</div>:""}</>
+:""}
+
 </div>
 
 {/* stats */}
@@ -124,8 +181,7 @@ fetchUserData()
 {(postData.length!=0)?<>
 
   {postData.map((item)=>{
-    return<> 
-    <Link href={`/commentstopost?post=${item._id}`}>
+    return  <Link href={`/commentstopost?post=${item._id}`} key={item._id}>
 <div className={style.post}>
 
 <div className={style.postMedia}>
@@ -159,7 +215,7 @@ fetchUserData()
 
 </div>
 </div></Link>
-</>
+
   })}
 </>:""}
 
