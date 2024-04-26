@@ -36,13 +36,13 @@ export async function GET(req,res){
   
     let arr=[];
 
-    for (let index = 0; index <  data.comments.length; index++) {
-      let id= data.comments[index].userId;
+    for (let index = 0; index <  newData[0].comments.length; index++) {
+      let id= newData[0].comments[index].userId;
     let userData=await clientPersonalData.findById(id);
     let userEmail=userData.email;
     let userName=userData.name;
     let userImage=userData.image;
-    let postCommentID=data.comments[index]._id;
+    let postCommentID=newData[0].comments[index]._id;
     arr.push({userEmail,userName,userImage,postCommentID})
     }
 

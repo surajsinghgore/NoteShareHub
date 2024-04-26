@@ -515,7 +515,7 @@ if(fetchSinglePost.status == "200"){
                               <div className={style.user}>
                                 <Link
                                   href={
-                                    "/user" + commentUserData[index].userEmail
+                                    "/user/" + commentUserData[index].userEmail
                                   }
                                 >
                                   <Image
@@ -531,7 +531,7 @@ if(fetchSinglePost.status == "200"){
                               <div className={style.comments}>
                                 <Link
                                   href={
-                                    "/user" + commentUserData[index].userEmail
+                                    "/user/" + commentUserData[index].userEmail
                                   }
                                 >
                                   <h3>{commentUserData[index].userName}</h3>
