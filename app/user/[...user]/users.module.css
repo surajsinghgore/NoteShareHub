@@ -78,3 +78,74 @@ height: 2.5vw;
 color: white;
     padding: 0% 8%;
 }
+
+.users .mainUserBody .userProfileMenu .userDetails .top .followBtn:hover{
+    background-color: rgb(137, 178, 255);
+}
+
+/* userStatus */
+
+.users .mainUserBody .userProfileMenu .userDetails .userStatus{
+    width: 100%;
+    display: flex;
+    list-style: none;
+}
+.users .mainUserBody .userProfileMenu .userDetails .userStatus li{
+    margin-top: 3%;
+    margin-right: 4%;
+    color: rgb(81, 81, 81);
+    font-size: 1.2vw;
+}
+.users .mainUserBody .userProfileMenu .userDetails .userStatus b{
+    color: rgb(51, 51, 51);
+
+}
+.users .mainUserBody  .detailsIcons {
+   width: 100%;
+   height: auto;
+   background-color: rgb(255, 255, 255);
+}
+.users .mainUserBody  .detailsIcons .menusIcons{
+    width: 80%;
+    margin-left: 18%;
+    height: 10vw;
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+}
+.users .mainUserBody  .detailsIcons .menusIcons li{
+    width: auto;
+    margin-right: 4%;
+ 
+}
+.users .mainUserBody  .detailsIcons .menusIcons li .IconParent{
+    border: 2px solid red;
+    border-radius: 60px;
+    padding: 1.2vw 1vw;  
+    width: 5vw;
+margin-left: 10%;
+height: 5vw ;
+}
+.users .mainUserBody  .detailsIcons .menusIcons li .IconParent .imageIcon{
+    position: relative;
+  width: 2.6vw;
+height: 2.5vw ;
+}
+
+
+
+
+.users .mainUserBody  .detailsIcons .menusIcons li p{
+margin-top: 1%;
+cursor: pointer;
+font-weight: 600;
+}
+.users .mainUserBody  .detailsIcons .menusIcons li:hover .IconParent{
+box-shadow:0px 0px 12px 5px rgb(235, 235, 235);
+cursor: pointer;
+
+}
+.users .mainUserBody  .detailsIcons .menusIcons li:hover {
+color: red;
+cursor: pointer;
+}

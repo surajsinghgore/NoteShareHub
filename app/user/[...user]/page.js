@@ -43,6 +43,7 @@ export default function Page() {
 
 {/* details button */}
 <div className={style.userDetails}>
+{/* top user details and buttons */}
 <div className={style.top}>
 <h2>suraj singh</h2>
 
@@ -50,9 +51,33 @@ export default function Page() {
 <button class={style.MessageBtn}>Message</button>
 
 </div>
+
+{/* stats */}
+<div className={style.userStatus}>
+  <li><b>140</b> posts</li>
+  <li><b>140</b> followers</li>
+  <li><b>140</b> following</li>
 </div>
 </div>
 
+
+
+</div>
+<div className={style.detailsIcons}>
+
+<div className={style.menusIcons}>
+<li>
+<Link href=""><div className={style.IconParent}>
+
+<div className={style.imageIcon}>
+  <Image src="/saved.png" alt="saved" layout='fill' className={style.savedIcon}/>
+</div>
+</div>
+<p>Saved Notes</p></Link>
+</li>
+
+</div>
+</div>
    </div>
    </div>
     
