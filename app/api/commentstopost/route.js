@@ -1,11 +1,10 @@
-import {  NextRequest,NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import clientPersonalData from "../models/clientPersonalSchema";
 import uploadPosts from "../models/uploadposts";
-import likePosts from "../models/likeposts";
-import { headers } from 'next/headers'
-import disLikePosts from "../models/dislikepost";
- import mongoose from "mongoose";
+import DbConnection from "../controller/DatabaseConnection";
+import mongoose from "mongoose";
 export async function GET(req,res){
+  await DbConnection();
 
   if(req.nextUrl.searchParams.get('post')!=undefined){
     let postId=req.nextUrl.searchParams.get('post')
@@ -35,8 +34,9 @@ export async function GET(req,res){
     }
   
     let arr=[];
+    if(newData.length!=0){
 
-    for (let index = 0; index <  newData[0].comments.length; index++) {
+      for (let index = 0; index <  newData[0].comments.length; index++) {
       let id= newData[0].comments[index].userId;
     let userData=await clientPersonalData.findById(id);
     let userEmail=userData.email;
@@ -47,8 +47,7 @@ export async function GET(req,res){
     }
 
   
-
-  
+    
   
   
     return NextResponse.json(
@@ -59,9 +58,24 @@ export async function GET(req,res){
         status: 200,
       }
     );
+
+
   }
 
+ 
+else{
+ 
+  return NextResponse.json(
+    {
+      data: [],postOwner:[],message:"Success"
+    },
+    {
+      status: 200,
+    }
+  );
+}
 
+  }
   try {
     const {postId,userEmail}=await req.json();
       

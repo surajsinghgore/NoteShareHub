@@ -80,17 +80,20 @@ const [currentShareAddress,setCurrentShareAddress]=useState(`${process.env.NEXT_
   const fetchComments = async () => {
     let postId = searchParams.get("post");
     let fetchCommentsPost = await fetch(`/api/commentstopost?post=${postId}`);
-    let res = await fetchCommentsPost.json();
+    if(fetchComments!=undefined){
+      let res = await fetchCommentsPost.json();
+    
+      if (fetchCommentsPost.status == "200") {
 
-    if (fetchCommentsPost.status == "200") {
-      if (res.data != undefined) {
-        if (res.data.comments.length != 0) {
-          setCommentData(res.data.comments);
-
-          setCommentUserData(res.postOwner);
+          if (res.data.length != 0) {
+            setCommentData(res.data.comments);
+  
+            setCommentUserData(res.postOwner);
+          }
         }
       }
-    }
+    
+  
   };
   const fetchSinglePost = async () => {
     let postId = searchParams.get("post");

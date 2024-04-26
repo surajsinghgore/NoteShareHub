@@ -68,14 +68,14 @@ fetchUserData()
 <div className={style.userProfileMenu}>
 {/* profile */}
 <div className={style.profile}>
-<Image src={"/profile.webp"} alt="profile" className={style.userProfileMainImage}layout="fill"/>
+<Image src={userData.image} alt={userData.image} className={style.userProfileMainImage}layout="fill"/>
 </div>
 
 {/* details button */}
 <div className={style.userDetails}>
 {/* top user details and buttons */}
 <div className={style.top}>
-<h2>suraj singh</h2>
+<h2>{userData.name}</h2>
 
 <button className={style.followBtn}>Follow</button>
 <button className={style.MessageBtn}>Message</button>
@@ -88,9 +88,9 @@ fetchUserData()
 
 {/* stats */}
 <div className={style.userStatus}>
-  <li><b>140</b> posts</li>
-  <li><b>140</b> followers</li>
-  <li><b>140</b> following</li>
+  <li><b>{(postData!=undefined)?postData.length:"0"}</b> posts</li>
+  <li><b>{userData.follower}</b> followers</li>
+  <li><b>{userData.following}</b> following</li>
 </div>
 </div>
 
@@ -120,15 +120,16 @@ fetchUserData()
 
 <div className={style.userPostSection}>
 
-
 <div className={style.postSections}>
+{(postData.length!=0)?<>
 
-
-<Link href="/commentstopost?post=32323">
+  {postData.map((item)=>{
+    return<> 
+    <Link href={`/commentstopost?post=${item._id}`}>
 <div className={style.post}>
 
 <div className={style.postMedia}>
-<Image src={"/note.jpg"} alt="image" layout='fill'/>
+<Image src={item.post_media} alt={item.post_media} layout='fill'/>
 
 </div>
 
@@ -141,23 +142,29 @@ fetchUserData()
 
 {/* post title */}
 <div className={style.postTitle}>
-DOMAIN NAME SERVER
+{item.title}
 </div>
 <div className={style.postLike}>
 
 <div className={style.like}>
 <FontAwesomeIcon icon={faThumbsUp} className={style.numbersOfPostIcon} />
-<span>50</span>
+<span>{item.like}</span>
 </div>
 <div className={style.like}>
 <FontAwesomeIcon icon={faComment} className={style.numbersOfPostIcon} />
-<span>50</span>
+<span>{item.dislike}</span>
 
 </div>
 </div>
 
 </div>
 </div></Link>
+</>
+  })}
+</>:""}
+
+
+
 
 
 </div>
