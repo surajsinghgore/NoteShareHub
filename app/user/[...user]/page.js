@@ -21,6 +21,11 @@ import Link from "next/link";
 import { useEffect, useState } from 'react';
 
 export default function Page() {
+  const [mainPost,setMainPost]=useState(true)
+  const [showFollower,setFollower]=useState(false);
+  const [followerData,setFollowerData]=useState([]);
+  const [followingData,setFollowingData]=useState([]);
+  const [showFollowing,setFollowing]=useState(false);
   const session = useSession();
   const loginState = useSelector((state) => state.clientLoginState);
   const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
@@ -202,6 +207,47 @@ let followToUserReq=await fetch("/api/followuser",{
      }
 
 }
+
+
+const fetchFollowersAndFollowingData=async()=>{
+  
+  let fetchUserData=await fetch(`/api/followerlist?user=${param}`);
+  let res=await fetchUserData.json();
+
+
+  if(fetchUserData.status=="500"){
+    toast.error(res.message);
+    return;
+  }
+
+ 
+  if(fetchUserData.status=="200"){
+    setFollowerData(res.followerlist)
+    setFollowingData(res.followinglist)
+   }
+}
+const followerList=()=>{
+  setMainPost(false);  
+  setFollowing(false)
+  setFollower(true)
+  fetchFollowersAndFollowingData();
+}
+
+const fetchMainData=()=>{
+  setMainPost(true);  
+  setFollowing(false)
+  setFollower(false)
+}
+
+const followingList=async()=>{
+  setFollowing(true)
+  setMainPost(false);  
+  setFollower(false)
+  fetchFollowersAndFollowingData();
+
+  
+
+}
   return (
    <>
       <Toaster position="bottom-center" richColors closeButton />
@@ -222,7 +268,7 @@ let followToUserReq=await fetch("/api/followuser",{
 <div className={style.userDetails}>
 {/* top user details and buttons */}
 <div className={style.top}>
-<h2>{userData.name}</h2>
+<h2 onClick={()=>fetchMainData()}>{userData.name}</h2>
 
 {(unFollowStatus)?<button className={style.followBtn} onClick={()=>unFollowUser()}>Unfollow</button>:<button className={style.followBtn} onClick={()=>followUser()}>Follow</button>}
 
@@ -238,18 +284,25 @@ let followToUserReq=await fetch("/api/followuser",{
 
 {/* stats */}
 <div className={style.userStatus}>
-  <li><b>{(postData!=undefined)?postData.length:"0"}</b> posts</li>
-  <li><b>{userData.follower}</b> followers</li>
-  <li><b>{userData.following}</b> following</li>
+  <li onClick={()=>fetchMainData()}><b>{(postData!=undefined)?postData.length:"0"}</b> posts</li>
+  <li onClick={()=>followerList()}><b>{userData.follower}</b> followers</li>
+  <li onClick={()=>followingList()}><b>{userData.following}</b> following</li>
 </div>
 </div>
 
 
 
 </div>
+
+
+
+
+
+
 
 {/* bottom icons */}
-<div className={style.detailsIcons}>
+{(loginState.state)?
+<>{(clientLoginInfo.email==param)?<div className={style.detailsIcons}>
 
 <div className={style.menusIcons}>
 <li>
@@ -263,12 +316,67 @@ let followToUserReq=await fetch("/api/followuser",{
 </li>
 
 </div>
+</div>:""}</>
+:""}
+
+
+
+{/* followers list */}
+{(showFollower)?<div className={style.followerList} style={(followerData.length==1)?{height:"27.4vw"}:{height:"auto"}}>
+<h6>Followers List:</h6>
+{(followerData.length!=0)?<>
+{followerData.map((item)=>  <li key={item._id}>
+<div className={style.followerProfile}>
+
+<div className={style.imageProfiles}>
+<Link href={"/user/"+item.email}>
+<Image src={item.image} alt="profile" className={style.imagesProfiles} layout="fill"/></Link>
 </div>
+
+</div>
+<div className={style.menu}>
+<h2><Link href={"/user/"+item.email}>{item.name}</Link></h2>
+
+<button>unfollow</button>
+</div>
+</li>
+)}
+</>:<div className={style.NoUserFind} style={{marginTop:"-18%"}}>No Record Found</div>}
+
+
+</div>:""}
+
+
+{/* following list */}
+{(showFollowing)?<div className={style.followerList} style={(followingData.length<=1)?{height:"auto"}:""}>
+<h6>Following List:</h6>
+{(followingData.length!=0)?<>
+{followingData.map((item)=>  <li key={item._id}>
+<div className={style.followerProfile}>
+
+<div className={style.imageProfiles}>
+<Link href={"/user/"+item.email}>
+<Image src={item.image} alt="profile" className={style.imagesProfiles} layout="fill"/></Link>
+</div>
+
+</div>
+<div className={style.menu}>
+<h2><Link href={"/user/"+item.email}>{item.name}</Link></h2>
+
+<button>unfollow</button>
+</div>
+</li>
+)}
+</>:<div className={style.NoUserFind} style={{marginTop:"-18%"}}>No Record Found</div>}
+
+
+</div>:""}
 
 
 {/* user post section */}
 
-<div className={style.userPostSection}>
+{(mainPost)?
+  <div className={style.userPostSection}>
 
 <div className={style.postSections}>
 {(postData.length!=0)?<>
@@ -319,7 +427,7 @@ let followToUserReq=await fetch("/api/followuser",{
 </div>
 </div>
 
-
+:""}
 
 
    </div>

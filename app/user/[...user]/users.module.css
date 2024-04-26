@@ -108,7 +108,13 @@ margin-top: 35%;
     margin-right: 4%;
     color: rgb(81, 81, 81);
     font-size: 1.2vw;
+    cursor: pointer;
 }
+.users .mainUserBody .userProfileMenu .userDetails .userStatus li:hover,.users .mainUserBody .userProfileMenu .userDetails .userStatus li:hover b{
+    color: rgb(57, 8, 250);
+
+}
+
 .users .mainUserBody .userProfileMenu .userDetails .userStatus b{
     color: rgb(51, 51, 51);
 
@@ -162,6 +168,69 @@ cursor: pointer;
 .users .mainUserBody  .detailsIcons .menusIcons li:hover {
 color: red;
 cursor: pointer;
+}
+
+
+.users .mainUserBody  .followerList{
+    width: 100%;
+    height: auto;
+    list-style: none;
+    background-color: rgb(255, 255, 255);
+}
+.users .mainUserBody  .followerList h6{
+    margin-left: 25%;
+    margin-bottom: 2%;
+    font-size: 1.2vw;
+}
+
+
+.users .mainUserBody  .followerList li{
+    border: 1px solid rgb(219, 219, 219);
+    box-shadow: 0px 0px 12px 2px rgb(219, 219, 219);
+    width: 50%;
+    height: 10vw;
+    margin-bottom: 2%;
+    display: flex;
+    margin-left: 25%;
+}
+
+
+.users .mainUserBody  .followerList li .followerProfile{
+    position: relative;
+    width: 20%;
+    height: 100%;
+}
+.users .mainUserBody  .followerList li .followerProfile .imageProfiles{
+    position: relative;
+    width: 80%;
+    margin-top: 10%;
+    
+    margin-left: 10%;
+    height: 80%;
+}
+.users .mainUserBody  .followerList li .followerProfile .imageProfiles .imagesProfiles{
+    border-radius: 10px;
+}
+.users .mainUserBody  .followerList li .menu {
+    width: 60%;
+}
+.users .mainUserBody  .followerList li .menu h2{
+padding-left: 3%;
+padding-top: 5%;
+    font-size: 1.4vw;
+}
+.users .mainUserBody  .followerList li .menu button{
+
+    margin-left: 3%;
+    background-color: rgb(51, 51, 51);
+    font-size: 1vw;
+    border-radius: 4px;
+    margin-top: 4%;
+    font-weight: 500;
+    height: 2vw;
+    color: white;
+        padding: 0% 8%;
+
 }
 
 
