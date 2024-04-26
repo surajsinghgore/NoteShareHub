@@ -28,7 +28,7 @@ export default function Page() {
     const [param,setParam]=useState(decodeURIComponent(getParams.user[0]))
  const [postData,setPostData]=useState([])
  const [userData,setUserData]=useState([])
-
+const[unFollowStatus,setUnFollowStatus]=useState(false);
   const dispatch = useDispatch();
 
 //  fetching user data
@@ -73,11 +73,14 @@ const fetchUserData=async()=>{
       toast.error(res.message);
       return;
      }
+   
     if(fetchUserData.status=="200"){
      
       setPostData(res.postdata)
       setUserData(res.userdata)
-
+if(res.unfollow){
+  setUnFollowStatus(res.unfollow)
+}
      }
   }
 }
@@ -110,8 +113,52 @@ useEffect(() => {
 }, [session]);
 
 
+const unFollowUser=async()=>{
+
+
+if(loginState.state==false){
+  toast.error("Please Login to follow this account");
+  return;
+}
+
+// check weather same user will not follow themselves
+if(clientLoginInfo.email==userData.email){
+  toast.warning("Sorry, you do not follow yourself");
+  return;
+
+}
+
+let followToUserReq=await fetch("/api/unfollowuser",{
+  method:"POST",
+  body:JSON.stringify({userwhofollow:clientLoginInfo.email,usertowhofollow:userData.email})
+})
+
+    let res=await followToUserReq.json();
+
+    if(followToUserReq.status=="500"){
+      toast.error(res.message);
+      return;
+    }
+
+    if(followToUserReq.status=="404"){
+   
+      toast.error(res.message);
+      return;
+     }
+
+    if(followToUserReq.status=="400"){
+   
+      toast.warning(res.message);
+      return;
+     }
+    if(followToUserReq.status=="200"){
+      fetchUserData();
+      setUnFollowStatus(false)
+     }
+
+}
 const followUser=async()=>{
-  console.log(clientLoginInfo.email,userData.email)
+ 
 // first login need to login before follow user
 
 if(loginState.state==false){
@@ -177,7 +224,8 @@ let followToUserReq=await fetch("/api/followuser",{
 <div className={style.top}>
 <h2>{userData.name}</h2>
 
-<button className={style.followBtn} onClick={()=>followUser()}>Follow</button>
+{(unFollowStatus)?<button className={style.followBtn} onClick={()=>unFollowUser()}>Unfollow</button>:<button className={style.followBtn} onClick={()=>followUser()}>Follow</button>}
+
 <button className={style.MessageBtn}>Message</button>
 
 {(loginState.state)?

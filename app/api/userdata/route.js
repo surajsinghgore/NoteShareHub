@@ -49,10 +49,17 @@ return NextResponse.json(
 let publicUserPost=await uploadPosts.find({autherId:userData._id,visibility:"public"}).select("-autherId -createdAt -dateandtime -description -keyword -mainId -updatedAt -visibility -__v").sort({dateandtime:-1});
 
 
+// check weather unfollow btn need to enable for not
+let unfollowbtn=false;
+let checkWeatherAlreadyFollowedOrNot=await clientPersonalData.find({"following.userId":userData._id})
+if(checkWeatherAlreadyFollowedOrNot.length!=0){
+  unfollowbtn=true;
+}
+
 let UserDataInfo={name:userData.name,email:userData.email,image:userData.image,follower:userData.follower.length,following:userData.following.length};
 return NextResponse.json(
     {
-      postdata: publicUserPost,userdata:UserDataInfo,message:"Success"
+      unfollow:unfollowbtn,postdata: publicUserPost,userdata:UserDataInfo,message:"Success"
     },
     {
       status: 200,

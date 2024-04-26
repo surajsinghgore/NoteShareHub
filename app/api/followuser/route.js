@@ -51,7 +51,6 @@ if(userWhoFollowData==null){
 
     // check weather already followed to this user already or not
 let checkWeatherAlreadyFollowedOrNot=await clientPersonalData.find({"following.userId":userToFollow._id})
-console.log(checkWeatherAlreadyFollowedOrNot)
 
 if(checkWeatherAlreadyFollowedOrNot.length!=0){
     return NextResponse.json(
