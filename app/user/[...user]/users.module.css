@@ -31,7 +31,7 @@ padding-top: 2%;
     position: relative;
     width: 10vw;
     height: 10vw;
-margin-left: 30%;
+margin-left: 26%;
     border: 3px solid rgb(51, 51, 51);
     border-radius: 160px;
  
@@ -79,6 +79,19 @@ color: white;
     padding: 0% 8%;
 }
 
+
+
+
+.users .mainUserBody .userProfileMenu .userDetails .top .settingUser{
+font-size: 1.6vw;
+margin-top: 35%;
+    margin-left: 100%;
+}
+.users .mainUserBody .userProfileMenu .userDetails .top .settingUser:hover{
+    color: rgb(137, 178, 255);
+    cursor: pointer;
+}
+
 .users .mainUserBody .userProfileMenu .userDetails .top .followBtn:hover{
     background-color: rgb(137, 178, 255);
 }
@@ -106,7 +119,7 @@ color: white;
    background-color: rgb(255, 255, 255);
 }
 .users .mainUserBody  .detailsIcons .menusIcons{
-    width: 80%;
+    width: 63%;
     margin-left: 18%;
     height: 10vw;
     display: flex;
@@ -121,23 +134,24 @@ color: white;
 .users .mainUserBody  .detailsIcons .menusIcons li .IconParent{
     border: 2px solid red;
     border-radius: 60px;
-    padding: 1.2vw 1vw;  
-    width: 5vw;
+    padding: 0.8vw 0.9vw;  
+    width: 4vw;
 margin-left: 10%;
-height: 5vw ;
+height: 4vw ;
 }
 .users .mainUserBody  .detailsIcons .menusIcons li .IconParent .imageIcon{
     position: relative;
-  width: 2.6vw;
-height: 2.5vw ;
+  width: 2vw;
+height: 2vw ;
 }
 
 
 
 
 .users .mainUserBody  .detailsIcons .menusIcons li p{
-margin-top: 1%;
+margin-top: 2%;
 cursor: pointer;
+font-size: 1vw;
 font-weight: 600;
 }
 .users .mainUserBody  .detailsIcons .menusIcons li:hover .IconParent{
@@ -149,3 +163,118 @@ cursor: pointer;
 color: red;
 cursor: pointer;
 }
+
+
+/* userPostSection */
+.users .mainUserBody  .userPostSection {
+    width: 100%;
+   
+    height: auto;
+    background-color: rgb(255, 255, 255);
+    }
+    
+.users .mainUserBody  .userPostSection .postSections{
+    width: 80%;
+    margin-left:10%;
+    height: auto; padding-bottom: 2vw;
+    display: flex;
+flex-wrap: wrap;
+ 
+    }
+.users .mainUserBody  .userPostSection .postSections a{
+    position: relative;
+    width: 30%;
+    margin-left:2%;
+    margin-bottom: 2%;
+    height: 30vw;
+    border: 2px solid rgb(70, 70, 70);
+box-shadow: 0px 0px 12px 1px rgb(156, 156, 156);
+    background-color: rgb(93, 93, 93);
+    }
+.users .mainUserBody  .userPostSection .postSections a .post{
+    position: relative;
+    width: 100%;
+height: 100%;
+    }
+    
+.users .mainUserBody  .userPostSection .postSections .post .postMedia{
+    position: relative;
+    width: 100%;
+ 
+    height: 100%;
+
+    }
+.users .mainUserBody  .userPostSection .postSections .post:hover{
+    box-shadow: 0px 0px 12px 1px rgb(87, 87, 87);
+cursor: pointer;
+
+}
+    
+.users .mainUserBody  .userPostSection .postSections .post:hover .numbersOfPost{
+    display: block;
+}
+/* show on hover menu */
+.users .mainUserBody  .userPostSection .postSections .post .numbersOfPost{
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+opacity: 1;
+height: 100%;
+display: none;
+transition: all 0.8s;
+}
+    
+    
+.users .mainUserBody  .userPostSection .postSections .post .numbersOfPost .hoverBgHide{
+position: absolute;
+top: 0;
+left: 0;
+background-color: #656565;
+width: 100%;
+opacity: 0.7;
+z-index: 1;
+display: flex;
+justify-content: center;
+height: 100%;
+}
+/* post title */
+.users .mainUserBody  .userPostSection .postSections .post .numbersOfPost .postTitle{
+    
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 11;
+  padding-bottom: 2%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: rgb(48, 48, 48);
+  text-align: center;
+  color: white;
+   padding-top: 2%;
+    }  
+    /* post like */
+.users .mainUserBody  .userPostSection .postSections .post .numbersOfPost .postLike{
+    
+    display: flex;
+    justify-content: center;
+   
+    }  
+    
+.users .mainUserBody  .userPostSection .postSections .post .numbersOfPost .like{
+font-size: 2vw;
+color: white;
+padding-left: 2%;
+z-index: 11;
+opacity: 1;
+margin-left: 5%;
+margin-right: 2%;
+margin-top: 50%;
+}
+    
+.users .mainUserBody  .userPostSection .postSections .post .numbersOfPost .like span{ 
+font-size: 1.8vw;
+margin-left: 10px;
+}
+    

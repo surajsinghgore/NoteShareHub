@@ -106,7 +106,7 @@ export default function Header() {
 
       <div className={style.user_panel}>
         {imageEnable ? (
-          <Link href="/user">
+          <Link href={"/user/"+clientLoginInfo.email}>
             <Image
               src={imagePath}
               alt="user profile"

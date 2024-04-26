@@ -6,13 +6,9 @@ import { signOut } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faUser,
-  faAngleRight,
-  faBell,
-  faLock,
-  faBookmark,
-  faFileInvoice,
-  faIdCard,
+  faComment,
+ faGear,
+ faThumbsUp
 } from "@fortawesome/free-solid-svg-icons";
 import ClientLoginVerify from "@/middleware/ClientLoginVerify";
 import Image from "next/legacy/image";
@@ -50,6 +46,10 @@ export default function Page() {
 <button class={style.followBtn}>Follow</button>
 <button class={style.MessageBtn}>Message</button>
 
+
+<div className={style.settingIcon} title="Open Setting">
+<Link href="/user"><FontAwesomeIcon icon={faGear} className={style.settingUser} /></Link>
+</div>
 </div>
 
 {/* stats */}
@@ -63,6 +63,8 @@ export default function Page() {
 
 
 </div>
+
+{/* bottom icons */}
 <div className={style.detailsIcons}>
 
 <div className={style.menusIcons}>
@@ -78,6 +80,58 @@ export default function Page() {
 
 </div>
 </div>
+
+
+{/* user post section */}
+
+<div className={style.userPostSection}>
+
+
+<div className={style.postSections}>
+
+
+<Link href="/commentstopost?post=32323">
+<div className={style.post}>
+
+<div className={style.postMedia}>
+<Image src={"/note.jpg"} alt="image" layout='fill'/>
+
+</div>
+
+
+<div className={style.numbersOfPost}>
+<div className={style.hoverBgHide}>
+
+
+</div>
+
+{/* post title */}
+<div className={style.postTitle}>
+DOMAIN NAME SERVER
+</div>
+<div className={style.postLike}>
+
+<div className={style.like}>
+<FontAwesomeIcon icon={faThumbsUp} className={style.numbersOfPostIcon} />
+<span>50</span>
+</div>
+<div className={style.like}>
+<FontAwesomeIcon icon={faComment} className={style.numbersOfPostIcon} />
+<span>50</span>
+
+</div>
+</div>
+
+</div>
+</div></Link>
+
+
+</div>
+</div>
+
+
+
+
    </div>
    </div>
     
