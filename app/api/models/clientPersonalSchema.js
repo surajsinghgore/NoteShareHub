@@ -19,7 +19,26 @@ const ClientData = new mongoose.Schema(
        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
    
     },
-      
+      follower:[
+        {
+          userId:{
+                type: String,
+                required: true
+            }      
+           ,dateandtime:{type:Date, default: Date.now }
+        }
+            
+           ],
+      following:[
+        {
+          userId:{
+                type: String,
+                required: true
+            }         
+            ,dateandtime:{type:Date, default: Date.now }
+        }
+            
+           ],
       image: {
       type: String,
       required: true,

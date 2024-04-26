@@ -1,5 +1,5 @@
 const cloudinary = require('cloudinary');
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 import DbConnection from "../controller/DatabaseConnection";
 import clientPersonalData from "../models/clientPersonalSchema";
 import uploadPosts from "../models/uploadposts";

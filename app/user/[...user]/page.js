@@ -1,33 +1,67 @@
 "use client";
-import style from './users.module.css'
 
+import style from './users.module.css'
 import { useParams } from 'next/navigation';
-import { signOut } from "next-auth/react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { Toaster, toast } from "sonner";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faComment,
  faGear,
  faThumbsUp
 } from "@fortawesome/free-solid-svg-icons";
-import ClientLoginVerify from "@/middleware/ClientLoginVerify";
+
 import Image from "next/legacy/image";
 import { useRouter } from "next/navigation";
 
-import { clientLoginState } from "../../../redux/slice/ClientLoginState";
+
 import Link from "next/link";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Page() {
+  const loginState = useSelector((state) => state.clientLoginState);
     const getParams = useParams();
     const [param,setParam]=useState(decodeURIComponent(getParams.user[0]))
-  const dispatch = useDispatch();
+ const [postData,setPostData]=useState([])
+ const [userData,setUserData]=useState([])
   const router = useRouter();
 
- 
-  return (
+//  fetching user data
+const fetchUserData=async()=>{
+
+  // if user not login ,means normal user search
+  if(loginState.state==false){
+    let fetchUserData=await fetch(`/api/userdata?user=${param}&userLogin=no`);
+    let res=await fetchUserData.json();
+console.log(res)
+    if(fetchUserData.status=="500"){
+      toast.error(res.message);
+      return;
+    }
+
+    if(fetchUserData.status=="404"){
    
+      toast.error(res.message);
+      return;
+     }
+    if(fetchUserData.status=="200"){
+      setPostData(res.postdata)
+      setUserData(res.userdata)
+
+     }
+  }
+}
+
+useEffect(()=>{
+fetchUserData()
+},[])
+  return (
+   <>
+   {(userData.length!=0)?<>
    <div className={style.users}>
+      <Toaster position="bottom-center" richColors closeButton />
+
    <div className={style.mainUserBody}>
 
 {/* user profile menu */}
@@ -43,8 +77,8 @@ export default function Page() {
 <div className={style.top}>
 <h2>suraj singh</h2>
 
-<button class={style.followBtn}>Follow</button>
-<button class={style.MessageBtn}>Message</button>
+<button className={style.followBtn}>Follow</button>
+<button className={style.MessageBtn}>Message</button>
 
 
 <div className={style.settingIcon} title="Open Setting">
@@ -133,9 +167,10 @@ DOMAIN NAME SERVER
 
 
    </div>
-   </div>
+   </div></>:<div className={style.NoUserFind}>No User Found with <span>{param}</span></div>}
+   
     
-    
+    </>
    
   );
 }

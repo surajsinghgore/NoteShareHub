@@ -278,3 +278,18 @@ font-size: 1.8vw;
 margin-left: 10px;
 }
     
+
+
+.NoUserFind{
+    padding-top: 10%;
+    width: 100%;
+    text-align: center;
+    font-size: 3vw;
+    height: 47.4vw;
+    line-height: 30vw;
+    background-color: #fff;
+}
+.NoUserFind span{
+    color: rgb(253, 83, 15);
+    text-transform: uppercase;
+}

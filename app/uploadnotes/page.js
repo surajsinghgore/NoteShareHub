@@ -1,10 +1,11 @@
 "use client";
+import { Toaster, toast } from "sonner";
 
 import LoadingBar from "react-top-loading-bar";
 import { useRouter } from 'next/navigation';
 
 import { useSession } from "next-auth/react";
-import { Toaster, toast } from "sonner";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/legacy/image";
 import { FileUploader } from "react-drag-drop-files";
