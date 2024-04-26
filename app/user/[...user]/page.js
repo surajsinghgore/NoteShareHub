@@ -15,7 +15,7 @@ import {
   faIdCard,
 } from "@fortawesome/free-solid-svg-icons";
 import ClientLoginVerify from "@/middleware/ClientLoginVerify";
-
+import Image from "next/legacy/image";
 import { useRouter } from "next/navigation";
 
 import { clientLoginState } from "../../../redux/slice/ClientLoginState";
@@ -24,7 +24,7 @@ import { useState } from 'react';
 
 export default function Page() {
     const getParams = useParams();
-    const [param,setParam]=useState(getParams.user[0])
+    const [param,setParam]=useState(decodeURIComponent(getParams.user[0]))
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -34,7 +34,24 @@ export default function Page() {
    <div className={style.users}>
    <div className={style.mainUserBody}>
 
-    <h1>{param}</h1>
+{/* user profile menu */}
+<div className={style.userProfileMenu}>
+{/* profile */}
+<div className={style.profile}>
+<Image src={"/profile.webp"} alt="profile" className={style.userProfileMainImage}layout="fill"/>
+</div>
+
+{/* details button */}
+<div className={style.userDetails}>
+<div className={style.top}>
+<h2>suraj singh</h2>
+
+<button class={style.followBtn}>Follow</button>
+<button class={style.MessageBtn}>Message</button>
+
+</div>
+</div>
+</div>
 
    </div>
    </div>
