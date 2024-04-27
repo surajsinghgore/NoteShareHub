@@ -102,6 +102,10 @@ export default function Header() {
       <div className={style.notification} title="Check Notification">
         <div className={style.dot}></div>
         <FontAwesomeIcon icon={faBell} className={style.notification_icon} />
+
+
+
+     
       </div>
 
       <div className={style.user_panel}>
@@ -121,6 +125,32 @@ export default function Header() {
           </Link>
         )}
       </div>
+
+
+         {/* suggestion */}
+         <div className={style.arrow_up}></div>
+         <div className={style.notifSuggestion}>
+<div className={style.topNotifi}>
+Notification <span>3</span>
+</div>
+
+{/* post */}
+<div className={style.notiPost}>
+
+<div className={style.post1}>
+<div className={style.profileUser}>
+<Image src={"/profile.webp"} alt="profiile" className={style.profileUserImage}layout="fill"/>
+</div>
+
+<div className={style.descriptions}>
+<b>Saksham </b> posted a new notes on computer science
+</div>
+</div>
+
+
+
+</div>
+</div>
     </div>
   );
 }
