@@ -386,3 +386,8 @@ margin-left: 10px;
     .searchBarForPost input:focus{
         border-radius: 60px;
     }
+
+.noDataFound{
+    width: 100%;
+    height: 10vw;
+}

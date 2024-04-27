@@ -154,8 +154,9 @@ else{
 
   return (
     <>
+    {console.log(data.length)}
    <ClientLoginVerify />
-<div className={style.savedNotes}>
+<div className={style.savedNotes} >
      
      <Toaster position="bottom-center" richColors closeButton />
 
@@ -170,7 +171,7 @@ else{
 
 
 
-<div className={style.savedNotesMedia}>
+<div className={style.savedNotesMedia} >
 
 
 {(data.length!=0)?<>

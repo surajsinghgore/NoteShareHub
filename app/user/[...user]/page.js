@@ -338,7 +338,7 @@ const unFollowUserBtn=async(usertowhofollow)=>{
    {(userData.length!=0)?<>
    <div className={style.users}>
 
-   <div className={style.mainUserBody}>
+   <div className={style.mainUserBody} >
 
 {/* user profile menu */}
 <div className={style.userProfileMenu}>
@@ -506,7 +506,7 @@ const unFollowUserBtn=async(usertowhofollow)=>{
 </div></Link>
 
   })}
-</>:""}
+</>:<div className={style.noDataFound}>No Notes Found</div>}
 
 
 
