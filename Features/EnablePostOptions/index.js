@@ -254,8 +254,8 @@ if(savedNotes.status=="200"){
                         />
                       </div>
                       <div className="hidemenu_desc">
-                        <h2>Save Post</h2>
-                        <h3>Add this to your saved items</h3>
+                        <h2>Save Note</h2>
+                        <h3>Add this to your saved notes</h3>
                       </div>
                     </li>
 

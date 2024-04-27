@@ -260,6 +260,40 @@ if(fetchSinglePost.status == "200"){
     setShareState(!shareState);
   };
 
+
+  const savedNotes=async(id)=>{
+    if(loginState.state==false){
+      toast.error("Please Log In to saved this post.");
+    return; }
+    let userActiveEmail=clientLoginInfo.email;
+    
+    
+    let savedNotes=await fetch("/api/savednotes",{
+      method:"POST",
+      body:JSON.stringify({postId:id,userActiveEmail:userActiveEmail})
+    })
+    let res=await savedNotes.json();
+    if(savedNotes.status=="500"){
+      toast.error(res.message);
+      return;
+    }
+    if(savedNotes.status=="400"){
+      toast.warning(res.message);
+      setOptionsState(false)
+    
+      return;
+    }
+    if(savedNotes.status=="404"){
+      toast.error(res.message);
+      return;
+    }
+    
+    if(savedNotes.status=="200"){
+      toast.success(res.message);
+      setOptionsState(false)
+      }
+    
+      }
   return (
     <>
 
@@ -302,7 +336,7 @@ if(fetchSinglePost.status == "200"){
                       {/* hide menu on click */}
                       {optionState && (
                         <div className={style.hide_menu}>
-                          <li>
+                          <li onClick={()=>savedNotes(data._id)}>
                             <div className={style.hidemenu_icons}>
                               <FontAwesomeIcon
                                 icon={faBookmark}
@@ -310,23 +344,11 @@ if(fetchSinglePost.status == "200"){
                               />
                             </div>
                             <div className={style.hidemenu_desc}>
-                              <h2>Save Post</h2>
-                              <h3>Add this to your saved items</h3>
+                              <h2>Save Note</h2>
+                              <h3>Add this to your saved notes</h3>
                             </div>
                           </li>
 
-                          <li>
-                            <div className={style.hidemenu_icons}>
-                              <FontAwesomeIcon
-                                icon={faBookmark}
-                                className={style.hidemenu_icon}
-                              />
-                            </div>
-                            <div className={style.hidemenu_desc}>
-                              <h2>Save Post</h2>
-                              <h3>Add this to your saved items</h3>
-                            </div>
-                          </li>
                         </div>
                       )}
 
