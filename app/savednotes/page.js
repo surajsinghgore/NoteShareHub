@@ -18,14 +18,13 @@ import { clientLoginState } from "../../redux/slice/ClientLoginState";
 import Link from "next/link";
 
 export default function Page() {
+  const [copyofData,setCopyOfData]=useState([])
   const [data,setData]=useState([]);
   const loginState = useSelector((state) => state.clientLoginState);
   const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
   const session = useSession();
   const dispatch = useDispatch();
-const [time,setTime]=useState("")
-const [date,setDate]=useState("")
-
+const [search,setSearch]=useState("")
 
   const fetchNotes=async()=>{
 
@@ -56,7 +55,7 @@ if(fetchNotes.status=="404"){
 
 if(fetchNotes.status=="200"){
   setData(res.data)
-
+  setCopyOfData(res.data)
 
 
 }
@@ -122,6 +121,40 @@ fetchNotes();
       }
     }
   },[session])
+
+
+
+  // search notes using saved search bar
+
+const searchSavedNotes=(e)=>{
+  // copyofData
+setSearch(e.target.value);
+
+if(e.target.value==""){
+  setData(copyofData);
+}
+else{
+
+  const filterData=copyofData.filter((item)=>{
+    return item.title.toLowerCase().includes(e.target.value.toLowerCase())
+  })
+  if(filterData.length!=0){
+    setData(filterData);
+
+  }else{
+    const filterData=copyofData.filter((item)=>{
+
+      return item.keyword.includes(e.target.value.toLowerCase())
+   
+    
+    })
+    setData(filterData);
+
+  }
+
+}
+}
+
   return (
     <>
    <ClientLoginVerify />
@@ -131,7 +164,7 @@ fetchNotes();
 
    {/* top search */}
    <div className={style.searchNotesTop}>
-<input type="search" placeholder='Search Notes From Saved Notes' />
+<input type="search" placeholder='Search Notes From Saved Notes' value={search} onChange={(e)=>searchSavedNotes(e)}/>
 <FontAwesomeIcon icon={faMagnifyingGlass} className={style.searchIcon} />
 
    </div>
