@@ -1,48 +1,138 @@
+"use client";
+import ClientLoginVerify from "@/middleware/ClientLoginVerify";
+
 import style from './savednotes.module.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector ,useDispatch} from "react-redux";
+import { Toaster, toast } from "sonner";
 
 import {
     faMagnifyingGlass,
    
   } from "@fortawesome/free-solid-svg-icons";
 import Image from 'next/legacy/image';
-  
-export default function page() {
+import { useEffect, useState } from 'react';
+import { useSession } from "next-auth/react";
+import { setClientData } from "../../redux/slice/ClientLoginInfo";
+import { clientLoginState } from "../../redux/slice/ClientLoginState";
+import Link from "next/link";
+
+export default function Page() {
+  const [data,setData]=useState([]);
+  const loginState = useSelector((state) => state.clientLoginState);
+  const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
+  const session = useSession();
+  const dispatch = useDispatch();
+
+
+
+  const fetchNotes=async()=>{
+
+
+
+
+    if((clientLoginInfo.email==undefined)||clientLoginInfo.email==""){
+      toast.error("Please Login To Fetch Notes");
+return;
+    }
+
+const fetchNotes=await fetch(`/api/savednotes?user=${clientLoginInfo.email}`);
+let res=await fetchNotes.json();
+
+if(fetchNotes.status=="500"){
+  toast.error(res.message);
+  return;
+}
+
+if(fetchNotes.status=="400"){
+  toast.error(res.message);
+  return;
+}
+if(fetchNotes.status=="404"){
+  toast.error(res.message);
+  return;
+}
+
+if(fetchNotes.status=="200"){
+  setData(res.data)
+}
+  }
+
+
+  useEffect(()=>{
+   
+    if (session.data != undefined) {
+      if (session.data.user.image != undefined) {
+      
+        dispatch(clientLoginState(true));
+     
+        
+        dispatch(
+          setClientData({
+            name: session.data.user.name,
+            email: session.data.user.email,
+            image: session.data.user.image,
+          })
+        );
+        fetchNotes();
+      }
+    }
+  },[session])
   return (
-    <div className={style.savedNotes}>
-    {/* top search */}
-    <div className={style.searchNotesTop}>
+    <>
+   <ClientLoginVerify />
+<div className={style.savedNotes}>
+     
+     <Toaster position="bottom-center" richColors closeButton />
+
+   {/* top search */}
+   <div className={style.searchNotesTop}>
 <input type="search" placeholder='Search Notes From Saved Notes' />
 <FontAwesomeIcon icon={faMagnifyingGlass} className={style.searchIcon} />
 
-    </div>
+   </div>
 
 <h6>MY SAVED NOTES:-</h6>
 
-{/* notsavedNotes */}
-{/* <div className={style.notSavedNotesMedia}>
-<h2>You Not Saved Any Notes</h2>
-</div> */}
+
 
 <div className={style.savedNotesMedia}>
 
-<div className={style.mediaPost}>
+
+{(data.length!=0)?<>
+
+{(data.map((item)=>{
+  return  <div className={style.mediaPost}>
+<Link href={`/commentstopost?post=${item.id}`}>
 {/* image */}
 <div className={style.postImage}>
-<Image src={"/note.jpg"} alt="note" layout='fill' className={style.Image}/>
+<Image src={item.image} alt="note" layout='fill' className={style.Image}/>
 
 </div>
 
 {/* title */}
 <div className={style.postTitle}>
 
-<h1>SURAJ SINGH</h1>
-<p>23:23 Pm 23/23/2003 </p>
+<h1>{item.title}</h1>
+<p>{item.dateandtime}</p>
+</div></Link>
 </div>
+}))}
+    </>: <div className={style.notSavedNotesMedia}>
+<h2>You Not Saved Any Notes</h2>
+</div>}
 </div>
 
-</div>
+   </div>
 
-    </div>
+
+
+
+
+
+ 
+  
+   
+    </>
   )
 }

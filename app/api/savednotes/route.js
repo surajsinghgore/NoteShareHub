@@ -2,9 +2,53 @@ import {  NextResponse } from "next/server";
 import clientPersonalData from "../models/clientPersonalSchema";
 import uploadPosts from "../models/uploadposts";
 import savednotes from "../models/savedNotesSchema";
+import DbConnection from "../controller/DatabaseConnection";
+
+
+// get notes
+
+export async function GET(req,res){
+  await DbConnection();
+  if(req.nextUrl.searchParams.get('user')!=undefined){
+    let userEmailId=req.nextUrl.searchParams.get('user');
+
+    let userData=await clientPersonalData.findOne({email:userEmailId});
+    if(userData==null){
+      return NextResponse.json(
+        {
+          postdata: "User Not Found , Please relogin"
+        },
+        {
+          status: 404,
+        }
+      );
+    }
+
+// find all saved post
+let savedNotes=await savednotes.find({autherId:userData._id})
+
+
+let notesData=[];
+
+for (let index = 0; index < savedNotes.length; index++) {
+let findPost=await uploadPosts.findById(savedNotes[index].postId)
+  if(findPost!=null){
+    notesData.push({id:findPost._id,title:findPost.title,keyword:findPost.keyword,dateandtime:findPost.dateandtime,image:findPost.post_media})
+  }
+}
 
 
 
+    return NextResponse.json(
+      {
+        data: notesData
+      },
+      {
+        status: 200,
+      }
+    );
+  }
+}
 
 // post data to server
 export async function POST(req,res) {
@@ -38,7 +82,7 @@ if(userActiveEmail==undefined){
       );
   }
 
-
+  await DbConnection();
 // find User
 let findUser=await clientPersonalData.findOne({email:userActiveEmail});
 if(findUser==null){
