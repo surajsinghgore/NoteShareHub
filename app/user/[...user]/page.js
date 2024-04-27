@@ -60,7 +60,7 @@ const fetchUserData=async()=>{
     if(fetchUserData.status=="200"){
       if(res.postdata.length!=0){
         setPostData(res.postdata)
-
+        setBackupPostData(res.postdata)
       }
       setUserData(res.userdata)
 
@@ -303,7 +303,6 @@ const unFollowUserBtn=async(usertowhofollow)=>{
 
 
   const searchBarForPost=(e)=>{
-
   setSearch(e.target.value);
 
   if(e.target.value==""){
