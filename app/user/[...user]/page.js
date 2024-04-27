@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faComment,
  faGear,
+ 
  faThumbsUp
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -21,7 +22,8 @@ import Link from "next/link";
 import { useEffect, useState } from 'react';
 
 export default function Page() {
-  const [mainPost,setMainPost]=useState(true)
+  const [mainPost,setMainPost]=useState(true);
+  const [backupPostData,setBackupPostData]=useState([])
   const [showFollower,setFollower]=useState(false);
   const [followerData,setFollowerData]=useState([]);
   const [followingData,setFollowingData]=useState([]);
@@ -35,6 +37,7 @@ export default function Page() {
  const [userData,setUserData]=useState([])
 const[unFollowStatus,setUnFollowStatus]=useState(false);
   const dispatch = useDispatch();
+  const [search,setSearch]=useState("")
 
 //  fetching user data
 const fetchUserData=async()=>{
@@ -80,7 +83,7 @@ const fetchUserData=async()=>{
      }
    
     if(fetchUserData.status=="200"){
-     
+      setBackupPostData(res.postdata)
       setPostData(res.postdata)
       setUserData(res.userdata)
 if(res.unfollow){
@@ -248,6 +251,87 @@ const followingList=async()=>{
   
 
 }
+
+
+
+const unFollowUserBtn=async(usertowhofollow)=>{
+
+
+  if(loginState.state==false){
+    toast.error("Please Login to follow this account");
+    return;
+  }
+  
+  // check weather same user will not follow themselves
+  if(clientLoginInfo.email==usertowhofollow){
+    toast.warning("Sorry, you do not follow yourself");
+    return;
+  
+  }
+  
+  let followToUserReq=await fetch("/api/unfollowuser",{
+    method:"POST",
+    body:JSON.stringify({userwhofollow:clientLoginInfo.email,usertowhofollow:usertowhofollow})
+  })
+  
+      let res=await followToUserReq.json();
+  
+      if(followToUserReq.status=="500"){
+        toast.error(res.message);
+        return;
+      }
+  
+      if(followToUserReq.status=="404"){
+     
+        toast.error(res.message);
+        return;
+       }
+  
+      if(followToUserReq.status=="400"){
+     
+        toast.warning(res.message);
+        return;
+       }
+      if(followToUserReq.status=="200"){
+        fetchUserData();
+        setUnFollowStatus(false)
+        fetchFollowersAndFollowingData()
+       }
+  
+  }
+
+
+
+  const searchBarForPost=(e)=>{
+
+  setSearch(e.target.value);
+
+  if(e.target.value==""){
+    setPostData(backupPostData);
+  }
+  else{
+  
+    const filterData=backupPostData.filter((item)=>{
+      return item.title.toLowerCase().includes(e.target.value.toLowerCase())
+    })
+    if(filterData.length!=0){
+      setPostData(filterData);
+  
+    }else{
+
+
+      
+  
+ 
+      const filterData = backupPostData.filter(post =>
+        post.keyword.some(keyword => keyword.toLowerCase().includes(e.target.value.toLowerCase()))
+      );
+      setPostData(filterData);
+  
+    }
+  
+  }
+  }
   return (
    <>
       <Toaster position="bottom-center" richColors closeButton />
@@ -337,7 +421,6 @@ const followingList=async()=>{
 <div className={style.menu}>
 <h2><Link href={"/user/"+item.email}>{item.name}</Link></h2>
 
-<button>unfollow</button>
 </div>
 </li>
 )}
@@ -363,7 +446,7 @@ const followingList=async()=>{
 <div className={style.menu}>
 <h2><Link href={"/user/"+item.email}>{item.name}</Link></h2>
 
-<button>unfollow</button>
+<button onClick={()=>unFollowUserBtn(item.email)}>unfollow</button>
 </div>
 </li>
 )}
@@ -377,6 +460,12 @@ const followingList=async()=>{
 
 {(mainPost)?
   <div className={style.userPostSection}>
+
+
+<div className={style.searchBarForPost}>
+
+<input type="search" placeholder={`🔍 search for post by ${userData.name}`} value={search} onChange={(e)=>searchBarForPost(e)}/>
+</div>
 
 <div className={style.postSections}>
 {(postData.length!=0)?<>

@@ -26,7 +26,7 @@ if(userData==null){
         // check weather user data from without login user 
     if(userActiveEmailId=="no"){
 // send only public post of user
-let publicUserPost=await uploadPosts.find({autherId:userData._id,visibility:"public"}).select("-autherId -createdAt -dateandtime -description -keyword -mainId -updatedAt -visibility -__v").sort({dateandtime:-1});
+let publicUserPost=await uploadPosts.find({autherId:userData._id,visibility:"public"}).select("-autherId -createdAt -dateandtime -description -mainId -updatedAt -visibility -__v").sort({dateandtime:-1});
 
 
 let UserDataInfo={name:userData.name,email:userData.email,image:userData.image,follower:userData.follower.length,following:userData.following.length};
@@ -46,7 +46,7 @@ return NextResponse.json(
 // if active account but not of their own profile
     else if(userEmailId!==userActiveEmailId){
 // send only public post of user
-let publicUserPost=await uploadPosts.find({autherId:userData._id,visibility:"public"}).select("-autherId -createdAt -dateandtime -description -keyword -mainId -updatedAt -visibility -__v").sort({dateandtime:-1});
+let publicUserPost=await uploadPosts.find({autherId:userData._id,visibility:"public"}).select("-autherId -createdAt -dateandtime -description -mainId -updatedAt -visibility -__v").sort({dateandtime:-1});
 
 
 // check weather unfollow btn need to enable for not
@@ -70,7 +70,7 @@ return NextResponse.json(
     else if(userEmailId==userActiveEmailId){
      
 // send only public post of user
-let publicUserPost=await uploadPosts.find({autherId:userData._id}).select("-autherId -createdAt -dateandtime -description -keyword -mainId -updatedAt -visibility -__v").sort({dateandtime:-1});
+let publicUserPost=await uploadPosts.find({autherId:userData._id}).select("-autherId -createdAt -dateandtime -description -mainId -updatedAt -visibility -__v").sort({dateandtime:-1});
 
 
 let UserDataInfo={name:userData.name,email:userData.email,image:userData.image,follower:userData.follower.length,following:userData.following.length};

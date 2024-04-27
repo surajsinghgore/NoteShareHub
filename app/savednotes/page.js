@@ -142,12 +142,9 @@ else{
     setData(filterData);
 
   }else{
-    const filterData=copyofData.filter((item)=>{
-
-      return item.keyword.includes(e.target.value.toLowerCase())
-   
-    
-    })
+    const filterData = copyofData.filter(post =>
+      post.keyword.some(keyword => keyword.toLowerCase().includes(e.target.value.toLowerCase()))
+    );
     setData(filterData);
 
   }
