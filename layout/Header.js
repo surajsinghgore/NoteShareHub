@@ -88,7 +88,7 @@ export default function Header() {
       
           <FontAwesomeIcon icon={faHouse} className={style.menu_icon} />
         </div></Link>
-        <Link href="/"> <div className={(pathname==="/savednotes")?style.active:style.iconCard} title="Saved Notes">
+        <Link href="/savednotes"> <div className={(pathname==="/savednotes")?style.active:style.iconCard} title="Saved Notes">
           <FontAwesomeIcon icon={faBookmark} className={style.menu_icon} />
         </div></Link>
 

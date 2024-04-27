@@ -1,0 +1,105 @@
+.savedNotes{
+    z-index: 12;
+    width: 100%;
+    padding-top: 6%;
+
+    background-color: rgb(255, 255, 255);
+}
+.savedNotes h6{
+    padding-left: 4.5%;
+}
+
+
+/* searchTop */
+.savedNotes .searchNotesTop{
+position: relative;
+    width: 100%;
+    padding: 2% 0;
+    background-color: #fff;
+    height: auto;
+}
+
+.savedNotes .searchNotesTop input{
+    width: 70%;
+    margin-left: 15%;
+    outline: none;
+    padding: 0.5% 3%;
+    border-radius: 60px;
+    box-shadow: 0px 0px 8px 2px rgb(224, 224, 224);
+}
+.savedNotes .searchNotesTop .searchIcon{
+    position: absolute;
+    top: 44%;
+    font-size: 1vw;
+    color:rgb(192, 192, 192);
+    left: 16.5%;
+}
+
+
+/* notSavedNotesMedia */
+.savedNotes .notSavedNotesMedia{
+    width: 100%;
+    height: 35vw;
+}
+.savedNotes .notSavedNotesMedia h2{
+  color: rgb(64, 64, 64);
+padding-top: 3%;
+padding-left: 15.8%;
+  font-size: 1.2vw;
+}
+
+/* savedNotesMedia */
+.savedNotes .savedNotesMedia{
+    width: 100%;
+    height: auto;
+    display: flex;
+    z-index: 9;
+    padding-bottom: 2%;
+    flex-wrap: wrap;
+    background-color: rgb(255, 255, 255);
+}
+
+.savedNotes .savedNotesMedia .mediaPost{
+    width: 20%;
+    margin-top: 2%;
+    margin-left: 4%;
+    border-radius: 5px;    background-color: rgb(255, 255, 255);
+    height: 30vw;
+    box-shadow: 0px 0px 20px 3px rgb(246, 246, 246);
+    border: 1px solid rgb(246, 246, 246);
+}
+.savedNotes .savedNotesMedia .mediaPost .postImage{
+    position: relative;
+    height: 70%;
+    border-radius: 10px;
+    width: 94%;
+    margin-top: 3%;
+    border: 1px solid rgb(246, 246, 246);
+    background-color: #fff;
+    margin-left:3%;
+}
+.savedNotes .savedNotesMedia .mediaPost .postImage .Image{
+    border-radius: 10px;
+}
+.savedNotes .savedNotesMedia .mediaPost .postTitle{
+    width: 100%;
+    height: 30%;
+
+}
+
+.savedNotes .savedNotesMedia .mediaPost .postTitle h1{
+padding-top: 3%;
+font-size: 1.2vw;
+padding-left: 4%;
+}
+.savedNotes .savedNotesMedia .mediaPost .postTitle p{
+padding-top: 3%;
+font-size: 0.7vw;
+    padding-left: 4%;
+}
+
+
+.savedNotes .savedNotesMedia .mediaPost:hover{
+cursor: pointer;
+    box-shadow: 0px 0px 12px 3px rgb(226, 226, 226);
+}
