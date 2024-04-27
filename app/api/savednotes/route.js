@@ -192,3 +192,47 @@ else{
     
     
 }
+
+
+
+
+export async function DELETE(req,res){
+
+let {userEmail,postIdToDelete}=await req.json();
+  await DbConnection();
+
+    let userData=await clientPersonalData.findOne({email:userEmail});
+    if(userData==null){
+      return NextResponse.json(
+        {
+          postdata: "User Not Found , Please relogin"
+        },
+        {
+          status: 404,
+        }
+      );
+    }
+let userId=userData._id;
+ // find all saved post
+let savedNotesData=await savednotes.findOne({autherId:userId,postId:postIdToDelete})
+if(savedNotesData==null){
+  return NextResponse.json(
+    {
+      message: "Post Not Found"
+    },
+    {
+      status: 404,
+    }
+  );
+}
+
+await savednotes.findByIdAndDelete(savedNotesData._id);
+    return NextResponse.json(
+      {
+        message: "Note Successfully removed from Your Save Notes"
+      },
+      {
+        status: 200,
+      }
+    );
+  }

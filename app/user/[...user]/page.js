@@ -306,7 +306,7 @@ const followingList=async()=>{
 
 <div className={style.menusIcons}>
 <li>
-<Link href=""><div className={style.IconParent}>
+<Link href="/savednotes"><div className={style.IconParent}>
 
 <div className={style.imageIcon}>
   <Image src="/saved.png" alt="saved" layout='fill' className={style.savedIcon}/>

@@ -23,7 +23,8 @@ export default function Page() {
   const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
   const session = useSession();
   const dispatch = useDispatch();
-
+const [time,setTime]=useState("")
+const [date,setDate]=useState("")
 
 
   const fetchNotes=async()=>{
@@ -55,9 +56,52 @@ if(fetchNotes.status=="404"){
 
 if(fetchNotes.status=="200"){
   setData(res.data)
+
+
+
 }
   }
 
+
+
+  const removeSaveNote=async(id)=>{
+
+
+
+
+    if((clientLoginInfo.email==undefined)||clientLoginInfo.email==""){
+      toast.error("Please Login To Fetch Notes");
+return;
+    }
+
+const fetchNotesRes=await fetch("/api/savednotes",{
+  method:"DELETE",
+  body:JSON.stringify({userEmail:clientLoginInfo.email,postIdToDelete:id})
+});
+let res=await fetchNotesRes.json();
+
+if(fetchNotesRes.status=="500"){
+  toast.error(res.message);
+  return;
+}
+
+if(fetchNotesRes.status=="400"){
+  toast.error(res.message);
+  return;
+}
+if(fetchNotesRes.status=="404"){
+  toast.error(res.message);
+  return;
+}
+
+if(fetchNotesRes.status=="200"){
+
+  toast.success(res.message);
+fetchNotes();
+
+
+}
+  }
 
   useEffect(()=>{
    
@@ -102,8 +146,16 @@ if(fetchNotes.status=="200"){
 {(data.length!=0)?<>
 
 {(data.map((item)=>{
-  return  <div className={style.mediaPost}>
-<Link href={`/commentstopost?post=${item.id}`}>
+  let date = new Date(item.dateandtime);
+let amOrPm="";
+{(date.getHours>=12)?amOrPm="Pm":amOrPm="Am"}
+  return  <div className={style.mediaPosts} key={item.id}>
+
+
+  <div className={style.mediaPost}>
+
+  <button onClick={()=>removeSaveNote(item.id)}>remove</button>
+  <Link href={`/commentstopost?post=${item.id}`}>
 {/* image */}
 <div className={style.postImage}>
 <Image src={item.image} alt="note" layout='fill' className={style.Image}/>
@@ -114,8 +166,12 @@ if(fetchNotes.status=="200"){
 <div className={style.postTitle}>
 
 <h1>{item.title}</h1>
-<p>{item.dateandtime}</p>
+<p>{`${date.getHours()}-${date.getMinutes()} ${amOrPm}  ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`}</p>
+
+
 </div></Link>
+  </div>
+
 </div>
 }))}
     </>: <div className={style.notSavedNotesMedia}>
