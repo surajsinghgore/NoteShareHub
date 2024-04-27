@@ -41,8 +41,6 @@ export default function Index(props) {
 const [date,setDate]=useState("");
 const [time,setTime]=useState("");
 const [shareState, setShareState] = useState(false);
-
-
 const [currentShareAddress,setCurrentShareAddress]=useState();
 
   const { Data } = props;
@@ -202,6 +200,42 @@ return;
     setCurrentShareAddress(`${process.env.NEXT_PUBLIC_WEBSITE_DOMAIN}/commentstopost?post=${id}`)
     setShareState(!shareState);
   };
+
+
+
+  const savedNotes=async(id)=>{
+if(loginState.state==false){
+  toast.error("Please Log In to saved this post.");
+return; }
+let userActiveEmail=clientLoginInfo.email;
+
+
+let savedNotes=await fetch("/api/savednotes",{
+  method:"POST",
+  body:JSON.stringify({postId:id,userActiveEmail:userActiveEmail})
+})
+let res=await savedNotes.json();
+if(savedNotes.status=="500"){
+  toast.error(res.message);
+  return;
+}
+if(savedNotes.status=="400"){
+  toast.warning(res.message);
+  setOptionsState(false)
+
+  return;
+}
+if(savedNotes.status=="404"){
+  toast.error(res.message);
+  return;
+}
+
+if(savedNotes.status=="200"){
+  toast.success(res.message);
+  setOptionsState(false)
+  }
+
+  }
   return (
  <>
           
@@ -212,7 +246,7 @@ return;
                 {/* hide menu on click */}
                 {optionState && (
                   <div className="hide_menu" >
-                    <li>
+                    <li onClick={()=>savedNotes(Data.postData._id)}>
                       <div className="hidemenu_icons">
                         <FontAwesomeIcon
                           icon={faBookmark}
@@ -225,31 +259,7 @@ return;
                       </div>
                     </li>
 
-                    <li>
-                      <div className="hidemenu_icons">
-                        <FontAwesomeIcon
-                          icon={faBookmark}
-                          className="hidemenu_icon"
-                        />
-                      </div>
-                      <div className="hidemenu_desc">
-                        <h2>Save Post</h2>
-                        <h3>Add this to your saved items</h3>
-                      </div>
-                    </li>
-
-                    <li>
-                      <div className="hidemenu_icons">
-                        <FontAwesomeIcon
-                          icon={faBookmark}
-                          className="hidemenu_icon"
-                        />
-                      </div>
-                      <div className="hidemenu_desc">
-                        <h2>Save Post</h2>
-                        <h3>Add this to your saved items</h3>
-                      </div>
-                    </li>
+                  
                   </div>
                 )}
 
