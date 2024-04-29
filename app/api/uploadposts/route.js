@@ -2,6 +2,7 @@ const cloudinary = require('cloudinary');
 import {  NextResponse } from "next/server";
 import DbConnection from "../controller/DatabaseConnection";
 import clientPersonalData from "../models/clientPersonalSchema";
+import notificationSchema from "../models/showNotification";
 import uploadPosts from "../models/uploadposts";
 const crypto = require('crypto');
 
@@ -117,8 +118,20 @@ let sendpostdata=new uploadPosts({
   visibility:visibilityValue,
   mainId:uniqueNumber,
   })
-  await sendpostdata.save();
+  let postJustSendData=await sendpostdata.save();
+// send this to all users who follow them so that they get notified when ever new post is posted
+  let notificationSchemaData=new notificationSchema({
+    autherId:userActiveId,
+    postId:postJustSendData._id,
+  })
+  for (let index = 0; index < data.follower.length; index++) {
+    const userWhoNotSeenId=data.follower[index].userId;
+    
+    notificationSchemaData.followerWhoNotSeenThePost.push({userId:userWhoNotSeenId})
+  }
 
+  
+  await notificationSchemaData.save();
 }
  
     return NextResponse.json(
