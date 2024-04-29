@@ -44,7 +44,7 @@ if((req.nextUrl.searchParams.get('ItemSearch')!==null)&&(req.nextUrl.searchParam
   // remove duplicate
   
   const uniqueArray = Object.values(searchData.reduce((acc, obj) => {
-    acc[obj._id] = obj;
+    acc[obj.title] = obj;
     return acc;
   }, {}));
     return NextResponse.json(
@@ -130,7 +130,7 @@ normalKeywordData.forEach((result) => {
 // remove duplicate
 
 const uniqueArray = Object.values(searchData.reduce((acc, obj) => {
-  acc[obj._id] = obj;
+  acc[obj.title] = obj;
   return acc;
 }, {}));
   return NextResponse.json(
@@ -182,7 +182,7 @@ keywordData.forEach((result) => {
 // remove duplicate
 
 const uniqueArray = Object.values(searchData.reduce((acc, obj) => {
-  acc[obj._id] = obj;
+  acc[obj.title] = obj;
   return acc;
 }, {}));
 
@@ -279,7 +279,7 @@ searchData.push({_id:result._id,title:matchingKeywords[index]})
 // remove duplicate
 
 const uniqueArray = Object.values(searchData.reduce((acc, obj) => {
-  acc[obj._id] = obj;
+  acc[obj.title] = obj;
   return acc;
 }, {}));
 
