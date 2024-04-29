@@ -30,12 +30,30 @@ export default function Header() {
   const [imageEnable, setImageEnable] = useState(false);
   const [imagePath, setImagePath] = useState("");
 const [showNotification,setShowNotification]=useState(false);
+const[notificationData,setNotificationData]=useState([]);
+
+
+
+  // fetch notification data
+  const fetchNotificationData=async()=>{
+    if(session.data!=null){
+    let fetchNotification=await fetch(`/api/notification?userActiveEmail=${session.data.user.email}`)
+
+    let res=await fetchNotification.json();
+    if(fetchNotification.status==200){
+  
+      setNotificationData(res.data)
+    }
+    }
+
+  }
+
   useEffect(() => {
     if (session.data != undefined) {
       if (session.data.user.image != undefined) {
       
         dispatch(clientLoginState(true));
-
+        fetchNotificationData();
         setImageEnable(true);
         dispatch(
           setClientData({
@@ -56,6 +74,9 @@ const [showNotification,setShowNotification]=useState(false);
     setImagePath(clientLoginInfo.image);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
+
+
+
   return (
     <div className={style.Header} style={(pathname==="/commentstopost")?{zIndex:-1}:{zIndex:999}}>
       {/* logo */}
@@ -100,7 +121,7 @@ const [showNotification,setShowNotification]=useState(false);
         </div></Link>
       </div>
       <div className={style.notification} title="Check Notification">
-        <div className={style.dot}></div>
+        {(notificationData.length!=0)?<div className={style.dot}></div>:""}
         <FontAwesomeIcon icon={faBell} className={style.notification_icon} onClick={()=>setShowNotification(!showNotification)}/>
 
 
@@ -129,31 +150,45 @@ const [showNotification,setShowNotification]=useState(false);
 
 {/* show notification  */}
       {(showNotification)?<>
-
-                 {/* suggestion */}
- <div className={style.arrow_up}></div>
-         <div className={style.notifSuggestion}>
+    {/* suggestion */}
+    <div className={style.arrow_up}></div>
+    <div className={style.notifSuggestion}>
 <div className={style.topNotifi}>
-Notification <span>3</span>
+Notification <span>{notificationData.length}</span>
 </div>
+        {(notificationData.length!=0)?<>
 
+                      
 {/* post */}
 <div className={style.notiPost}>
-
+    {notificationData.map((item)=>{
+   
+      return <Link href={`http://localhost:3000/commentstopost?post=${item.postId}`}  key={item.postId}>
 <div className={style.post1}>
 <div className={style.profileUser}>
-<Image src={"/profile.webp"} alt="profiile" className={style.profileUserImage}layout="fill"/>
+<Image src={item.ownerImage} alt={item.ownerImage} className={style.profileUserImage}layout="fill"/>
 </div>
 
 <div className={style.descriptions}>
-<b>Saksham </b> posted a new notes on computer science
+<b>{item.ownerName} </b> posted a new notes on {item.postTitle}
 </div>
+</div>
+</Link>
+
+
+    })}
+
 </div>
 
 
 
+        </>:<h1 className={style.NoNotificationFound}>No pending notification at this moment</h1>}
+
 </div>
-</div>
+
+
+
+ 
       </>:""}
 
 

@@ -119,7 +119,11 @@ let sendpostdata=new uploadPosts({
   mainId:uniqueNumber,
   })
   let postJustSendData=await sendpostdata.save();
-// send this to all users who follow them so that they get notified when ever new post is posted
+// send this to all users who follow them so that they get notified when ever new post is posted only, public post
+
+if(visibilityValue=="public"){
+
+
   let notificationSchemaData=new notificationSchema({
     autherId:userActiveId,
     postId:postJustSendData._id,
@@ -132,6 +136,7 @@ let sendpostdata=new uploadPosts({
 
   
   await notificationSchemaData.save();
+}
 }
  
     return NextResponse.json(
