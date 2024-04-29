@@ -16,9 +16,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef,useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { setClientData } from "../redux/slice/ClientLoginInfo";
 import { clientLoginState } from "../redux/slice/ClientLoginState";
 
@@ -31,7 +31,24 @@ export default function Header() {
   const [imagePath, setImagePath] = useState("");
 const [showNotification,setShowNotification]=useState(false);
 const[notificationData,setNotificationData]=useState([]);
+const dropdown = useRef(null);
 
+
+
+//   disable on outside click
+useEffect(() => {
+    
+  // only add the event listener when the dropdown is opened
+  if (!showNotification) return;
+  function handleClick(event) {
+    if (dropdown.current && !dropdown.current.contains(event.target)) {
+      setShowNotification(false);
+    }
+  }
+  window.addEventListener("click", handleClick);
+  // clean up
+  return () => window.removeEventListener("click", handleClick);
+}, [showNotification]);
 
 
   // fetch notification data
@@ -78,7 +95,7 @@ const[notificationData,setNotificationData]=useState([]);
 
 
   return (
-    <div className={style.Header} style={(pathname==="/commentstopost")?{zIndex:-1}:{zIndex:999}}>
+    <div className={style.Header} style={(pathname==="/commentstopost")?{zIndex:-1}:{zIndex:999}} ref={dropdown}>
       {/* logo */}
       <div className={style.logo}>
         <div className={style.image}>
