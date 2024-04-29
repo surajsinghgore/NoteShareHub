@@ -41,6 +41,7 @@ const handleMainSearch=async(e)=>{
   setSearch(e.target.value)
   if(e.target.value==""){
     setShowSearchSuggestion(false);
+    return;
   }else{
 
   let mainSearchRes=await fetch(`/api/mainsearch?search=${e.target.value}`);

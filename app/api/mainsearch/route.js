@@ -6,7 +6,6 @@ export async function GET(req) {
 
     try {
 
-    
 
 
         // without login
@@ -14,6 +13,7 @@ export async function GET(req) {
            
             let searchInput=req.nextUrl.searchParams.get('search').toLowerCase();
             const regex = new RegExp(searchInput, 'i');
+await DbConnection();
     
 // first search for title
 let searchData=[];
@@ -32,7 +32,10 @@ if(titleData.length!=0){
 let keywordData=await uploadPost.find({visibility:"public",keyword:regex}).select("_id title keyword").sort({like:-1}).exec();
 keywordData.forEach((result) => {
     const matchingKeywords = result.keyword.filter((kw) => regex.test(kw));  
-    searchData.push({_id:result._id,title:matchingKeywords})
+   for (let index = 0; index < matchingKeywords.length; index++) {
+  searchData.push({_id:result._id,title:matchingKeywords[index]})
+    
+   }
   });
 
 
