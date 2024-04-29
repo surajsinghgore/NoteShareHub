@@ -56,7 +56,7 @@ if((title==undefined)||(keyword==undefined)||(visibility==undefined)||(descripti
 
   }
   let userActiveId=data._id;
-
+let userFollowers=data.follower.length;
   // check all post like title, keywords , description,visibility is equal to post size
   if((files.length!==title.length)||(files.length!==keyword.length)||(files.length!==visibility.length)||(files.length!==description.length)){
     return NextResponse.json(
@@ -121,6 +121,11 @@ let sendpostdata=new uploadPosts({
   let postJustSendData=await sendpostdata.save();
 // send this to all users who follow them so that they get notified when ever new post is posted only, public post
 
+
+// if o followers then no need to send notification
+if(userFollowers!=0){
+
+
 if(visibilityValue=="public"){
 
 
@@ -137,6 +142,8 @@ if(visibilityValue=="public"){
   
   await notificationSchemaData.save();
 }
+}
+
 }
  
     return NextResponse.json(

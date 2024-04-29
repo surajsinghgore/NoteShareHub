@@ -361,7 +361,7 @@ data.append("userActiveEmail",userActiveEmail)
 setTimeout(()=>{
 
 
-  push('/');
+  push(`/user/${userActiveEmail}`);
 },1500)
  
    }
