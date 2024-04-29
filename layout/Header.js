@@ -29,7 +29,7 @@ export default function Header() {
   const session = useSession();
   const [imageEnable, setImageEnable] = useState(false);
   const [imagePath, setImagePath] = useState("");
-
+const [showNotification,setShowNotification]=useState(false);
   useEffect(() => {
     if (session.data != undefined) {
       if (session.data.user.image != undefined) {
@@ -101,7 +101,7 @@ export default function Header() {
       </div>
       <div className={style.notification} title="Check Notification">
         <div className={style.dot}></div>
-        <FontAwesomeIcon icon={faBell} className={style.notification_icon} />
+        <FontAwesomeIcon icon={faBell} className={style.notification_icon} onClick={()=>setShowNotification(!showNotification)}/>
 
 
 
@@ -127,8 +127,11 @@ export default function Header() {
       </div>
 
 
-         {/* suggestion */}
-         <div className={style.arrow_up}></div>
+{/* show notification  */}
+      {(showNotification)?<>
+
+                 {/* suggestion */}
+ <div className={style.arrow_up}></div>
          <div className={style.notifSuggestion}>
 <div className={style.topNotifi}>
 Notification <span>3</span>
@@ -151,6 +154,11 @@ Notification <span>3</span>
 
 </div>
 </div>
+      </>:""}
+
+
+
+
     </div>
   );
 }
