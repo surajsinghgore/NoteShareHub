@@ -10,8 +10,8 @@ faNewspaper
 export default function LeftSideMenu() {
     const pathname = usePathname()
   return (
-//    <div className={style.leftSideMenu} style={{zIndex:-1}}>
-   <div className={style.leftSideMenu} style={(pathname==="/savednotes"||pathname==="/commentstopost"||pathname.includes("/user/"))?{zIndex:-1}:{zIndex:999}}> 
+
+   <div className={style.leftSideMenu} style={(pathname==="/savednotes"||pathname==="/commentstopost"||pathname.includes("/user/")||(pathname.includes("/search")))?{zIndex:-1}:{zIndex:999}}> 
       <div className={style.links_container}>
 
 

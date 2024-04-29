@@ -32,9 +32,29 @@ export default function Header() {
 const [showNotification,setShowNotification]=useState(false);
 const[notificationData,setNotificationData]=useState([]);
 const dropdown = useRef(null);
+const[showSearchSuggestion,setShowSearchSuggestion]=useState(false);
+const [search,setSearch]=useState("");
+const [searchData,setSearchData]=useState([]);
+
+// main search bar logic
+const handleMainSearch=async(e)=>{
+  setSearch(e.target.value)
+  if(e.target.value==""){
+    setShowSearchSuggestion(false);
+  }else{
+
+  let mainSearchRes=await fetch(`/api/mainsearch?search=${e.target.value}`);
+    
+    setShowSearchSuggestion(true);
+let res=await mainSearchRes.json();
+
+if(mainSearchRes.status=="200"){
+  setSearchData(res.data);
+}
 
 
-
+  }
+}
 //   disable on outside click
 useEffect(() => {
     
@@ -133,9 +153,29 @@ const deleteNotificationOnClick=async(postId)=>{
           type="search"
           name="search"
           id="search"
+          value={search}
+          onChange={(e)=>handleMainSearch(e)}
           placeholder="Start Search Topic For Handwritten Note"
         />
+        {(showSearchSuggestion)?<>
+{/* search bar suggestion */}
+<div className={style.searchMainSuggestion}>
+{(searchData.length!=0)?<>
+{searchData.map((item,index)=>{
+return <Link href="" key={index}><li>{item.title}</li></Link>
+})}
+
+</>:<h2>No Data Found</h2>}
+
+
+
+</div>
+
+        </>:""}
+
       </div>
+
+
 
       {/* small menu  */}
       <div className={style.menu}>
