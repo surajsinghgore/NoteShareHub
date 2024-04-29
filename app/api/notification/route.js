@@ -54,8 +54,7 @@ let findPostData=await uploadPosts.findById(findPendingNotes[index].postId).sele
 
 
         dataOfNotification.push({ownerName:postOwnerData.name,ownerId:postOwnerData._id,ownerImage:postOwnerData.image,email:postOwnerData.email,postId:findPostData._id,postTitle:findPostData.title})
-        console.log({ownerId:postOwnerData._id,ownerImage:postOwnerData.image,email:postOwnerData,postId:findPostData._id,postTitle:findPostData.title})
-    
+     
 
   
 }
@@ -84,4 +83,95 @@ let findPostData=await uploadPosts.findById(findPendingNotes[index].postId).sele
     
 }
 
+}
+
+
+// delete userNotification
+export async function DELETE(req,res){
+    
+    try {
+
+      
+  let postId=req.nextUrl.searchParams.get('postId')
+  let userEmail=req.nextUrl.searchParams.get('userEmail')
+
+    if(postId==undefined){
+        return NextResponse.json(
+            {
+              message:"Please Provide Id Of Post"
+            },
+            {
+              status: 400,
+            }
+          );  
+    }
+    if(userEmail==undefined){
+        return NextResponse.json(
+            {
+              message:"Please Login Again"
+            },
+            {
+              status: 400,
+            }
+          );  
+    }
+    await DbConnection();
+    // get user Id
+let userData=await clientPersonalData.findOne({email:userEmail})
+if(userData==null){
+    return NextResponse.json(
+        {
+          message:"Please Login Again"
+        },
+        {
+          status: 400,
+        }
+      );  
+}
+let userActiveId=userData._id;
+
+    // fetch post in notification
+let notificationData=await showNotification.findOne({postId,"followerWhoNotSeenThePost.userId":userActiveId})
+if(notificationData==null){
+    return NextResponse.json(
+        {
+          message:"Notification Not Found"
+        },
+        {
+          status: 404,
+        }
+      );  
+}
+await showNotification.updateOne(  {postId,"followerWhoNotSeenThePost.userId":userActiveId},
+    { $pull: { followerWhoNotSeenThePost: { userId: userActiveId } } }
+ 
+  );
+
+
+
+// delete full notification from table is all users viewed the profile
+let reCheckNotificationData=await showNotification.findOne({postId})
+if(reCheckNotificationData.followerWhoNotSeenThePost.length==0){
+    await showNotification.findOneAndDelete({postId})
+}
+
+        return NextResponse.json(
+            {
+             message:"Notification Success Removed On Click"
+            },
+            {
+              status: 200,
+            }
+          );
+    } catch (error) {
+        return NextResponse.json(
+            {
+              message: "Internal Server Error",
+            },
+            {
+              status: 500,
+            }
+          );
+        
+    }
 }

@@ -92,7 +92,24 @@ useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
+// delete notification on click to post
+const deleteNotificationOnClick=async(postId)=>{
+  if(session.data!=null){
+    let fetchNotificationDelete=await fetch(`/api/notification?postId=${postId}&userEmail=${session.data.user.email}`,{
+      method:"DELETE",
+    })
 
+    let res=await fetchNotificationDelete.json();
+   
+    if(fetchNotificationDelete.status==200){
+      fetchNotificationData()
+      
+    }
+
+
+
+    }
+}
 
   return (
     <div className={style.Header} style={(pathname==="/commentstopost")?{zIndex:-1}:{zIndex:999}} ref={dropdown}>
@@ -175,13 +192,14 @@ Notification <span>{notificationData.length}</span>
 </div>
         {(notificationData.length!=0)?<>
 
-                      
+                 
 {/* post */}
 <div className={style.notiPost}>
     {notificationData.map((item)=>{
    
-      return <Link href={`http://localhost:3000/commentstopost?post=${item.postId}`}  key={item.postId}>
-<div className={style.post1}>
+      return <Link href={`http://localhost:3000/commentstopost?post=${item.postId}`}  key={item.postId} onClick={()=>deleteNotificationOnClick(item.postId)}>  
+      
+      <div className={style.post1} >
 <div className={style.profileUser}>
 <Image src={item.ownerImage} alt={item.ownerImage} className={style.profileUserImage}layout="fill"/>
 </div>
@@ -190,8 +208,8 @@ Notification <span>{notificationData.length}</span>
 <b>{item.ownerName} </b> posted a new notes on {item.postTitle}
 </div>
 </div>
-</Link>
 
+</Link>
 
     })}
 
