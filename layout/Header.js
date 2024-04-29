@@ -43,7 +43,8 @@ const handleMainSearch=async(e)=>{
     setShowSearchSuggestion(false);
     return;
   }else{
-
+    // without login
+if(session.data==null){
   let mainSearchRes=await fetch(`/api/mainsearch?search=${e.target.value}`);
     
     setShowSearchSuggestion(true);
@@ -53,6 +54,19 @@ if(mainSearchRes.status=="200"){
   setSearchData(res.data);
 }
 
+}
+// with login
+else{
+  let mainSearchRes=await fetch(`/api/mainsearch?search=${e.target.value}&userActive=${session.data.user.email}`);
+    
+  setShowSearchSuggestion(true);
+let res=await mainSearchRes.json();
+
+if(mainSearchRes.status=="200"){
+setSearchData(res.data);
+}
+
+}
 
   }
 }

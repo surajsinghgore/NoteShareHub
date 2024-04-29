@@ -10,7 +10,7 @@ export async function GET(req) {
 
 // search main page
 // search result without login
-if((req.nextUrl.searchParams.get('ItemSearch')!==undefined)&&(req.nextUrl.searchParams.get('userActiveEmail')==undefined)){
+if((req.nextUrl.searchParams.get('ItemSearch')!==null)&&(req.nextUrl.searchParams.get('userActiveEmail')==null)){
   let mainSearch=req.nextUrl.searchParams.get('ItemSearch');
 
   const regex = new RegExp(mainSearch, 'i');
@@ -61,7 +61,7 @@ if((req.nextUrl.searchParams.get('ItemSearch')!==undefined)&&(req.nextUrl.search
   
 
 // search result with login
-if((req.nextUrl.searchParams.get('ItemSearch')!==undefined)&&(req.nextUrl.searchParams.get('userActiveEmail')!=undefined)){
+ if((req.nextUrl.searchParams.get('ItemSearch')!==null)&&(req.nextUrl.searchParams.get('userActiveEmail')!=null)){
 let mainSearch=req.nextUrl.searchParams.get('ItemSearch');
 let userActiveEmail=req.nextUrl.searchParams.get('userActiveEmail');
 const regex = new RegExp(mainSearch, 'i');
@@ -149,7 +149,7 @@ const uniqueArray = Object.values(searchData.reduce((acc, obj) => {
 
 // search bar logic
         // without login
-        if((req.nextUrl.searchParams.get('search')!=undefined)){
+      if((req.nextUrl.searchParams.get('search')!=null)&&(req.nextUrl.searchParams.get('userActive')==null)){
            
             let searchInput=req.nextUrl.searchParams.get('search').toLowerCase();
             const regex = new RegExp(searchInput, 'i');
@@ -157,7 +157,7 @@ await DbConnection();
     
 // first search for title
 let searchData=[];
-let titleData=(await uploadPost.find({visibility:"public",title:regex}).select("title").sort({like:-1}).exec());
+let titleData=(await uploadPost.find({visibility:"public",title:regex}).select("title _id").sort({like:-1}).exec());
 if(titleData.length!=0){
     for (let i = 0; i < titleData.length; i++) {
         searchData.push(titleData[i])
@@ -169,21 +169,27 @@ if(titleData.length!=0){
 
 
 // second search for keyword
-let keywordData=await uploadPost.find({visibility:"public",keyword:regex}).select("title keyword").sort({like:-1}).exec();
+let keywordData=await uploadPost.find({visibility:"public",keyword:regex}).select("title keyword _id").sort({like:-1}).exec();
 keywordData.forEach((result) => {
     const matchingKeywords = result.keyword.filter((kw) => regex.test(kw));  
    for (let index = 0; index < matchingKeywords.length; index++) {
-  searchData.push({title:matchingKeywords[index]})
+  searchData.push({_id:result._id,title:matchingKeywords[index]})
     
    }
   });
 
 
+// remove duplicate
+
+const uniqueArray = Object.values(searchData.reduce((acc, obj) => {
+  acc[obj._id] = obj;
+  return acc;
+}, {}));
 
 
           
             return NextResponse.json(
-                {data:searchData,
+                {data:uniqueArray,
                   message: "success",
                 },
                 {
@@ -191,6 +197,104 @@ keywordData.forEach((result) => {
                 }
               );
           }
+
+// with login
+else if((req.nextUrl.searchParams.get('search')!==null)&&(req.nextUrl.searchParams.get('userActive')!==null)){
+ 
+  let searchInput=req.nextUrl.searchParams.get('search').toLowerCase();
+  let userActiveEmail=req.nextUrl.searchParams.get('userActive').toLowerCase();
+  const regex = new RegExp(searchInput, 'i');
+await DbConnection();
+
+
+let userData=await clientData.findOne({email:userActiveEmail});
+if(userData==null){
+  return NextResponse.json(
+    {data:searchData,
+      message: "Please login again",
+    },
+    {
+      status: 404,
+    }
+  );
+}
+
+let userActiveId=userData._id;
+// first search for title
+let searchData=[];
+
+let titleDataUser=await uploadPost.find({autherId:userActiveId,title:regex}).select("title _id").sort({like:-1}).exec();
+if(titleDataUser.length!=0){
+for (let i = 0; i < titleDataUser.length; i++) {
+searchData.push(titleDataUser[i])
+
+}
+
+}
+
+
+
+// second search for keyword
+let keywordDataUser=await uploadPost.find({autherId:userActiveId,keyword:regex}).select("_id title keyword").sort({like:-1}).exec();
+keywordDataUser.forEach((result) => {
+const matchingKeywords = result.keyword.filter((kw) => regex.test(kw));  
+for (let index = 0; index < matchingKeywords.length; index++) {
+searchData.push({_id:result._id,title:matchingKeywords[index]})
+
+}
+});
+
+
+
+
+
+
+
+
+
+
+let titleData=await uploadPost.find({visibility:"public",title:regex}).select("title _id").sort({like:-1}).exec();
+if(titleData.length!=0){
+for (let i = 0; i < titleData.length; i++) {
+searchData.push(titleData[i])
+
+}
+
+}
+
+
+
+// second search for keyword
+let keywordData=await uploadPost.find({visibility:"public",keyword:regex}).select("title keyword _id").sort({like:-1}).exec();
+keywordData.forEach((result) => {
+const matchingKeywords = result.keyword.filter((kw) => regex.test(kw));  
+for (let index = 0; index < matchingKeywords.length; index++) {
+searchData.push({_id:result._id,title:matchingKeywords[index]})
+
+}
+});
+
+
+
+// remove duplicate
+
+const uniqueArray = Object.values(searchData.reduce((acc, obj) => {
+  acc[obj._id] = obj;
+  return acc;
+}, {}));
+
+
+  return NextResponse.json(
+      {data:uniqueArray,
+        message: "success",
+      },
+      {
+        status: 200,
+      }
+    );
+}
+
+
     } catch (error) {
         console.log(error)
         return NextResponse.json(
