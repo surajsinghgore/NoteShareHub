@@ -87,7 +87,7 @@ if(mainSearchRes.status=="200"){
 else{
     let mainSearchRes=await fetch(`/api/mainsearch?ItemSearch=${param}`);
     let res=await mainSearchRes.json();
-console.log(res)
+
 setLoading(false)
 
     if(mainSearchRes.status=="200"){
