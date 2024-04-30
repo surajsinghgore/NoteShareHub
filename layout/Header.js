@@ -82,7 +82,10 @@ useEffect(() => {
   }
   window.addEventListener("click", handleClick);
   // clean up
-  return () => window.removeEventListener("click", handleClick);
+  if( window.removeEventListener("click", handleClick)!=null){
+    return () => window.removeEventListener("click", handleClick);
+
+  }
 }, [showNotification]);
 
 
@@ -147,7 +150,7 @@ const deleteNotificationOnClick=async(postId)=>{
 }
 useEffect(()=>{
   setShowSearchSuggestion(false)
-  setSearch("");
+ 
 },[pathname])
   return (
     <div className={style.Header} style={(pathname==="/commentstopost")?{zIndex:-1}:{zIndex:999}} ref={dropdown}>

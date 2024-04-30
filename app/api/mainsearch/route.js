@@ -8,9 +8,10 @@ export async function GET(req) {
     try {
 
 
-// search main page
+//! search main page [mainPage Search Result]
 // search result without login
 if((req.nextUrl.searchParams.get('ItemSearch')!==null)&&(req.nextUrl.searchParams.get('userActiveEmail')==null)){
+
   let mainSearch=req.nextUrl.searchParams.get('ItemSearch');
 
   const regex = new RegExp(mainSearch, 'i');
@@ -22,46 +23,55 @@ if((req.nextUrl.searchParams.get('ItemSearch')!==null)&&(req.nextUrl.searchParam
 //  fetch from title
   
   
-    let normalTitleData=(await uploadPost.find({visibility:"public",title:regex}).select("_id title post_media like dislike description").sort({like:-1}).exec());
-  if(normalTitleData.length!=0){
-      for (let i = 0; i < normalTitleData.length; i++) {
+// !fetch from title public 
+let normalTitleData=await uploadPost.find({visibility:"public",title:regex}).select("_id title post_media like dislike dateandtime comments description autherId ").sort({like:-1}).exec();
+if(normalTitleData.length!=0){
+    for (let i = 0; i < normalTitleData.length; i++) {
+  // user data fetch
+  let userDataFetch=await clientData.findById(normalTitleData[i].autherId);
+
+        searchData.push({autherName:userDataFetch.name,autherEmail:userDataFetch.email,autherProfile:userDataFetch.image,_id:normalTitleData[i]._id,post_media:normalTitleData[i].post_media,title:normalTitleData[i].title,like:normalTitleData[i].like,dislike:normalTitleData[i].dislike,description:normalTitleData[i].description,comments:normalTitleData[i].comments,dateandtime:normalTitleData[i].dateandtime})
+    }
+
+}
+
+
+
+// second search for keyword
+let normalKeywordData=await uploadPost.find({visibility:"public",keyword:regex}).select("_id title post_media like dislike description dateandtime comments keyword autherId ").sort({like:-1}).exec();
+normalKeywordData.forEach(async(result) => {
+    const matchingKeywords = result.keyword.filter((kw) => regex.test(kw));  
+   for (let index = 0; index < matchingKeywords.length; index++) {
+  // user data fetch
+  let userDataFetch=await clientData.findById(result.autherId);
+
+        searchData.push({autherName:userDataFetch.name,autherEmail:userDataFetch.email,autherProfile:userDataFetch.image,_id:result._id,post_media:result.post_media,title:matchingKeywords[index],like:result.like,dislike:result.dislike,description:result.description,comments:result.comments,dateandtime:result.dateandtime})
     
-          searchData.push({_id:normalTitleData[i]._id,post_media:normalTitleData[i].post_media,title:normalTitleData[i].title,like:normalTitleData[i].like,dislike:normalTitleData[i].dislike,description:normalTitleData[i].description})
-      }
-  
-  }
-    
-  // second search for keyword
-  let normalKeywordData=await uploadPost.find({visibility:"public",keyword:regex}).select("_id title post_media like dislike description keyword").sort({like:-1}).exec();
-  normalKeywordData.forEach((result) => {
-      const matchingKeywords = result.keyword.filter((kw) => regex.test(kw));  
-     for (let index = 0; index < matchingKeywords.length; index++) {
-    searchData.push({_id:result._id,post_media:result.post_media,title:matchingKeywords[index],like:result.like,dislike:result.dislike,description:result.description})
-      
-     }
-    });
-  
-  // remove duplicate
-  
-  const uniqueArray = Object.values(searchData.reduce((acc, obj) => {
-    acc[obj.title] = obj;
-    return acc;
-  }, {}));
-    return NextResponse.json(
-      {data:uniqueArray,
-        message: "success",
-      },
-      {
-        status: 200,
-      }
-    );
+   }
+  });
+
+// remove duplicate
+
+const uniqueArray = Object.values(searchData.reduce((acc, obj) => {
+  acc[obj.title] = obj;
+  return acc;
+}, {}));
+  return NextResponse.json(
+    {data:uniqueArray,
+      message: "success",
+    },
+    {
+      status: 200,
+    }
+  );
     
   }
   
   
 
-// search result with login
+//! search result with login
  if((req.nextUrl.searchParams.get('ItemSearch')!==null)&&(req.nextUrl.searchParams.get('userActiveEmail')!=null)){
+
 let mainSearch=req.nextUrl.searchParams.get('ItemSearch');
 let userActiveEmail=req.nextUrl.searchParams.get('userActiveEmail');
 const regex = new RegExp(mainSearch, 'i');
@@ -84,33 +94,40 @@ let userActiveId=userData._id;
 // !fetch from user Records first [title]
 // first search for title
 let searchData=[];
-let titleData=await uploadPost.find({autherId:userActiveId,title:regex}).select("_id title post_media like dislike description").exec();
+let titleData=await uploadPost.find({autherId:userActiveId,title:regex}).select("_id title post_media like dislike description dateandtime autherId comments").exec();
 
 if(titleData.length!=0){
-    for (let i = 0; i < titleData.length; i++) {
-        searchData.push(titleData[i])
-        
-    }
+  for (let i = 0; i < titleData.length; i++) {
+    // user data fetch
+    let userDataFetch=await clientData.findById(titleData[i].autherId);
+  
+          searchData.push({autherName:userDataFetch.name,autherEmail:userDataFetch.email,autherProfile:userDataFetch.image,_id:titleData[i]._id,post_media:titleData[i].post_media,title:titleData[i].title,like:titleData[i].like,dislike:titleData[i].dislike,description:titleData[i].description,comments:titleData[i].comments,dateandtime:titleData[i].dateandtime})
+      }
+  
 
 }
 
 // !fetch from user Records first [keyword]
-let keywordData=await uploadPost.find({autherId:userActiveId,keyword:regex}).select("_id title post_media keyword like dislike description").exec();
-keywordData.forEach((result) => {
+let keywordData=await uploadPost.find({autherId:userActiveId,keyword:regex}).select("_id title post_media keyword like dislike dateandtime description autherId comments").exec();
+keywordData.forEach(async(result) => {
     const matchingKeywords = result.keyword.filter((kw) => regex.test(kw));  
    for (let index = 0; index < matchingKeywords.length; index++) {
 
+  // user data fetch
+  let userDataFetch=await clientData.findById(result.autherId);
 
-    searchData.push({_id:result._id,post_media:result.post_media,title:matchingKeywords[index],like:result.like,dislike:result.dislike,description:result.description})
+        searchData.push({autherName:userDataFetch.name,autherEmail:userDataFetch.email,autherProfile:userDataFetch.image,_id:result._id,post_media:result.post_media,title:matchingKeywords[index],like:result.like,dislike:result.dislike,description:result.description,comments:result.comments,dateandtime:result.dateandtime})
    }
   });
 
-
-  let normalTitleData=(await uploadPost.find({visibility:"public",title:regex}).select("_id title post_media like dislike description").sort({like:-1}).exec());
+// !fetch from title public 
+  let normalTitleData=await uploadPost.find({visibility:"public",title:regex}).select("_id title post_media like dislike dateandtime comments description autherId ").sort({like:-1}).exec();
 if(normalTitleData.length!=0){
     for (let i = 0; i < normalTitleData.length; i++) {
-  
-        searchData.push({_id:normalTitleData[i]._id,post_media:normalTitleData[i].post_media,title:normalTitleData[i].title,like:normalTitleData[i].like,dislike:normalTitleData[i].dislike,description:normalTitleData[i].description})
+  // user data fetch
+  let userDataFetch=await clientData.findById(normalTitleData[i].autherId);
+
+        searchData.push({autherName:userDataFetch.name,autherEmail:userDataFetch.email,autherProfile:userDataFetch.image,_id:normalTitleData[i]._id,post_media:normalTitleData[i].post_media,title:normalTitleData[i].title,like:normalTitleData[i].like,dislike:normalTitleData[i].dislike,description:normalTitleData[i].description,comments:normalTitleData[i].comments,dateandtime:normalTitleData[i].dateandtime})
     }
 
 }
@@ -118,11 +135,14 @@ if(normalTitleData.length!=0){
 
 
 // second search for keyword
-let normalKeywordData=await uploadPost.find({visibility:"public",keyword:regex}).select("_id title post_media like dislike description keyword").sort({like:-1}).exec();
-normalKeywordData.forEach((result) => {
+let normalKeywordData=await uploadPost.find({visibility:"public",keyword:regex}).select("_id title post_media like dislike description dateandtime comments keyword autherId ").sort({like:-1}).exec();
+normalKeywordData.forEach(async(result) => {
     const matchingKeywords = result.keyword.filter((kw) => regex.test(kw));  
    for (let index = 0; index < matchingKeywords.length; index++) {
-  searchData.push({_id:result._id,post_media:result.post_media,title:matchingKeywords[index],like:result.like,dislike:result.dislike,description:result.description})
+  // user data fetch
+  let userDataFetch=await clientData.findById(result.autherId);
+
+        searchData.push({autherName:userDataFetch.name,autherEmail:userDataFetch.email,autherProfile:userDataFetch.image,_id:result._id,post_media:result.post_media,title:matchingKeywords[index],like:result.like,dislike:result.dislike,description:result.description,comments:result.comments,dateandtime:result.dateandtime})
     
    }
   });
@@ -147,7 +167,7 @@ const uniqueArray = Object.values(searchData.reduce((acc, obj) => {
 
 
 
-// search bar logic
+//! search bar logic [Only For Search Bar]
         // without login
       if((req.nextUrl.searchParams.get('search')!=null)&&(req.nextUrl.searchParams.get('userActive')==null)){
            
