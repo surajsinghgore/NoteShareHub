@@ -18,6 +18,7 @@ import {
   faThumbsDown,
   faThumbsUp,
   faGlobe,
+  faCloudArrowDown,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   FacebookShareButton,
@@ -349,6 +350,26 @@ useEffect(()=>{
                       </div>
                     </li>
 
+
+                    <li >
+
+                   
+                      <div className={style.hidemenu_icons}>
+                    <Link href={item.post_media} download={item.post_media}>
+                        <FontAwesomeIcon
+                          icon={faCloudArrowDown}
+                          className={style.hidemenu_icon}
+                        />
+                      </Link>
+                      </div>
+                      <div className={style.hidemenu_desc}>
+                    <Link href={item.post_media} download={item.post_media}>
+                  
+                        <h2>Download</h2>
+                        <h3>Download this note</h3>
+                      </Link>
+                      </div>
+                    </li>
                   
                   </div>
                 )}
