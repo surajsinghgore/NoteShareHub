@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import style from './style.module.css'
 import { usePathname } from 'next/navigation'
 import { useSession } from "next-auth/react";
+import SearchPageSkeleton from '../../components/SearchMainPageSkeleton'
 
 import { Toaster, toast } from "sonner";
 import Image from "next/legacy/image";
@@ -55,7 +56,7 @@ const [shareState, setShareState] = useState(false);
 const [currentShareAddress,setCurrentShareAddress]=useState();
 
   const [showAllDescription,setShowAllDescription]=useState(false);
-
+const[loading,setLoading]=useState(true);
     const pathname = usePathname();
     const getParams = useParams();
     const [param,setParam]=useState(decodeURIComponent(getParams.search[1]))
@@ -65,12 +66,14 @@ const[pageData,setPageData]=useState([]);
 
 //   fetch search data to view
 const fetchSearchData=async()=>{
-
+  setLoading(true)
     // with login
     if (session.data != undefined) {
     
         let mainSearchRes=await fetch(`/api/mainsearch?ItemSearch=${param}&userActiveEmail=${session.data.user.email}`);
 let res=await mainSearchRes.json();
+setLoading(false)
+
 if(mainSearchRes.status=="200"){
     setPageData(res.data)       
 
@@ -84,6 +87,8 @@ if(mainSearchRes.status=="200"){
 else{
     let mainSearchRes=await fetch(`/api/mainsearch?ItemSearch=${param}`);
     let res=await mainSearchRes.json();
+console.log(res)
+setLoading(false)
 
     if(mainSearchRes.status=="200"){
       setPageData(res.data)
@@ -315,6 +320,8 @@ useEffect(()=>{
 
     {/*right search menu */}
     <div className={style.rightMenu}>
+
+    
 {/* result */}
 {/* */}
 {(pageData.length!=0)?<>
@@ -509,7 +516,8 @@ useEffect(()=>{
               </div>
             </div>
   }))}
-</>: <h6 className={style.noResultFound}>No Result Found</h6>}
+</>:<>{(loading)?<SearchPageSkeleton number={1}/>: <h6 className={style.noResultFound}>No Result Found</h6>}</>}
+
 
 
 

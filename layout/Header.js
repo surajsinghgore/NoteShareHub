@@ -149,13 +149,16 @@ const deleteNotificationOnClick=async(postId)=>{
     }
 }
 useEffect(()=>{
-  setShowSearchSuggestion(false)
  
+  setShowSearchSuggestion(false)
 },[pathname])
 
 const HandleNotification=(title)=>{
   setShowNotification(false);
-  setSearch(title)
+
+  
+    setSearch("")
+
 }
   return (
     <div className={style.Header} style={(pathname==="/commentstopost")?{zIndex:-1}:{zIndex:999}} ref={dropdown}>
