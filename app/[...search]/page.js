@@ -288,7 +288,7 @@ useEffect(()=>{
       }
   return (
     <div className={style.searchResult}>
-       <Toaster position={style.bottom_center} richColors closeButton />
+       <Toaster position="bottom-center" richColors closeButton />
     {/* left search menu */}
     <div className={style.leftMenu}>
 <h2>Search Results</h2>

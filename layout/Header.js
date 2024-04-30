@@ -152,6 +152,11 @@ useEffect(()=>{
   setShowSearchSuggestion(false)
  
 },[pathname])
+
+const HandleNotification=(title)=>{
+  setShowNotification(false);
+  setSearch(title)
+}
   return (
     <div className={style.Header} style={(pathname==="/commentstopost")?{zIndex:-1}:{zIndex:999}} ref={dropdown}>
       {/* logo */}
@@ -183,7 +188,7 @@ useEffect(()=>{
 <div className={style.searchMainSuggestion}>
 {(searchData.length!=0)?<>
 {searchData.map((item,index)=>{
-return <Link href={`/search/${item.title}`} key={index} ><li onClick={()=>setShowNotification(false)}>{item.title}</li></Link>
+return <Link href={`/search/${item.title}`} key={index} ><li onClick={()=>HandleNotification(item.title)}>{item.title}</li></Link>
 })}
 
 </>:<h2>No Data Found</h2>}
