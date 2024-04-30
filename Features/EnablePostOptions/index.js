@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBookmark,
+  faCloudArrowDown,
   faComment,
   faEllipsis,
   faShareNodes,
@@ -259,6 +260,26 @@ if(savedNotes.status=="200"){
                       </div>
                     </li>
 
+
+                    <li onClick={()=>savedNotes(Data.postData._id)}>
+                      <div className="hidemenu_icons">
+                    <Link href={Data.postData.post_media} download={Data.postData.post_media}>
+
+                      <FontAwesomeIcon
+                          icon={faCloudArrowDown}
+                          className="hidemenu_icon"
+                        />
+                        </Link>
+                      </div>
+                      <div className="hidemenu_desc">
+                    <Link href={Data.postData.post_media} download={Data.postData.post_media}>
+
+                      <h2>Download</h2>
+                        <h3>Download this note</h3>
+                        </Link>
+                      </div>
+                    </li>
+                   
                   
                   </div>
                 )}
