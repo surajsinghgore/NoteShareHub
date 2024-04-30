@@ -23,6 +23,7 @@ import {
   faThumbsDown,
   faThumbsUp,
   faLocationArrow,
+  faCloudArrowDown,
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/legacy/image";
 import { useState, useEffect, useRef } from "react";
@@ -349,6 +350,26 @@ if(fetchSinglePost.status == "200"){
                             </div>
                           </li>
 
+
+                      
+                          <li >
+                            <div className={style.hidemenu_icons}>
+                    <Link href={data.post_media} download={data.post_media}>
+
+                              <FontAwesomeIcon
+                                icon={faCloudArrowDown}
+                                className={style.hidemenu_icon}
+                              />
+                              </Link>
+                            </div>
+                            <div className={style.hidemenu_desc}>
+                    <Link href={data.post_media} download={data.post_media}>
+
+                              <h2>Save Note</h2>
+                              <h3>Add this to your saved notes</h3>
+                              </Link>
+                            </div>
+                          </li>
                         </div>
                       )}
 
