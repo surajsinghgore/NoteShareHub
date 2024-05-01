@@ -1,4 +1,5 @@
 "use client";
+
 import { useSession } from "next-auth/react";
 import style from './users.module.css'
 import { useParams } from 'next/navigation';
@@ -32,6 +33,7 @@ export default function Page() {
   const session = useSession();
   const loginState = useSelector((state) => state.clientLoginState);
   const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
+  const DeletePostReload = useSelector((state) => state.DeletePostReload);
     const getParams = useParams();
     const [param,setParam]=useState(decodeURIComponent(getParams.user[0]))
  const [postData,setPostData]=useState([])
@@ -95,8 +97,9 @@ if(res.unfollow){
 }
 
 useEffect(()=>{
+ 
   fetchUserData();
-},[])
+},[DeletePostReload])
 
 useEffect(() => {
   if (session.data != undefined) {
@@ -348,6 +351,7 @@ const unFollowUserBtn=async(usertowhofollow)=>{
   }
   return (
    <>
+
       <Toaster position="bottom-center" richColors closeButton />
 
    {(userData.length!=0)?<>

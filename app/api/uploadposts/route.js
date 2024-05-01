@@ -16,6 +16,113 @@ cloudinary.v2.config({
 
 
 
+// delete post
+export async function DELETE(req){
+
+try {
+
+  if(req.nextUrl.searchParams.get('id')==undefined){ return NextResponse.json(
+    {
+      message: "Please Provide Id To DELETE",
+    },
+    {
+      status: 400,
+    }
+  );}
+  if(req.nextUrl.searchParams.get('activeUser')==undefined){
+    return NextResponse.json(
+      {
+        message: "Please Login ",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+
+let userActiveEmail=req.nextUrl.searchParams.get('activeUser');
+let NoteIdToDelete=req.nextUrl.searchParams.get('id');
+
+  // fetch user data
+  let userActiveData=await clientPersonalData.findOne({email:userActiveEmail});
+  if(userActiveData==null){
+
+    return NextResponse.json(
+      {
+        message: "Please Login With Valid Account",
+      },
+      {
+        status: 404,
+      }
+    );
+  }
+
+let userActiveId=userActiveData._id.toString();
+
+
+// fetch post data
+let postData=await uploadPosts.findById(NoteIdToDelete);
+if(postData==null){
+  return NextResponse.json(
+    {
+      message: "Note Not Found TO DELETE",
+    },
+    {
+      status: 404,
+    }
+  );
+}
+
+const noteMedia = postData.post_media.match(/\/([^\/?#]+)\.\w+$/)[1];;
+
+
+
+// check weather owner of post or not
+console.log(postData.autherId,userActiveId,postData.autherId==userActiveId)
+if(postData.autherId!=userActiveId){
+  return NextResponse.json(
+    {
+      message: "You Are Not OWNER OF THE POST",
+    },
+    {
+      status: 404,
+    }
+  );
+}
+  let res= await cloudinary.uploader.destroy(noteMedia);
+
+
+await uploadPosts.findByIdAndDelete(NoteIdToDelete)
+// also delete notification of post if left
+let notificationData=await notificationSchema.findOne({autherId:userActiveId,postId:postData._id});
+
+
+await notificationSchema.findByIdAndDelete(notificationData._id)
+return NextResponse.json(
+  {
+    message: "Note Successfully Deleted",
+  },
+  {
+    status: 200,
+  }
+);
+
+
+} catch (error) {
+  console.log(error)
+  return NextResponse.json(
+    {
+      message: "Internal Server Error",
+    },
+    {
+      status: 500,
+    }
+  );
+}
+
+}
+
+
 
 
 // post data to server
