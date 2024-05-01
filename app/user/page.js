@@ -1,7 +1,10 @@
 "use client";
 import { signOut } from "next-auth/react";
-import { useDispatch } from "react-redux";
+import { useSession } from "next-auth/react";
+import { useDispatch,useSelector } from "react-redux";
 import style from "./user.module.css";
+import { notificationState } from "../../redux/slice/NotificationStatus";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -22,6 +25,8 @@ import Link from "next/link";
 export default function Page() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const session = useSession();
+  const notificationStates = useSelector((state) => state.notificationState);
 
   const logOut = async () => {
     localStorage.removeItem("clientLogin");
@@ -38,6 +43,17 @@ export default function Page() {
       router.push("/");
     });
   };
+
+
+  const showNotification=()=>{
+    if(notificationStates.state){
+      dispatch(notificationState(false));
+
+  }else{
+      dispatch(notificationState(true));
+
+  }
+  }
   return (
     <ClientLoginVerify >
     <div className={style.user_panel}>
@@ -60,19 +76,22 @@ export default function Page() {
           </div>
           </Link>
 
+            <Link href="/savednotes">
           <div className={`${style.link} ${style.lastLink}`}>
             <div className={`${style.icon} ${style.bookMark}`}>
               <FontAwesomeIcon icon={faBookmark} className={style.menu_icon} />
             </div>
 
-            <div className={style.title}>Bookmark Notes</div>
+            <div className={style.title}>Bookmark Notes</div> 
             <FontAwesomeIcon icon={faAngleRight} className={style.right} />
           </div>
+          </Link>
         </div>
 
         {/* post related */}
         <div className={style.links}>
           <h2>Activity</h2>
+          <Link href={(session.data!=null)?`/user/${session.data.user.email}`:"/login"}>
           <div className={style.link}>
             <div className={`${style.icon} ${style.myPost}`}>
               <FontAwesomeIcon
@@ -84,21 +103,15 @@ export default function Page() {
             <div className={style.title}>My Post</div>
             <FontAwesomeIcon icon={faAngleRight} className={style.right} />
           </div>
+          </Link>
 
-          <div className={`${style.link} ${style.lastLink}`}>
-            <div className={`${style.icon} ${style.logout}`}>
-              <FontAwesomeIcon icon={faIdCard} className={style.menu_icon} />
-            </div>
-
-            <div className={style.title}>Followed Accounts</div>
-            <FontAwesomeIcon icon={faAngleRight} className={style.right} />
-          </div>
+      
         </div>
 
         {/* other services */}
         <div className={style.links}>
           <h2>Other</h2>
-          <div className={style.link}>
+          <div className={style.link} onClick={()=>showNotification()}>
             <div className={`${style.icon} ${style.notification}`}>
               <FontAwesomeIcon icon={faBell} className={style.menu_icon} />
             </div>
