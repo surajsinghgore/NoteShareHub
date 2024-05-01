@@ -72,9 +72,8 @@ margin-bottom: 5%;
 }
 
 .leftSideMenu .links_container .section .links .link_card .icon{
-    width: 
-    auto;
-    height: auto;
+    width: 2.9vw;
+    height: 2.9vw;
     border-radius: 50px;
     text-align: center;
     background-color: red;

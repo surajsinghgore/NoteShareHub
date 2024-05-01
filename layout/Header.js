@@ -25,6 +25,7 @@ import { clientLoginState } from "../redux/slice/ClientLoginState";
 export default function Header() {
   const dispatch = useDispatch();
   const clientLoginInfo = useSelector((state) => state.clientLoginInfo);
+  const notificationState = useSelector((state) => state.notificationState);
   const pathname = usePathname()
   const session = useSession();
   const [imageEnable, setImageEnable] = useState(false);
@@ -89,6 +90,14 @@ useEffect(() => {
 }, [showNotification]);
 
 
+
+useEffect(() => {
+   
+  if(notificationState.state){
+
+    setShowNotification(true)
+  }
+}, [notificationState]);
   // fetch notification data
   const fetchNotificationData=async()=>{
     if(session.data!=null){
@@ -266,7 +275,7 @@ Notification <span>{notificationData.length}</span>
 <div className={style.notiPost}>
     {notificationData.map((item)=>{
    
-      return <Link href={`http://localhost:3000/commentstopost?post=${item.postId}`}  key={item.postId} onClick={()=>deleteNotificationOnClick(item.postId)}>  
+      return <Link href={`${process.env.NEXT_PUBLIC_WEBSITE_DOMAIN}/commentstopost?post=${item.postId}`}  key={item.postId} onClick={()=>deleteNotificationOnClick(item.postId)}>  
       
       <div className={style.post1} >
 <div className={style.profileUser}>
