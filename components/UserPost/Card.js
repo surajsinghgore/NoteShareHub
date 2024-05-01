@@ -10,10 +10,13 @@ import { DeletePostReload } from "../../redux/slice/DeletePostReload";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faBook,
+  faClose,
   faCloudArrowDown,
   faComment,
  faEllipsisVertical,
  faGear,
+ 
+ faPaperPlane,
  
  faPenSquare,
  
@@ -27,7 +30,7 @@ export default function Card(props) {
     const session = useSession();
     const DeletePostReloads = useSelector((state) => state.DeletePostReload);
     const [progress, setProgress] = useState(100);
-
+const [updateModal,setUpdateModal]=useState(false);
     const [menuOption,setMenuOption]=useState(false);
     const { item } = props;
     const dispatch = useDispatch();
@@ -55,7 +58,9 @@ export default function Card(props) {
 
 
 
-
+const updateNotePost=async(id)=>{
+    setUpdateModal(true);
+}
   const deleteNotePost=async(id)=>{
      setProgress(30)
 if(id==undefined||id==null){
@@ -102,7 +107,129 @@ toast.success(res.message);
 
   }
   return (
-    <div className={style.post} key={item._id} ref={dropdown}>
+    <>
+
+   {(updateModal)?<></>:""}
+
+<div className={style.updateModelBg}>
+</div>
+<div className={style.updateForm}>
+<div className={style.closeBtn}>
+<FontAwesomeIcon
+title="Close Update Form"
+                          icon={faClose}
+                          className={style.close}
+                        />
+</div>
+<h2>Update Post</h2>
+<div className={style.mainForm}>
+
+
+{/* left */}
+<div className={style.left}>
+
+                                <div className={style.post_info}>
+                                  <li>
+                                    <div className={style.title}>Title</div>
+                                    <div className={style.input}>
+                                      <input
+                                        type="text"
+                                        placeholder="Enter Title Of This Post"
+                                    
+                                      />
+                                    </div>
+                                  </li>
+
+                                  <li>
+                                    <div className={style.title}>
+                                      Enter Keywords
+                                    </div>
+                                    <div className={style.input}>
+                                      <input
+                                        type="text"
+                                       
+                                        placeholder="Enter Keywords Of This Post like web,android,iot"
+                                      />
+                                    </div>
+                                  </li>
+
+                                  <li>
+                                    <div className={style.title}>
+                                      Post Visibility
+                                    </div>
+                                    <div className={style.input}>
+                                      <select
+                                        name="visibility"
+                                       
+                                      >
+                                        <option>public</option>
+                                        <option>private</option>
+                                      </select>
+                                    </div>
+                                  </li>
+
+                                  <li>
+                                    <div className={style.title}>
+                                      Post Description
+                                    </div>
+                                    <div className={style.input}>
+                                      <textarea
+                                        name="description"
+                                        
+                                        
+                                        placeholder="Describe The Post In Detail"
+                                      ></textarea>
+                                    </div>
+                                  </li>
+                                </div>
+                          
+
+
+</div>
+
+
+{/* right */}
+<div className={style.right}>
+<div className={style.title}>
+                                  Selected Media
+                                </div>
+                                <div className={style.mediaImages}>
+                                  <Image
+                                    src="/note.jpg"
+                                    alt="media"
+                                    layout="fill"
+                                    priority
+                                  />
+                                </div>
+                                <div className={style.imageMediaDes}>
+                                  <h2>Filename</h2>
+                                  <p>3232312131</p>
+                                </div>
+
+</div>
+</div>
+{/* btn */}
+<div className={style.uploadBtn}>
+                      <button >
+                        <FontAwesomeIcon
+                          icon={faPaperPlane}
+                          title="Discard this post"
+                          className={style.postMedia}
+                        />{" "}
+                        Update Note
+                      </button>
+                    </div>
+
+</div>
+
+
+
+
+
+
+
+
+    {/* <div className={style.post} key={item._id} ref={dropdown}>
    <LoadingBar
         color="#242c3f"
         progress={progress}
@@ -125,7 +252,7 @@ toast.success(res.message);
                     </li>
 
                     <li >
-                      <div className={style.hidemenu_icons}>
+                      <div className={style.hidemenu_icons} onClick={()=>updateNotePost(item._id)}>
                         <FontAwesomeIcon
                           icon={faTrash}
                           className={style.hidemenu_icon}
@@ -148,6 +275,7 @@ toast.success(res.message);
     </Link>
     
   
-    </div>
+    </div> */}
+    </>
   )
 }
