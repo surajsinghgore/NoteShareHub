@@ -61,6 +61,11 @@ const [updateModal,setUpdateModal]=useState(false);
 const updateNotePost=async(id)=>{
     setUpdateModal(true);
 }
+
+const closeUpdateForm=()=>{
+    setUpdateModal(false);
+
+}
   const deleteNotePost=async(id)=>{
      setProgress(30)
 if(id==undefined||id==null){
@@ -108,13 +113,18 @@ toast.success(res.message);
   }
   return (
     <>
-
-   {(updateModal)?<></>:""}
-
-<div className={style.updateModelBg}>
+<LoadingBar
+        color="#242c3f"
+        progress={progress}
+      
+        height={6}
+      />
+   {(updateModal)?<>
+{/* update view */}
+    <div className={style.updateModelBg}>
 </div>
 <div className={style.updateForm}>
-<div className={style.closeBtn}>
+<div className={style.closeBtn} onClick={()=>closeUpdateForm()}>
 <FontAwesomeIcon
 title="Close Update Form"
                           icon={faClose}
@@ -222,30 +232,21 @@ title="Close Update Form"
 
 </div>
 
-
-
-
-
-
-
-
-    {/* <div className={style.post} key={item._id} ref={dropdown}>
-   <LoadingBar
-        color="#242c3f"
-        progress={progress}
-      
-        height={6}
-      />
+   </>:
+   <>
+   {/* normal view */}
+   <div className={style.post} key={item._id} ref={dropdown}>
+   
 <FontAwesomeIcon icon={faEllipsisVertical} className={style.mainSetting} onClick={()=>handleMainMenu()}/>
 {(menuOption&&<div className={style.menuOpen}>
-<li >
+<li onClick={()=>updateNotePost(item._id)}>
                       <div className={style.hidemenu_icons}>
                         <FontAwesomeIcon
                           icon={faPenSquare}
                           className={style.hidemenu_icon}
                         />
                       </div>
-                      <div className={style.hidemenu_desc}>
+                      <div className={style.hidemenu_desc} >
                         <h2>Edit Note</h2>
                         <h3>Edit this  note</h3>
                       </div>
@@ -275,7 +276,18 @@ title="Close Update Form"
     </Link>
     
   
-    </div> */}
+    </div>
+   </>}
+
+
+
+
+
+
+
+
+
+   
     </>
   )
 }

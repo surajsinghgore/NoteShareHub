@@ -433,7 +433,7 @@ cursor: pointer;
     position: absolute;
     top:0;
     right:0;
-z-index: 9;
+z-index: 1;
 color: white;
 font-size: 1.3vw;
     border: 2px solid rgb(70, 70, 70);
@@ -514,20 +514,23 @@ background-color: rgb(31, 133, 249);
 
   /* updateModel */
   .updateModelBg{
-    position: absolute;
+
+
+    position: fixed;
+z-index: 1;
     top: 0;
     left: 0;
     width: 100%;
-opacity: 0.2;
+opacity: 0.7;
     height: 47.7vw;
     background-color: rgb(214, 214, 214);
   }
 
   .updateForm{
-    position: absolute;
+    position: fixed;
     top: 14%;
     left:20%;
-    width: 60%;
+    width: 60%;z-index: 12;
     height: 39vw;
     border: 2px solid rgb(224, 224, 224);
     z-index: 9;
@@ -545,7 +548,7 @@ opacity: 0.2;
     background-color: red;
     width: 3vw;
     height: 3vw;
-    font-size: 1.8vw;
+    font-size: 1.8vw;z-index: 12;
   }
   .updateForm .closeBtn:hover{
     box-shadow: 8px 5px 22px 2px rgb(174, 174, 174);
@@ -559,12 +562,12 @@ opacity: 0.2;
   }
   .updateForm .mainForm{
     display: flex;
-width: 100%;
+width: 100%;z-index: 12;
 margin-top: -3%;
   }
 
   .updateForm .left{
-      width: 55%;
+      width: 55%;z-index: 12;
     }
 
      .updateForm .left .post_info{
