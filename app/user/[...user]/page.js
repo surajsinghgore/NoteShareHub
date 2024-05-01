@@ -4,6 +4,7 @@ import style from './users.module.css'
 import { useParams } from 'next/navigation';
 import { useSelector,useDispatch } from "react-redux";
 import { Toaster, toast } from "sonner";
+import Card from "../../../components/UserPost/Card";
 
 import { setClientData } from "../../../redux/slice/ClientLoginInfo";
 import { clientLoginState } from "../../../redux/slice/ClientLoginState";
@@ -38,8 +39,8 @@ export default function Page() {
 const[unFollowStatus,setUnFollowStatus]=useState(false);
   const dispatch = useDispatch();
   const [search,setSearch]=useState("")
-
-//  fetching user data
+const[menuOption,setMenuOption]=useState(false);
+  //  fetching user data
 const fetchUserData=async()=>{
  
   // if user not login ,means normal user search
@@ -100,8 +101,15 @@ useEffect(()=>{
 useEffect(() => {
   if (session.data != undefined) {
     if (session.data.user.image != undefined) {
-    
-      dispatch(clientLoginState(true));
+     if(param==session.data.user.email){
+
+       setMenuOption(true)
+     }else{
+      setMenuOption(true)
+
+
+     }
+      dispatch(clientLoginState(false));
    
       
       dispatch(
@@ -331,6 +339,13 @@ const unFollowUserBtn=async(usertowhofollow)=>{
   
   }
   }
+
+  const sendMessage=()=>{
+    
+    toast.message('Message To User', {
+      description: 'coming soon',
+    })
+  }
   return (
    <>
       <Toaster position="bottom-center" richColors closeButton />
@@ -355,7 +370,7 @@ const unFollowUserBtn=async(usertowhofollow)=>{
 
 {(unFollowStatus)?<button className={style.followBtn} onClick={()=>unFollowUser()}>Unfollow</button>:<button className={style.followBtn} onClick={()=>followUser()}>Follow</button>}
 
-<button className={style.MessageBtn}>Message</button>
+<button className={style.MessageBtn} onClick={()=>sendMessage()}>Message</button>
 
 {(loginState.state)?
 <>{(clientLoginInfo.email==param)?<div className={style.settingIcon} title="Open Setting">
@@ -467,9 +482,32 @@ const unFollowUserBtn=async(usertowhofollow)=>{
 </div>
 
 <div className={style.postSections}>
-{(postData.length!=0)?<>
 
-  {postData.map((item)=>{
+
+
+{(postData.length!=0)?<>
+{/*  edit btn enable */}
+{/* <Link href={`/commentstopost?post=${item._id}`} key={item._id}> */}
+{(menuOption)?<>
+{/* with edit btn */}
+{postData.map((item)=>{
+    return  <Card item={item} key={item._id} />
+
+  })}
+
+
+
+
+
+
+
+
+
+</>:
+
+<>
+{/* without edit btn */}
+{postData.map((item)=>{
     return  <Link href={`/commentstopost?post=${item._id}`} key={item._id}>
 <div className={style.post}>
 
@@ -506,6 +544,8 @@ const unFollowUserBtn=async(usertowhofollow)=>{
 </div></Link>
 
   })}
+</>}
+
 </>:<div className={style.noDataFound}>No Notes Found</div>}
 
 
