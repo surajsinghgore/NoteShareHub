@@ -73,7 +73,7 @@ if(postData==null){
   );
 }
 
-const noteMedia = postData.post_media.match(/\/([^\/?#]+)\.\w+$/)[1];;
+const noteMedia = postData.post_media.match(/\/([^\/?#]+)\.\w+$/)[1];
 
 
 

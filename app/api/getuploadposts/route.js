@@ -14,7 +14,7 @@ if(req.nextUrl.searchParams.get('post')!=undefined){
   let postId=req.nextUrl.searchParams.get('post')
 
 
-  let data=await uploadPosts.findById(postId).select("-createdAt -updatedAt -keyword").sort({ dateandtime: -1 });
+  let data=await uploadPosts.findById(postId).select("-createdAt -updatedAt").sort({ dateandtime: -1 });
   
   if(data==null){
     return NextResponse.json(

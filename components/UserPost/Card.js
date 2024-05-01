@@ -13,6 +13,7 @@ import {
   faClose,
   faCloudArrowDown,
   faComment,
+ faEdit,
  faEllipsisVertical,
  faGear,
  
@@ -26,11 +27,24 @@ import {
 import { useState ,useRef,useEffect} from "react";
 import Link from "next/link";
 export default function Card(props) {
+  // data
+  
+  const [title, setTitle] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const [visibility, setVisibility] = useState("");
+  const [description, setDescription] = useState("");
+  const [file, setFile] = useState("");
+  const [fileName, setFileName] = useState("");
+const[fileChangesStatus,setFileChangeStatus]=useState(false);
+
+
     const dropdown = useRef(null);
+    const closeMenuOpen = useRef(null);
     const session = useSession();
     const DeletePostReloads = useSelector((state) => state.DeletePostReload);
     const [progress, setProgress] = useState(100);
-const [updateModal,setUpdateModal]=useState(false);
+    const [updateModal,setUpdateModal]=useState(false);
+
     const [menuOption,setMenuOption]=useState(false);
     const { item } = props;
     const dispatch = useDispatch();
@@ -59,12 +73,27 @@ const [updateModal,setUpdateModal]=useState(false);
 
 
 const updateNotePost=async(id)=>{
+
     setUpdateModal(true);
+    // fetch data
+    let fetchData=await fetch(`/api/getuploadposts?post=${id}`);
+    let data=await fetchData.json();
+    if(fetchData.status=="200"){
+       setTitle(data.data.title);
+       let keywords=data.data.keyword.toString();
+
+     setKeyword(keywords);
+       setVisibility(data.data.visibility);
+     setDescription(data.data.description);
+       setFile(data.data.post_media);
+      setFileName(data.data.post_media.match(/\/([^\/?#]+)\.\w+$/)[1]);
+    }
+  
 }
 
 const closeUpdateForm=()=>{
     setUpdateModal(false);
-
+ 
 }
   const deleteNotePost=async(id)=>{
      setProgress(30)
@@ -111,6 +140,16 @@ if(DeletePostReloads.state){
 toast.success(res.message);
 
   }
+
+  const handleChanges = async (e) => {
+    setFileChangeStatus(true)
+    setFile(URL.createObjectURL(e.target.files[0]));
+setFileName(e.target.files[0].name)
+    // extractTextFromImage(e.target.files);
+  };
+
+
+  const updateRecords=async()=>{}
   return (
     <>
 <LoadingBar
@@ -121,9 +160,9 @@ toast.success(res.message);
       />
    {(updateModal)?<>
 {/* update view */}
-    <div className={style.updateModelBg}>
+    <div className={style.updateModelBg} >
 </div>
-<div className={style.updateForm}>
+<div className={style.updateForm} >
 <div className={style.closeBtn} onClick={()=>closeUpdateForm()}>
 <FontAwesomeIcon
 title="Close Update Form"
@@ -145,7 +184,8 @@ title="Close Update Form"
                                       <input
                                         type="text"
                                         placeholder="Enter Title Of This Post"
-                                    
+                                    value={title}
+                                    onChange={(e)=>setTitle(e.target.value)}
                                       />
                                     </div>
                                   </li>
@@ -157,7 +197,8 @@ title="Close Update Form"
                                     <div className={style.input}>
                                       <input
                                         type="text"
-                                       
+                                        value={keyword}
+                                    onChange={(e)=>setKeyword(e.target.value)}
                                         placeholder="Enter Keywords Of This Post like web,android,iot"
                                       />
                                     </div>
@@ -170,10 +211,14 @@ title="Close Update Form"
                                     <div className={style.input}>
                                       <select
                                         name="visibility"
-                                       
+                                        value={visibility}
+                                    onChange={(e)=>setVisibility(e.target.value)}
+                                    defaultValue={visibility}
                                       >
-                                        <option>public</option>
-                                        <option>private</option>
+                                    
+                                      <option >public</option>
+                                      <option>private</option>
+                                      
                                       </select>
                                     </div>
                                   </li>
@@ -185,7 +230,8 @@ title="Close Update Form"
                                     <div className={style.input}>
                                       <textarea
                                         name="description"
-                                        
+                                        value={description}
+                                    onChange={(e)=>setDescription(e.target.value)}
                                         
                                         placeholder="Describe The Post In Detail"
                                       ></textarea>
@@ -204,23 +250,42 @@ title="Close Update Form"
                                   Selected Media
                                 </div>
                                 <div className={style.mediaImages}>
+                                <div className={style.editDivImage} title="Edit Image" >
+                               
+                          <label className={style.button} htmlFor="upload">
+                          <FontAwesomeIcon
+                          icon={faEdit}
+                          
+                          className={style.editImage}
+                        />
+                          </label>
+                          <input
+                            id="upload"
+                            type="file"
+                            onChange={(e)=>handleChanges(e)}
+                        accept="image/jpg, image/png, image/gif, image/webp,image/jpeg,"
+                          />
+                        
+                        
+                        
+                        </div>
                                   <Image
-                                    src="/note.jpg"
-                                    alt="media"
+                                    src={file}
+                                    alt={file}
                                     layout="fill"
                                     priority
                                   />
                                 </div>
                                 <div className={style.imageMediaDes}>
                                   <h2>Filename</h2>
-                                  <p>3232312131</p>
+                                  <p>{fileName}</p>
                                 </div>
 
 </div>
 </div>
 {/* btn */}
 <div className={style.uploadBtn}>
-                      <button >
+                      <button onClick={()=>updateRecords()}>
                         <FontAwesomeIcon
                           icon={faPaperPlane}
                           title="Discard this post"
