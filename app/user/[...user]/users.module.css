@@ -398,6 +398,7 @@ margin-left: 10px;
 /* for edit btn */
 
 .users .mainUserBody  .userPostSection .postSections .post{
+    user-select: none;
     position: relative;
     width: 30%;
     margin-left:2%;
@@ -408,18 +409,19 @@ margin-left: 10px;
     background-color: rgb(93, 93, 93);
 }
 
-.users .mainUserBody  .userPostSection .postSections a .post{
-    position: relative;
-    width: 100%;
-height: 100%;
-    }
-    
-.users .mainUserBody  .userPostSection .postSections .post .postMedia{
-    position: relative;
-    width: 100%;
- 
-    height: 100%;
 
+.users .mainUserBody  .userPostSection .postSections .post a{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+    margin-left: -0%;
+    display: flex;
+    }  
+.users .mainUserBody  .userPostSection .postSections .post .postMedias{
+    position: relative;
+    width: 100%;
+    height: 100%;
     }
 .users .mainUserBody  .userPostSection .postSections .post:hover{
     box-shadow: 0px 0px 12px 1px rgb(87, 87, 87);
@@ -434,7 +436,8 @@ cursor: pointer;
 z-index: 9;
 color: white;
 font-size: 1.3vw;
-cursor: pointer;
+    border: 2px solid rgb(70, 70, 70);
+    cursor: pointer;
 padding: 3% 5%;
 background-color: rgb(129, 185, 250);
 }
@@ -477,6 +480,11 @@ background-color: rgb(31, 133, 249);
     text-align: center;
     margin-top: 5%;
   }
+  .hidemenu_icons a{
+    background: none;
+    display: block;
+  }
+
   .hidemenu_icon {
     padding-top: 6%;
     font-size: 1.5vw;
@@ -486,6 +494,11 @@ background-color: rgb(31, 133, 249);
   .menuOpen .hidemenu_desc {
     width: 80%;
     margin-top: 4%;
+  }
+
+  .hidemenu_desc a{
+    background: none;
+    display: block;
   }
   .menuOpen .hidemenu_desc h2 {
     font-size: 1vw;

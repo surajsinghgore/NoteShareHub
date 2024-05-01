@@ -67,6 +67,7 @@ const[pageData,setPageData]=useState([]);
 
 //   fetch search data to view
 const fetchSearchData=async()=>{
+  console.log('object')
   setLoading(true)
     // with login
     if (session.data != undefined) {
@@ -76,7 +77,22 @@ let res=await mainSearchRes.json();
 setLoading(false)
 
 if(mainSearchRes.status=="200"){
-    setPageData(res.data)       
+
+
+ 
+ 
+
+ 
+
+
+
+const uniqueArray = Object.values(res.data.reduce((acc, obj) => {
+  acc[obj._id] = obj;
+  return acc;
+}, {}));
+
+setPageData(uniqueArray)      
+       
 
 }
       
@@ -327,8 +343,8 @@ useEffect(()=>{
 {/* */}
 {(pageData.length!=0)?<>
 
-  {(pageData.map((item)=>{
-    return <div className={style.post} ref={dropdown} key={item._id}>
+  {(pageData.map((item,index)=>{
+    return <div className={style.post} ref={dropdown} key={index}>
           
               {/* top section */}
      
