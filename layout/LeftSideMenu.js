@@ -151,15 +151,7 @@ export default function LeftSideMenu() {
         </div>
        
 
-       {/* link 2 */}
-       <div className={style.link_card} onClick={()=>showNotification()}>
-            <div className={style.icon}>
-            <FontAwesomeIcon icon={faEnvelope} className={style.menu_icon} />
-            </div>
-            <div className={style.title}>
-               Query
-            </div>
-        </div>
+    
     </div>
 </div>
 
