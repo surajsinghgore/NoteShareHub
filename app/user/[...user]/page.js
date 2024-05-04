@@ -45,8 +45,38 @@ const[menuOption,setMenuOption]=useState(false);
   //  fetching user data
 const fetchUserData=async()=>{
  
+  if(session.data!=null){
+
+
+// if login
+
+let fetchUserData=await fetch(`/api/userdata?user=${param}&userLogin=${session.data.user.email}`);
+let res=await fetchUserData.json();
+
+if(fetchUserData.status=="500"){
+  toast.error(res.message);
+  return;
+}
+
+if(fetchUserData.status=="404"){
+
+  toast.error(res.message);
+  return;
+ }
+
+if(fetchUserData.status=="200"){
+  setBackupPostData(res.postdata)
+  setPostData(res.postdata)
+  setUserData(res.userdata)
+if(res.unfollow){
+setUnFollowStatus(res.unfollow)
+}
+ }
+
+
+  }else{
   // if user not login ,means normal user search
-  if(loginState.state==false){
+
     let fetchUserData=await fetch(`/api/userdata?user=${param}&userLogin=no`);
     let res=await fetchUserData.json();
 
@@ -68,36 +98,15 @@ const fetchUserData=async()=>{
       setUserData(res.userdata)
 
      }
+  
   }
-  // if login
-  else{
-    let fetchUserData=await fetch(`/api/userdata?user=${param}&userLogin=${clientLoginInfo.email}`);
-    let res=await fetchUserData.json();
 
-    if(fetchUserData.status=="500"){
-      toast.error(res.message);
-      return;
-    }
-
-    if(fetchUserData.status=="404"){
-   
-      toast.error(res.message);
-      return;
-     }
-   
-    if(fetchUserData.status=="200"){
-      setBackupPostData(res.postdata)
-      setPostData(res.postdata)
-      setUserData(res.userdata)
-if(res.unfollow){
-  setUnFollowStatus(res.unfollow)
-}
-     }
-  }
+  
+  
 }
 
 useEffect(()=>{
- 
+
   fetchUserData();
 },[DeletePostReload])
 
@@ -107,10 +116,6 @@ useEffect(() => {
      if(param==session.data.user.email){
 
        setMenuOption(true)
-     }else{
-      setMenuOption(true)
-
-
      }
       dispatch(clientLoginState(false));
    
@@ -474,6 +479,11 @@ const unFollowUserBtn=async(usertowhofollow)=>{
 </div>:""}
 
 
+
+
+
+
+
 {/* user post section */}
 
 {(mainPost)?
@@ -491,7 +501,7 @@ const unFollowUserBtn=async(usertowhofollow)=>{
 
 {(postData.length!=0)?<>
 {/*  edit btn enable */}
-{/* <Link href={`/commentstopost?post=${item._id}`} key={item._id}> */}
+
 {(menuOption)?<>
 {/* with edit btn */}
 {postData.map((item)=>{

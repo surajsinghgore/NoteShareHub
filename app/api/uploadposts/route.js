@@ -293,6 +293,7 @@ let formData=await req.formData();
  
 
     const title = formData.get('title');
+    const file = formData.get('file');
     const keyword = formData.get('keyword');
     const visibility = formData.get('visibility');
     const description = formData.get('description');
@@ -375,6 +376,8 @@ let formData=await req.formData();
 let noteData=await uploadPosts.findById(postId);
 
 if(noteData==null){
+
+
   return NextResponse.json(
     {
       message: "Note is Not Valid ,Please Refresh The Page",
@@ -421,7 +424,6 @@ if(noteData.autherId!=activeUserId){
 // means not updating image just update normal details
 if(pictureStatus=="no"){
 
-
   // lets update except image
   
   await uploadPosts.findByIdAndUpdate(noteData._id,{title:title,keyword:KeywordArray,visibility:visibility,description:description});
@@ -434,14 +436,58 @@ if(pictureStatus=="no"){
     }
   );
 }
-// check weather image update or not
-// {id:id,title:title,keyword:keyword,description,visibility,file:'no'}
-// image updated
+// means also file updated
 
-// image not updated
+else{
 
-  // const {id,title,keyword,description,visibility}=await req.json();
 
+
+
+  if(file==null||file==undefined){
+    return NextResponse.json(
+      {
+        message: "Please Provide Image of the Post",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+
+// get old filename 
+
+const oldFileName = noteData.post_media.match(/\/([^\/?#]+)\.\w+$/)[1];
+
+// console.log(oldFileFullPath,oldFileName)
+
+
+await cloudinary.uploader.destroy(oldFileName);
+
+const fileBuffer = await file.arrayBuffer();
+const mimeType = file.type;
+const encoding = "base64";
+const base64Data = Buffer.from(fileBuffer).toString("base64");
+const fileUri = "data:" + mimeType + ";" + encoding + "," + base64Data;
+
+
+const res = await cloudinary.uploader.upload(fileUri, {public_id: file.filename});
+let url=res.url;
+
+
+await uploadPosts.findByIdAndUpdate(noteData._id,{title:title,keyword:KeywordArray,visibility:visibility,description:description,post_media:url });
+return NextResponse.json(
+  {
+    message: "Note Successfully Updated",
+  },
+  {
+    status: 200,
+  }
+);
+
+
+
+  
+}
 
 
 

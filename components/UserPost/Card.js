@@ -9,19 +9,18 @@ import { useSelector,useDispatch } from "react-redux";
 import { DeletePostReload } from "../../redux/slice/DeletePostReload";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faBook,
+
   faClose,
-  faCloudArrowDown,
-  faComment,
+
  faEdit,
  faEllipsisVertical,
- faGear,
+
  
  faPaperPlane,
  
  faPenSquare,
  
- faThumbsUp,
+
  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import { useState ,useRef,useEffect} from "react";
@@ -35,6 +34,7 @@ export default function Card(props) {
   const [description, setDescription] = useState("");
   const [file, setFile] = useState("");
   const [fileName, setFileName] = useState("");
+  const[fileArr,setFileArr]=useState([]);
 const[fileChangesStatus,setFileChangeStatus]=useState(false);
 
 
@@ -142,19 +142,20 @@ if(DeletePostReloads.state){
 
 }
 toast.success(res.message);
-
+setMenuOption(false);
   }
 
   const handleChanges = async (e) => {
     setFileChangeStatus(true)
+    setFileArr(e.target.files[0])
     setFile(URL.createObjectURL(e.target.files[0]));
 setFileName(e.target.files[0].name)
-    // extractTextFromImage(e.target.files);
+
   };
 
 
   const updateRecords=async(id)=>{
- 
+    setProgress(20);
 if(session.data==null){
   toast.warning("Please Login To Update This Note");
   setProgress(100)
@@ -181,11 +182,90 @@ data.append("visibility",visibility)
       // Yes post also updated
 if(fileChangesStatus){
 
+
+  data.append("pictureStatus",'true')
+  data.append("file",fileArr)
+
+
+  // ! [title field]
+  if ((title.length == 0)||title.length == " ") {
+    toast.warning("Please Enter Title in Post ");
+  setProgress(100)
+    return;
+  }
+
+    // ! [keyword field]
+    if ((keyword.length == 0)||keyword.length == " ") {
+      toast.warning("Please Enter Keyword in Post ");
+    setProgress(100)
+      return;
+    }
+
+    
+    // ! [description field]
+    if ((description.length == 0)||description.length == " ") {
+      toast.warning("Please Enter Description in Post ");
+    setProgress(100)
+      return;
+    }
+
+  
+    // ! [file field]
+    if ((file.length == 0)||file.length == " ") {
+      toast.warning("Please Provide Notes Images in Post ");
+    setProgress(100)
+      return;
+    }
+
+
+
+    const updateNotesRes=await fetch("/api/uploadposts",{
+      method:"PATCH",
+      
+      body:data
+    })
+
+
+    setProgress(100)
+
+let res=await updateNotesRes.json();
+  if(updateNotesRes.status==500){
+    toast.error(res.message);
+    return; 
+}
+
+if(updateNotesRes.status==400){
+    toast.warning(res.message);
+    return; 
+}
+
+if(updateNotesRes.status==404){
+    toast.error(res.message);
+    return; 
+}
+
+
+
+  setUpdateModal(false);
+  if(DeletePostReloads.state){
+    dispatch(DeletePostReload(false));
+}else{
+
+    dispatch(DeletePostReload(true));
+
+}
+toast.success(res.message);
+setMenuOption(false);
+
+
+
 }
 
 
 // image not updated
 else{
+
+
 
 data.append("pictureStatus",'no')
 
@@ -211,28 +291,30 @@ data.append("pictureStatus",'no')
     setProgress(100)
       return;
     }
+
+
     const updateNotesRes=await fetch("/api/uploadposts",{
       method:"PATCH",
-      
       body:data
     })
+
     setProgress(100)
-    if (!updateNotesRes.ok) {
-      throw new Error('Failed to update profile');
-  }
+ 
+
 
 let res=await updateNotesRes.json();
-  if(updateNotesRes=="500"){
+
+  if(updateNotesRes.status==500){
     toast.error(res.message);
     return; 
 }
 
-if(updateNotesRes=="400"){
+if(updateNotesRes.status==400){
     toast.warning(res.message);
     return; 
 }
 
-if(updateNotesRes=="404"){
+if(updateNotesRes.status==404){
     toast.error(res.message);
     return; 
 }
@@ -249,6 +331,7 @@ if(updateNotesRes=="404"){
 }
 toast.success(res.message);
 
+setMenuOption(false);
 
 
 
@@ -408,6 +491,7 @@ title="Close Update Form"
    <div className={style.post} key={item._id} ref={dropdown}>
    
 <FontAwesomeIcon icon={faEllipsisVertical} className={style.mainSetting} onClick={()=>handleMainMenu()}/>
+
 {(menuOption&&<div className={style.menuOpen}>
 <li onClick={()=>updateNotePost(item._id)}>
                       <div className={style.hidemenu_icons}>
