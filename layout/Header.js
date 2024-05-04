@@ -114,7 +114,7 @@ useEffect(() => {
 
   useEffect(() => {
     if (session.data != undefined) {
-    
+      if (session.data.user.image != undefined) {
       
         dispatch(clientLoginState(true));
         fetchNotificationData();
@@ -127,6 +127,7 @@ useEffect(() => {
           })
         );
         setImagePath(session.data.user.image);
+      }
     }
 
     // manage profile when logout
@@ -134,7 +135,7 @@ useEffect(() => {
       setImageEnable(false);
       setImagePath("");
     }
-    //setImagePath(clientLoginInfo.image);
+    setImagePath(clientLoginInfo.image);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
@@ -161,7 +162,7 @@ useEffect(()=>{
   setShowSearchSuggestion(false)
 },[pathname])
 
-const HandleNotification=()=>{
+const HandleNotification=(title)=>{
   setShowNotification(false);
 
   
