@@ -1,0 +1,21 @@
+.privacy{
+    width: 80%;
+    margin-left: 20%;
+    height: 300px;
+}
+
+.privacy .mainBody {
+    padding-top: 9%;
+    padding-bottom: 4%;
+}
+
+.mainElements{
+    width: 90%;
+    margin-left: 3%;
+}
+.mainElements h2{
+    margin-top: 1%;
+    color: rgb(56, 56, 56);
+font-size: 1.7vw;
+    margin-bottom: 1%;
+}

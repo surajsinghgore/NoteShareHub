@@ -128,7 +128,7 @@ export default function Page() {
             <div className={style.title} onClick={() => logOut()}>
               Lockout
             </div>
-            <FontAwesomeIcon icon={faAngleRight} className={style.right} />
+            
           </div>
         </div>
       </div>

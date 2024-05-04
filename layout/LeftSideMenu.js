@@ -11,7 +11,9 @@ import {
     faBell,
     faBookmark,
     faCloudArrowUp,
+    faEnvelope,
 faNewspaper,
+faShieldHalved,
 faSliders,
 faUser
 } from "@fortawesome/free-solid-svg-icons";
@@ -132,6 +134,34 @@ export default function LeftSideMenu() {
 </div>
 
 
+<div className={style.section}>
+    <h2>About Website</h2>
+    <div className={style.links}>
+{/* link 1 */}
+        <div className={style.link_card}>
+        <div className={style.icon}>
+        <Link href="/privacy">
+            <FontAwesomeIcon icon={faShieldHalved} className={style.menu_icon} />
+            </Link>
+            </div>
+            <div className={style.title}>
+            <Link href="/privacy">
+               Privacy Policy
+               </Link>  </div>
+        </div>
+       
+
+       {/* link 2 */}
+       <div className={style.link_card} onClick={()=>showNotification()}>
+            <div className={style.icon}>
+            <FontAwesomeIcon icon={faEnvelope} className={style.menu_icon} />
+            </div>
+            <div className={style.title}>
+               Query
+            </div>
+        </div>
+    </div>
+</div>
 
 
       </div>
