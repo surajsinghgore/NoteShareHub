@@ -4,6 +4,16 @@ import DbConnection from "../controller/DatabaseConnection";
 import clientPersonalData from "../models/clientPersonalSchema";
 import notificationSchema from "../models/showNotification";
 import uploadPosts from "../models/uploadposts";
+import likePost from "../models/likeposts";
+import dislikePost from "../models/dislikepost";
+import saveNotes from "../models/savedNotesSchema";
+
+
+
+
+
+
+
 const crypto = require('crypto');
 
 cloudinary.v2.config({
@@ -89,9 +99,11 @@ if(postData.autherId!=userActiveId){
     }
   );
 }
-  let res= await cloudinary.uploader.destroy(noteMedia);
+ await cloudinary.uploader.destroy(noteMedia);
 
-
+await likePost.findOneAndDelete({postId:NoteIdToDelete})
+await dislikePost.findOneAndDelete({postId:NoteIdToDelete})
+await saveNotes.findOneAndDelete({postId:NoteIdToDelete})
 await uploadPosts.findByIdAndDelete(NoteIdToDelete)
 // also delete notification of post if left
 let notificationData=await notificationSchema.findOne({autherId:userActiveId,postId:postData._id});

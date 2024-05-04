@@ -14,6 +14,7 @@ try {
 if(req.nextUrl.searchParams.get('userActiveEmail')!=undefined){
   let userActiveEmail=req.nextUrl.searchParams.get('userActiveEmail')
 // find userDetails
+
 let userData=await clientPersonalData.findOne({email:userActiveEmail})
 if(userData==null){
     return NextResponse.json(
@@ -29,6 +30,7 @@ if(userData==null){
 let userActiveId=userData._id;
 // check pending notification of user
 let findPendingNotes=await showNotification.find({"followerWhoNotSeenThePost.userId":userActiveId})
+
 if(findPendingNotes.length==0){
     return NextResponse.json(
         {
