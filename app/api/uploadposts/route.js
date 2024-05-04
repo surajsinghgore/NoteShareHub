@@ -280,3 +280,186 @@ if(visibilityValue=="public"){
     
     
 }
+
+
+
+// update notes data
+
+export async function PATCH(req){
+  try {
+
+let formData=await req.formData();
+
+ 
+
+    const title = formData.get('title');
+    const keyword = formData.get('keyword');
+    const visibility = formData.get('visibility');
+    const description = formData.get('description');
+    const userActiveEmail = formData.get('userActiveEmail');
+    const postId = formData.get('id');
+    const pictureStatus = formData.get('pictureStatus');
+
+    if(title.length==0||title==""||title==null||title==undefined){
+      return NextResponse.json(
+        {
+          message: "Please Enter Title Of The Post",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    if(keyword.length==0||keyword==""||keyword==null||keyword==undefined){
+      return NextResponse.json(
+        {
+          message: "Please Enter Keyword Of The Post",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    if(visibility.length==0||visibility==""||visibility==null||visibility==undefined){
+      return NextResponse.json(
+        {
+          message: "Please Enter Visibility Of The Post",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+
+    if(description.length==0||description==""||description==null||description==undefined){
+      return NextResponse.json(
+        {
+          message: "Please Enter Description Of The Post",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+
+    if(postId.length==0||postId==""||postId==null||postId==undefined){
+      return NextResponse.json(
+        {
+          message: "Please Enter PostId Of The Post",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+
+    if(userActiveEmail==null||userActiveEmail==undefined){
+      return NextResponse.json(
+        {
+          message: "Please Login With Active Email Id",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+
+    const KeywordArray=keyword.split(",");
+  // get post Details weather available or not
+let noteData=await uploadPosts.findById(postId);
+
+if(noteData==null){
+  return NextResponse.json(
+    {
+      message: "Note is Not Valid ,Please Refresh The Page",
+    },
+    {
+      status: 404,
+    }
+  );
+}
+
+// find user details
+
+let userData=await clientPersonalData.findOne({email:userActiveEmail});
+if(userData==null){
+  return NextResponse.json(
+    {
+      message: "Please Login with Valid Account",
+    },
+    {
+      status: 404,
+    }
+  );
+}
+
+// check weather author of post or not
+
+let activeUserId=userData._id.toString();
+
+if(noteData.autherId!=activeUserId){
+  return NextResponse.json(
+    {
+      message: "You are not the Owner Of This Post",
+    },
+    {
+      status: 400,
+    }
+  );
+}
+
+
+
+
+
+// means not updating image just update normal details
+if(pictureStatus=="no"){
+
+
+  // lets update except image
+  
+  await uploadPosts.findByIdAndUpdate(noteData._id,{title:title,keyword:KeywordArray,visibility:visibility,description:description});
+  return NextResponse.json(
+    {
+      message: "Note Successfully Updated",
+    },
+    {
+      status: 200,
+    }
+  );
+}
+// check weather image update or not
+// {id:id,title:title,keyword:keyword,description,visibility,file:'no'}
+// image updated
+
+// image not updated
+
+  // const {id,title,keyword,description,visibility}=await req.json();
+
+
+
+
+
+
+
+
+
+
+} catch (error) {
+  console.log(error)
+  return NextResponse.json(
+    {
+      message: "Internal Server Error",
+    },
+    {
+      status: 500,
+    }
+  );
+}
+}

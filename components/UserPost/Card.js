@@ -39,7 +39,7 @@ const[fileChangesStatus,setFileChangeStatus]=useState(false);
 
 
     const dropdown = useRef(null);
-    const closeMenuOpen = useRef(null);
+    
     const session = useSession();
     const DeletePostReloads = useSelector((state) => state.DeletePostReload);
     const [progress, setProgress] = useState(100);
@@ -71,7 +71,7 @@ const[fileChangesStatus,setFileChangeStatus]=useState(false);
   }, [menuOption]);
 
 
-
+// fetching notes default value
 const updateNotePost=async(id)=>{
 
     setUpdateModal(true);
@@ -87,6 +87,10 @@ const updateNotePost=async(id)=>{
      setDescription(data.data.description);
        setFile(data.data.post_media);
       setFileName(data.data.post_media.match(/\/([^\/?#]+)\.\w+$/)[1]);
+
+
+    
+
     }
   
 }
@@ -149,7 +153,108 @@ setFileName(e.target.files[0].name)
   };
 
 
-  const updateRecords=async()=>{}
+  const updateRecords=async(id)=>{
+ 
+if(session.data==null){
+  toast.warning("Please Login To Update This Note");
+  setProgress(100)
+    return;
+}
+if(id==undefined||id==null){
+  toast.warning("Please try again by refreshing the page");
+    setProgress(100)
+      return;
+}
+
+const data=new FormData();
+data.append("title",title)
+data.append("id",id)
+data.append("userActiveEmail",session.data.user.email);
+data.append("keyword",keyword)
+data.append("description",description)
+data.append("visibility",visibility)
+
+
+
+      // let's update note
+      // check weather image is updated or not
+      // Yes post also updated
+if(fileChangesStatus){
+
+}
+
+
+// image not updated
+else{
+
+data.append("pictureStatus",'no')
+
+
+  // ! [title field]
+  if ((title.length == 0)||title.length == " ") {
+    toast.warning("Please Enter Title in Post ");
+  setProgress(100)
+    return;
+  }
+
+    // ! [keyword field]
+    if ((keyword.length == 0)||keyword.length == " ") {
+      toast.warning("Please Enter Keyword in Post ");
+    setProgress(100)
+      return;
+    }
+
+    
+    // ! [description field]
+    if ((description.length == 0)||description.length == " ") {
+      toast.warning("Please Enter Description in Post ");
+    setProgress(100)
+      return;
+    }
+    const updateNotesRes=await fetch("/api/uploadposts",{
+      method:"PATCH",
+      
+      body:data
+    })
+    setProgress(100)
+    if (!updateNotesRes.ok) {
+      throw new Error('Failed to update profile');
+  }
+
+let res=await updateNotesRes.json();
+  if(updateNotesRes=="500"){
+    toast.error(res.message);
+    return; 
+}
+
+if(updateNotesRes=="400"){
+    toast.warning(res.message);
+    return; 
+}
+
+if(updateNotesRes=="404"){
+    toast.error(res.message);
+    return; 
+}
+
+
+
+  setUpdateModal(false);
+  if(DeletePostReloads.state){
+    dispatch(DeletePostReload(false));
+}else{
+
+    dispatch(DeletePostReload(true));
+
+}
+toast.success(res.message);
+
+
+
+
+
+}
+  }
   return (
     <>
 <LoadingBar
@@ -285,7 +390,7 @@ title="Close Update Form"
 </div>
 {/* btn */}
 <div className={style.uploadBtn}>
-                      <button onClick={()=>updateRecords()}>
+                      <button onClick={()=>updateRecords(item._id)}>
                         <FontAwesomeIcon
                           icon={faPaperPlane}
                           title="Discard this post"
