@@ -94,3 +94,14 @@ padding-left: 4%;
     color: rgb(37 41 56) !important;
     cursor: pointer;
 }
+
+
+
+
+@media only screen and (min-device-width: 0px) and (max-device-width: 1000px) {
+
+    .leftSideMenu{
+        display: none;
+        }
+        
+}
