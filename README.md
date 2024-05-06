@@ -24,7 +24,7 @@ https://www.youtube.com/watch?v=krFu5NfKPbg&t=13s
 
 ## Screenshots
 
-![App Screenshot](https://res.cloudinary.com/dnxv21hr0/image/upload/v1715000676/yjnncrbxer9udxf2icg3.png)
+![App Screenshot](https://res.cloudinary.com/dnxv21hr0/image/upload/v1715001080/fpusrvp0cqjdpohbdzfz.jpg)
 
 
 ## Tech Stack
